@@ -29,7 +29,6 @@ tailwind.config = {
 <style>
   body { background: #FAFAFC; font-family: 'Inter', sans-serif; color: #0F0F19; -webkit-font-smoothing: antialiased; }
   .gradient-text { background: linear-gradient(135deg, #6364E0 0%, #3F40A8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .ticker { display: flex; gap: 40px; animation: marquee 60s linear infinite; }
   @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   #floatingNav { transition: top .3s cubic-bezier(.4,0,.2,1), padding .3s; }
   #floatingNav.scrolled { top: 12px; }
@@ -61,36 +60,6 @@ tailwind.config = {
 </style>
 </head>
 <body class="text-ink-900">
-
-<!-- ============ MARQUEE TICKER ============ -->
-<div class="bg-ink-900 text-white py-2.5 overflow-hidden border-b border-white/5 relative">
-  <div class="ticker">
-    <div class="flex items-center gap-10 whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60">
-      <span class="flex items-center gap-2 text-warn"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>Prevenção primeiro — não só o laudo</span>
-      <span class="text-white/20">●</span>
-      <span class="text-white">NR-1 punitiva em 16 dias</span>
-      <span class="text-white/20">●</span>
-      <span>Detectar antes do afastamento</span>
-      <span class="text-white/20">●</span>
-      <span>Reconhecer antes da demissão</span>
-      <span class="text-white/20">●</span>
-      <span class="flex items-center gap-2 text-warn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07"/></svg>0800 555 0000</span>
-      <span class="text-white/20">●</span>
-    </div>
-    <div class="flex items-center gap-10 whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60" aria-hidden="true">
-      <span class="flex items-center gap-2 text-warn"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>Prevenção primeiro — não só o laudo</span>
-      <span class="text-white/20">●</span>
-      <span class="text-white">NR-1 punitiva em 16 dias</span>
-      <span class="text-white/20">●</span>
-      <span>Detectar antes do afastamento</span>
-      <span class="text-white/20">●</span>
-      <span>Reconhecer antes da demissão</span>
-      <span class="text-white/20">●</span>
-      <span class="flex items-center gap-2 text-warn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07"/></svg>0800 555 0000</span>
-      <span class="text-white/20">●</span>
-    </div>
-  </div>
-</div>
 
 <!-- ============ FLOATING CAPSULE NAV ============ -->
 <header id="floatingNav" class="fixed top-9 left-1/2 -translate-x-1/2 z-50 px-4 max-w-full">
@@ -544,105 +513,163 @@ tailwind.config = {
 </section>
 
 <!-- ============ MANIFESTO ============ -->
-<section id="manifesto" class="py-24 lg:py-32 bg-surface relative overflow-hidden">
-  <div class="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-accent-100/40 blur-3xl"></div>
-  <div class="relative max-w-5xl mx-auto px-6 lg:px-10 text-center">
-    <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent-600">Por que Innova</span>
-    <h2 class="font-display text-5xl lg:text-7xl mt-3 leading-[1.0]">Software brasileiro,<br/>feito para a <span class="italic gradient-text">complexidade brasileira.</span></h2>
-    <p class="mt-8 text-lg text-ink-700 max-w-3xl mx-auto">A regulação aqui muda. O eSocial tem 47 leiautes diferentes. A NR-1 ganhou novo escopo em 2024. O Art. 457 da CLT tem casuística rica de jurisprudência. Empresa brasileira não pode rodar com software pensado lá fora — precisa de plataforma que entende a CLT como ela é. <strong class="text-ink-900">E que vai além do laudo: previne.</strong></p>
+<section id="manifesto" class="py-24 lg:py-40 bg-surface">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
 
-    <div class="grid md:grid-cols-3 gap-5 mt-16 text-left">
-      <div class="bg-white rounded-3xl p-7">
-        <div class="w-12 h-12 rounded-2xl bg-accent-50 grid place-items-center mb-5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-        <h3 class="font-extrabold text-lg">Especialistas, não generalistas</h3>
-        <p class="text-sm text-ink-700 mt-2">Cada produto Innova é construído com responsável técnico real (RT SST, advogado trabalhista, psicólogo organizacional) — não é "uma plataforma que faz tudo um pouco".</p>
+    <div class="grid lg:grid-cols-12 gap-x-12 gap-y-10 mb-20 lg:mb-32 items-end">
+      <div class="lg:col-span-2 hidden lg:block">
+        <div class="text-[10px] uppercase tracking-[0.3em] font-extrabold text-ink-500">Por que Innova</div>
       </div>
-      <div class="bg-white rounded-3xl p-7">
-        <div class="w-12 h-12 rounded-2xl bg-warn/10 grid place-items-center mb-5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <h3 class="font-extrabold text-lg">Defensável por design</h3>
-        <p class="text-sm text-ink-700 mt-2">Trilha de auditoria 20 anos, hash SHA-256, WORM, ICP-Brasil. Toda evidência é gerada para sobreviver à fiscalização e à ação trabalhista — não para enfeitar relatório.</p>
+      <div class="lg:col-span-10">
+        <h2 class="font-display text-[44px] sm:text-6xl lg:text-[88px] leading-[0.95] tracking-tight text-ink-900">
+          Software brasileiro,<br/>
+          <span class="italic text-accent-600">feito para a complexidade brasileira.</span>
+        </h2>
+        <p class="mt-10 lg:mt-12 text-[17px] lg:text-xl text-ink-700 max-w-2xl leading-relaxed">
+          A regulação aqui muda. O eSocial tem 47 leiautes. A NR-1 ganhou novo escopo em 2024. O Art. 457 da CLT tem jurisprudência rica. Empresa brasileira não roda com software pensado lá fora — e principalmente não roda com promessa de IA. <span class="text-ink-900 font-semibold">Vai além do laudo. Previne.</span>
+        </p>
       </div>
-      <div class="bg-white rounded-3xl p-7">
-        <div class="w-12 h-12 rounded-2xl bg-ok/10 grid place-items-center mb-5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
-        <h3 class="font-extrabold text-lg">Produtos que se conversam</h3>
-        <p class="text-sm text-ink-700 mt-2">O ENPS do /RH alimenta o IPAR psicossocial do /NR1. As atas do /Premiações puxam do /RH. O ecossistema só faz sentido inteiro — mas você pode começar por um.</p>
-      </div>
+    </div>
+
+    <div class="space-y-16 lg:space-y-24">
+
+      <article class="grid lg:grid-cols-12 gap-x-12 gap-y-4 border-t border-ink-900/10 pt-12 lg:pt-16">
+        <div class="lg:col-span-3 flex items-start gap-4">
+          <span class="font-display text-5xl lg:text-7xl leading-none text-accent-600">01</span>
+          <span class="text-[10px] uppercase tracking-[0.25em] font-extrabold text-ink-500 mt-3">Origem</span>
+        </div>
+        <div class="lg:col-span-9 lg:pl-8 lg:border-l lg:border-ink-900/10">
+          <h3 class="font-display text-3xl lg:text-5xl leading-tight text-ink-900">Especialistas, não generalistas.</h3>
+          <p class="text-base lg:text-lg text-ink-700 mt-5 max-w-3xl leading-relaxed">
+            Cada produto Innova tem responsável técnico assinando: RT em SST, advogado trabalhista, psicólogo organizacional registrado. Não é "uma plataforma que faz tudo um pouco" — é três produtos que poderiam ser três empresas, compartilhando fundação.
+          </p>
+        </div>
+      </article>
+
+      <article class="grid lg:grid-cols-12 gap-x-12 gap-y-4 border-t border-ink-900/10 pt-12 lg:pt-16">
+        <div class="lg:col-span-3 flex items-start gap-4">
+          <span class="font-display text-5xl lg:text-7xl leading-none text-accent-600">02</span>
+          <span class="text-[10px] uppercase tracking-[0.25em] font-extrabold text-ink-500 mt-3">Postura</span>
+        </div>
+        <div class="lg:col-span-9 lg:pl-8 lg:border-l lg:border-ink-900/10">
+          <h3 class="font-display text-3xl lg:text-5xl leading-tight text-ink-900">Defensável por design.</h3>
+          <p class="text-base lg:text-lg text-ink-700 mt-5 max-w-3xl leading-relaxed">
+            Trilha de auditoria de 20 anos. Hash SHA-256 em cada evento. Armazenamento WORM. Assinatura ICP-Brasil. Cada evidência é gerada pra sobreviver à fiscalização e à ação trabalhista — não pra deixar o relatório bonito. Quando o auditor pedir, está lá.
+          </p>
+        </div>
+      </article>
+
+      <article class="grid lg:grid-cols-12 gap-x-12 gap-y-4 border-t border-ink-900/10 pt-12 lg:pt-16">
+        <div class="lg:col-span-3 flex items-start gap-4">
+          <span class="font-display text-5xl lg:text-7xl leading-none text-accent-600">03</span>
+          <span class="text-[10px] uppercase tracking-[0.25em] font-extrabold text-ink-500 mt-3">Sistema</span>
+        </div>
+        <div class="lg:col-span-9 lg:pl-8 lg:border-l lg:border-ink-900/10">
+          <h3 class="font-display text-3xl lg:text-5xl leading-tight text-ink-900">Os três se conversam.</h3>
+          <p class="text-base lg:text-lg text-ink-700 mt-5 max-w-3xl leading-relaxed">
+            O ENPS do /RH vira sinal de risco psicossocial no IPAR do /NR1. As atas do /Premiações puxam do controle de disciplina. O ecossistema só faz sentido por inteiro — mas você pode começar por um produto e ir crescendo. A integração é interna, não API que precisa configurar.
+          </p>
+        </div>
+      </article>
+
     </div>
   </div>
 </section>
 
 <!-- ============ NÚMEROS ============ -->
-<section id="numeros" class="py-24 lg:py-28 bg-white">
-  <div class="max-w-7xl mx-auto px-6 lg:px-10">
-    <div class="text-center mb-16">
-      <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent-600">Em números</span>
-      <h2 class="font-display text-5xl lg:text-6xl mt-3 leading-[1.0]">A Innova hoje.</h2>
-    </div>
-    <div class="grid md:grid-cols-4 gap-5">
-      <div class="bg-surface rounded-4xl p-7 text-center">
-        <div class="font-display text-6xl text-accent-600">12</div>
-        <div class="text-xs text-ink-500 font-extrabold uppercase tracking-[0.15em] mt-2">Empresas ativas</div>
+<section id="numeros" class="py-24 lg:py-32 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="grid lg:grid-cols-12 gap-x-12 gap-y-10 items-end mb-16 lg:mb-24">
+      <div class="lg:col-span-2 hidden lg:block">
+        <div class="text-[10px] uppercase tracking-[0.3em] font-extrabold text-ink-500">Hoje</div>
       </div>
-      <div class="bg-surface rounded-4xl p-7 text-center">
-        <div class="font-display text-6xl text-accent-600">1.823</div>
-        <div class="text-xs text-ink-500 font-extrabold uppercase tracking-[0.15em] mt-2">Colaboradores na base</div>
-      </div>
-      <div class="bg-surface rounded-4xl p-7 text-center">
-        <div class="font-display text-6xl text-accent-600">98%</div>
-        <div class="text-xs text-ink-500 font-extrabold uppercase tracking-[0.15em] mt-2">SLA do S-2240</div>
-      </div>
-      <div class="bg-surface rounded-4xl p-7 text-center">
-        <div class="font-display text-6xl text-accent-600">0</div>
-        <div class="text-xs text-ink-500 font-extrabold uppercase tracking-[0.15em] mt-2">Vazamentos LGPD</div>
+      <div class="lg:col-span-10">
+        <h2 class="font-display text-[44px] lg:text-7xl leading-[0.95] tracking-tight text-ink-900">A Innova,<br/><span class="italic text-accent-600">em quatro métricas reais.</span></h2>
       </div>
     </div>
+    <dl class="grid sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-ink-900/10 border-y border-ink-900/10">
+      <div class="px-2 sm:px-8 py-10">
+        <dt class="text-[10px] uppercase tracking-[0.25em] font-extrabold text-ink-500">Empresas ativas</dt>
+        <dd class="font-display text-7xl lg:text-8xl text-ink-900 mt-4 leading-none">12</dd>
+        <p class="text-xs text-ink-500 mt-3">Crescendo 2 a 3 por mês desde dez/2025.</p>
+      </div>
+      <div class="px-2 sm:px-8 py-10">
+        <dt class="text-[10px] uppercase tracking-[0.25em] font-extrabold text-ink-500">Colaboradores na base</dt>
+        <dd class="font-display text-7xl lg:text-8xl text-ink-900 mt-4 leading-none">1.823</dd>
+        <p class="text-xs text-ink-500 mt-3">Cada um com PGR vivo e S-2240 em dia.</p>
+      </div>
+      <div class="px-2 sm:px-8 py-10">
+        <dt class="text-[10px] uppercase tracking-[0.25em] font-extrabold text-ink-500">SLA do S-2240</dt>
+        <dd class="font-display text-7xl lg:text-8xl text-ink-900 mt-4 leading-none">98<span class="text-ink-300">%</span></dd>
+        <p class="text-xs text-ink-500 mt-3">Envio em até 24h após o evento. Auditado.</p>
+      </div>
+      <div class="px-2 sm:px-8 py-10">
+        <dt class="text-[10px] uppercase tracking-[0.25em] font-extrabold text-ink-500">Vazamentos LGPD</dt>
+        <dd class="font-display text-7xl lg:text-8xl text-accent-600 mt-4 leading-none">0</dd>
+        <p class="text-xs text-ink-500 mt-3">Dado sensível em VPC isolada, hash em rest.</p>
+      </div>
+    </dl>
   </div>
 </section>
 
 <!-- ============ TIME ============ -->
-<section id="time" class="py-24 lg:py-32 bg-surface">
-  <div class="max-w-7xl mx-auto px-6 lg:px-10">
-    <div class="grid lg:grid-cols-12 gap-10">
-      <div class="lg:col-span-5">
-        <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent-600">Quem está por trás</span>
-        <h2 class="font-display text-5xl lg:text-6xl mt-3 leading-[1.0]">Time pequeno.<br/><span class="italic">Convicção grande.</span></h2>
-        <p class="mt-6 text-ink-700">A Innova é um time de 5 pessoas que vive próximo dos clientes — sem camadas comerciais, sem call center, sem vendedor. Quem te atende é quem constrói o produto.</p>
-        <a href="#contato" class="mt-6 inline-flex items-center gap-2 text-sm font-extrabold text-accent-600 hover:text-accent-700">Conhecer o manifesto completo →</a>
+<section id="time" class="py-24 lg:py-40 bg-surface">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+
+    <div class="grid lg:grid-cols-12 gap-x-12 gap-y-10 items-end mb-16 lg:mb-24">
+      <div class="lg:col-span-2 hidden lg:block">
+        <div class="text-[10px] uppercase tracking-[0.3em] font-extrabold text-ink-500">Por trás</div>
       </div>
       <div class="lg:col-span-7">
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          <div class="bg-white rounded-3xl p-5 text-center">
-            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent-300 to-accent-600 grid place-items-center text-white font-extrabold mx-auto mb-3">GC</div>
-            <div class="font-extrabold text-sm">Gabriel Couto</div>
-            <div class="text-[11px] text-ink-500 mt-0.5">Sócio · Resp. SST</div>
-          </div>
-          <div class="bg-white rounded-3xl p-5 text-center">
-            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-warn to-danger grid place-items-center text-white font-extrabold mx-auto mb-3">RP</div>
-            <div class="font-extrabold text-sm">Ricardo Pereira</div>
-            <div class="text-[11px] text-ink-500 mt-0.5">Eng. Segurança · CREA</div>
-          </div>
-          <div class="bg-white rounded-3xl p-5 text-center">
-            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-ok to-emerald-700 grid place-items-center text-white font-extrabold mx-auto mb-3">LM</div>
-            <div class="font-extrabold text-sm">Leonardo Meneses</div>
-            <div class="text-[11px] text-ink-500 mt-0.5">Méd. Trabalho · CRM</div>
-          </div>
-          <div class="bg-white rounded-3xl p-5 text-center">
-            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent-300 to-accent-500 grid place-items-center text-white font-extrabold mx-auto mb-3">JS</div>
-            <div class="font-extrabold text-sm">Juliana Souza</div>
-            <div class="text-[11px] text-ink-500 mt-0.5">Customer Success</div>
-          </div>
-          <div class="bg-white rounded-3xl p-5 text-center">
-            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-ok to-accent-500 grid place-items-center text-white font-extrabold mx-auto mb-3">PF</div>
-            <div class="font-extrabold text-sm">Pedro Ferreira</div>
-            <div class="text-[11px] text-ink-500 mt-0.5">Customer Success</div>
-          </div>
-          <div class="bg-accent-500 text-white rounded-3xl p-5 text-center">
-            <div class="w-16 h-16 rounded-full bg-white/20 grid place-items-center mx-auto mb-3"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-            <div class="font-extrabold text-sm">Vagas abertas</div>
-            <div class="text-[11px] text-white/80 mt-0.5">Conheça nossa cultura</div>
-          </div>
-        </div>
+        <h2 class="font-display text-[44px] lg:text-7xl leading-[0.95] tracking-tight text-ink-900">
+          Time pequeno.<br/><span class="italic text-accent-600">Convicção grande.</span>
+        </h2>
       </div>
+      <div class="lg:col-span-3">
+        <p class="text-ink-700 leading-relaxed text-[15px]">
+          Cinco pessoas, sem camadas comerciais, sem call center, sem SDR. Quem você fala é quem constrói o produto.
+        </p>
+      </div>
+    </div>
+
+    <ul class="border-t border-ink-900/10">
+      <li class="grid lg:grid-cols-12 gap-x-8 gap-y-1 border-b border-ink-900/10 py-7 lg:py-9 items-baseline">
+        <div class="lg:col-span-1 font-display text-2xl lg:text-3xl text-ink-300">01</div>
+        <div class="lg:col-span-5 font-display text-2xl lg:text-4xl text-ink-900">Gabriel Couto</div>
+        <div class="lg:col-span-4 text-sm text-ink-700">Sócio fundador · Responsável Técnico SST</div>
+        <div class="lg:col-span-2 text-[11px] uppercase tracking-[0.18em] font-extrabold text-accent-600">CREA-RS · 18a</div>
+      </li>
+      <li class="grid lg:grid-cols-12 gap-x-8 gap-y-1 border-b border-ink-900/10 py-7 lg:py-9 items-baseline">
+        <div class="lg:col-span-1 font-display text-2xl lg:text-3xl text-ink-300">02</div>
+        <div class="lg:col-span-5 font-display text-2xl lg:text-4xl text-ink-900">Ricardo Pereira</div>
+        <div class="lg:col-span-4 text-sm text-ink-700">Engenheiro de Segurança · PGR</div>
+        <div class="lg:col-span-2 text-[11px] uppercase tracking-[0.18em] font-extrabold text-accent-600">CREA-PR · 12a</div>
+      </li>
+      <li class="grid lg:grid-cols-12 gap-x-8 gap-y-1 border-b border-ink-900/10 py-7 lg:py-9 items-baseline">
+        <div class="lg:col-span-1 font-display text-2xl lg:text-3xl text-ink-300">03</div>
+        <div class="lg:col-span-5 font-display text-2xl lg:text-4xl text-ink-900">Leonardo Meneses</div>
+        <div class="lg:col-span-4 text-sm text-ink-700">Médico do Trabalho · Casos clínicos</div>
+        <div class="lg:col-span-2 text-[11px] uppercase tracking-[0.18em] font-extrabold text-accent-600">CRM-SP · 9a</div>
+      </li>
+      <li class="grid lg:grid-cols-12 gap-x-8 gap-y-1 border-b border-ink-900/10 py-7 lg:py-9 items-baseline">
+        <div class="lg:col-span-1 font-display text-2xl lg:text-3xl text-ink-300">04</div>
+        <div class="lg:col-span-5 font-display text-2xl lg:text-4xl text-ink-900">Juliana Souza</div>
+        <div class="lg:col-span-4 text-sm text-ink-700">Customer Success · Implantação</div>
+        <div class="lg:col-span-2 text-[11px] uppercase tracking-[0.18em] font-extrabold text-accent-600">Operações</div>
+      </li>
+      <li class="grid lg:grid-cols-12 gap-x-8 gap-y-1 border-b border-ink-900/10 py-7 lg:py-9 items-baseline">
+        <div class="lg:col-span-1 font-display text-2xl lg:text-3xl text-ink-300">05</div>
+        <div class="lg:col-span-5 font-display text-2xl lg:text-4xl text-ink-900">Pedro Ferreira</div>
+        <div class="lg:col-span-4 text-sm text-ink-700">Customer Success · Suporte técnico</div>
+        <div class="lg:col-span-2 text-[11px] uppercase tracking-[0.18em] font-extrabold text-accent-600">Operações</div>
+      </li>
+    </ul>
+
+    <div class="mt-12 flex items-baseline justify-between gap-6 flex-wrap">
+      <p class="font-display text-2xl lg:text-3xl text-ink-700 italic">Vagas abertas pra quem incomoda com mediocridade.</p>
+      <a href="#contato" class="text-sm font-extrabold text-accent-600 hover:text-accent-700 inline-flex items-center gap-2 group">
+        Mandar email → <span class="opacity-50 group-hover:opacity-100 transition">contato@innova.com.br</span>
+      </a>
     </div>
   </div>
 </section>

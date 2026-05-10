@@ -27,7 +27,6 @@ tailwind.config = {
 <style>
   body { background: #FAFAFC; font-family: 'Inter', sans-serif; color: #0F0F19; -webkit-font-smoothing: antialiased; }
   .gradient-text { background: linear-gradient(135deg, #6364E0 0%, #3F40A8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .ticker { display: flex; gap: 40px; animation: marquee 60s linear infinite; }
   @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   #floatingNav { transition: top .3s cubic-bezier(.4,0,.2,1), padding .3s; }
   #floatingNav.scrolled { top: 12px; }
@@ -42,32 +41,6 @@ tailwind.config = {
 </style>
 </head>
 <body class="text-ink-900">
-
-<!-- ============ TICKER ============ -->
-<div class="bg-ink-900 text-white py-2.5 overflow-hidden border-b border-white/5 relative">
-  <div class="ticker">
-    <div class="flex items-center gap-10 whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60">
-      <span class="flex items-center gap-2 text-warn"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>Em breve · lançamento maio/2026</span>
-      <span class="text-white/20">●</span>
-      <span class="text-white">Pulse semanal · ENPS · clima · feedback 360</span>
-      <span class="text-white/20">●</span>
-      <span>Detectar antes da demissão silenciosa</span>
-      <span class="text-white/20">●</span>
-      <span>Lista de espera aberta</span>
-      <span class="text-white/20">●</span>
-    </div>
-    <div class="flex items-center gap-10 whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60" aria-hidden="true">
-      <span class="flex items-center gap-2 text-warn"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>Em breve · lançamento maio/2026</span>
-      <span class="text-white/20">●</span>
-      <span class="text-white">Pulse semanal · ENPS · clima · feedback 360</span>
-      <span class="text-white/20">●</span>
-      <span>Detectar antes da demissão silenciosa</span>
-      <span class="text-white/20">●</span>
-      <span>Lista de espera aberta</span>
-      <span class="text-white/20">●</span>
-    </div>
-  </div>
-</div>
 
 <!-- ============ FLOATING NAV ============ -->
 <header id="floatingNav" class="fixed top-9 left-1/2 -translate-x-1/2 z-50 px-4 max-w-full">
@@ -195,49 +168,38 @@ tailwind.config = {
       <p class="mt-6 text-lg text-ink-700">A Innova /RH não é uma pesquisa anual gigante que ninguém responde — são pulses curtos, frequentes, com perguntas certas no momento certo.</p>
     </div>
 
-    <div class="grid lg:grid-cols-2 gap-5">
-      <div class="bg-surface rounded-4xl p-7 hover:-translate-y-0.5 transition">
-        <div class="flex items-center gap-3 mb-4"><div class="w-12 h-12 rounded-2xl bg-accent-50 grid place-items-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div><div class="text-[10px] uppercase tracking-wider font-extrabold text-accent-600">Mensal</div><h3 class="font-extrabold text-xl">ENPS</h3></div></div>
-        <p class="text-sm text-ink-700">Employee Net Promoter Score. Uma pergunta única — "Em uma escala de 0 a 10, o quanto você recomendaria essa empresa para um amigo trabalhar?" — aplicada todo mês.</p>
-        <div class="mt-4 pt-4 border-t border-black/10 grid grid-cols-3 gap-2 text-center text-xs">
-          <div><div class="font-bold text-ink-900">1 pergunta</div><div class="text-ink-500 text-[10px]">cadência mensal</div></div>
-          <div><div class="font-bold text-ink-900">95%+</div><div class="text-ink-500 text-[10px]">taxa de resposta</div></div>
-          <div><div class="font-bold text-ink-900">Anônimo</div><div class="text-ink-500 text-[10px]">3 camadas</div></div>
-        </div>
-      </div>
+    <div class="border-t border-ink-900/10">
+      <article class="grid lg:grid-cols-12 gap-x-8 gap-y-3 py-12 lg:py-14 border-b border-ink-900/10">
+        <div class="lg:col-span-2 text-[10px] uppercase tracking-[0.22em] font-extrabold text-accent-600 leading-tight">Mensal · 1 pergunta · 95% resposta</div>
+        <div class="lg:col-span-3 font-display text-3xl lg:text-4xl text-ink-900 leading-[1.0]">ENPS</div>
+        <p class="lg:col-span-7 lg:pl-8 lg:border-l lg:border-ink-900/10 text-base lg:text-lg text-ink-700 leading-relaxed">
+          Employee Net Promoter Score. Uma pergunta única — <em>"De 0 a 10, o quanto você recomendaria a empresa pra um amigo trabalhar?"</em> — aplicada todo mês com anonimato em 3 camadas. Tendência mensal serve de alerta precoce; nenhuma resposta isolada identifica quem respondeu.
+        </p>
+      </article>
 
-      <div class="bg-surface rounded-4xl p-7 hover:-translate-y-0.5 transition">
-        <div class="flex items-center gap-3 mb-4"><div class="w-12 h-12 rounded-2xl bg-warn/10 grid place-items-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="text-[10px] uppercase tracking-wider font-extrabold text-warn">Semanal</div><h3 class="font-extrabold text-xl">Pulse curto</h3></div></div>
-        <p class="text-sm text-ink-700">3 a 5 perguntas que rotacionam a cada semana, focadas em sinais de alerta: carga, autonomia, reconhecimento, relação com liderança. Detecta deterioração antes da pesquisa anual.</p>
-        <div class="mt-4 pt-4 border-t border-black/10 grid grid-cols-3 gap-2 text-center text-xs">
-          <div><div class="font-bold text-ink-900">3-5 perguntas</div><div class="text-ink-500 text-[10px]">cadência semanal</div></div>
-          <div><div class="font-bold text-ink-900">~2 min</div><div class="text-ink-500 text-[10px]">para responder</div></div>
-          <div><div class="font-bold text-ink-900">Rotativas</div><div class="text-ink-500 text-[10px]">8 dimensões</div></div>
-        </div>
-      </div>
+      <article class="grid lg:grid-cols-12 gap-x-8 gap-y-3 py-12 lg:py-14 border-b border-ink-900/10">
+        <div class="lg:col-span-2 text-[10px] uppercase tracking-[0.22em] font-extrabold text-warn leading-tight">Semanal · 3-5 perguntas · ~2 min</div>
+        <div class="lg:col-span-3 font-display text-3xl lg:text-4xl text-ink-900 leading-[1.0]">Pulse curto</div>
+        <p class="lg:col-span-7 lg:pl-8 lg:border-l lg:border-ink-900/10 text-base lg:text-lg text-ink-700 leading-relaxed">
+          Três a cinco perguntas rotativas cobrindo oito dimensões: carga, autonomia, reconhecimento, relação com liderança, segurança psicológica, propósito, ferramentas, ritmo. Detecta deterioração <span class="text-ink-900 font-semibold">muito antes</span> de qualquer pesquisa anual conseguir.
+        </p>
+      </article>
 
-      <div class="bg-surface rounded-4xl p-7 hover:-translate-y-0.5 transition">
-        <div class="flex items-center gap-3 mb-4"><div class="w-12 h-12 rounded-2xl bg-ok/10 grid place-items-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><div><div class="text-[10px] uppercase tracking-wider font-extrabold text-ok">Anual / Semestral</div><h3 class="font-extrabold text-xl">Clima organizacional</h3></div></div>
-        <p class="text-sm text-ink-700">Pesquisa profunda baseada em metodologia validada (similar ao COPSOQ II do /NR1). Compara contra benchmark de mercado, gera plano de ação por área.</p>
-        <div class="mt-4 pt-4 border-t border-black/10 grid grid-cols-3 gap-2 text-center text-xs">
-          <div><div class="font-bold text-ink-900">40+ perguntas</div><div class="text-ink-500 text-[10px]">cadência semestral</div></div>
-          <div><div class="font-bold text-ink-900">Benchmark</div><div class="text-ink-500 text-[10px]">mercado BR</div></div>
-          <div><div class="font-bold text-ink-900">Por setor</div><div class="text-ink-500 text-[10px]">recortes</div></div>
-        </div>
-      </div>
+      <article class="grid lg:grid-cols-12 gap-x-8 gap-y-3 py-12 lg:py-14 border-b border-ink-900/10">
+        <div class="lg:col-span-2 text-[10px] uppercase tracking-[0.22em] font-extrabold text-ok leading-tight">Semestral · 40+ perguntas · com benchmark</div>
+        <div class="lg:col-span-3 font-display text-3xl lg:text-4xl text-ink-900 leading-[1.0]">Clima organizacional</div>
+        <p class="lg:col-span-7 lg:pl-8 lg:border-l lg:border-ink-900/10 text-base lg:text-lg text-ink-700 leading-relaxed">
+          Pesquisa profunda baseada em metodologia validada (parente do COPSOQ II do /NR1). Comparação contra benchmark de mercado brasileiro e recortes por setor, geração automática de plano de ação por área.
+        </p>
+      </article>
 
-      <div class="bg-gradient-to-br from-accent-500 to-accent-700 text-white rounded-4xl p-7 hover:-translate-y-0.5 transition relative overflow-hidden">
-        <div class="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-white/10"></div>
-        <div class="relative">
-          <div class="flex items-center gap-3 mb-4"><div class="w-12 h-12 rounded-2xl bg-white grid place-items-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div><div><div class="text-[10px] uppercase tracking-wider font-extrabold text-warn">Sob demanda</div><h3 class="font-extrabold text-xl text-white">Feedback 360</h3></div></div>
-          <p class="text-sm text-white/85">Avaliação multidirecional para liderança e talentos-chave. Cada pessoa recebe feedback de pares, subordinados e gestores. Insumo para PDI e plano de retenção.</p>
-          <div class="mt-4 pt-4 border-t border-white/20 grid grid-cols-3 gap-2 text-center text-xs">
-            <div><div class="font-bold text-white">~20 perguntas</div><div class="text-white/60 text-[10px]">por avaliação</div></div>
-            <div><div class="font-bold text-white">Multi-fonte</div><div class="text-white/60 text-[10px]">par/sub/gestor</div></div>
-            <div><div class="font-bold text-white">Anônimo</div><div class="text-white/60 text-[10px]">para o avaliado</div></div>
-          </div>
-        </div>
-      </div>
+      <article class="grid lg:grid-cols-12 gap-x-8 gap-y-3 py-12 lg:py-14 border-b border-ink-900/10">
+        <div class="lg:col-span-2 text-[10px] uppercase tracking-[0.22em] font-extrabold text-accent-600 leading-tight">Sob demanda · ~20 perguntas · multi-fonte</div>
+        <div class="lg:col-span-3 font-display text-3xl lg:text-4xl text-ink-900 leading-[1.0]">Feedback 360</div>
+        <p class="lg:col-span-7 lg:pl-8 lg:border-l lg:border-ink-900/10 text-base lg:text-lg text-ink-700 leading-relaxed">
+          Avaliação multidirecional para liderança e talentos-chave. Cada pessoa recebe feedback de pares, subordinados e gestores diretos, mantendo anonimato para o avaliado. Insumo direto pra plano de desenvolvimento individual e estratégia de retenção.
+        </p>
+      </article>
     </div>
   </div>
 </section>

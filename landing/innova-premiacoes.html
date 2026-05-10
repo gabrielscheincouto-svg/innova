@@ -27,7 +27,6 @@ tailwind.config = {
 <style>
   body { background: #FAFAFC; font-family: 'Inter', sans-serif; color: #0F0F19; -webkit-font-smoothing: antialiased; }
   .gradient-text { background: linear-gradient(135deg, #6364E0 0%, #3F40A8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .ticker { display: flex; gap: 40px; animation: marquee 60s linear infinite; }
   @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   #floatingNav { transition: top .3s cubic-bezier(.4,0,.2,1), padding .3s; }
   #floatingNav.scrolled { top: 12px; }
@@ -39,32 +38,6 @@ tailwind.config = {
 </style>
 </head>
 <body class="text-ink-900">
-
-<!-- ============ TICKER ============ -->
-<div class="bg-ink-900 text-white py-2.5 overflow-hidden border-b border-white/5 relative">
-  <div class="ticker">
-    <div class="flex items-center gap-10 whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60">
-      <span class="flex items-center gap-2 text-warn"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>Reconhecimento que previne · não só prêmio</span>
-      <span class="text-white/20">●</span>
-      <span class="text-white">Art. 457 §2 CLT · Lei 13.467/2017</span>
-      <span class="text-white/20">●</span>
-      <span>Economia de até 100% em encargos</span>
-      <span class="text-white/20">●</span>
-      <span>Beta limitado · 8 vagas restantes</span>
-      <span class="text-white/20">●</span>
-    </div>
-    <div class="flex items-center gap-10 whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60" aria-hidden="true">
-      <span class="flex items-center gap-2 text-warn"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>Reconhecimento que previne · não só prêmio</span>
-      <span class="text-white/20">●</span>
-      <span class="text-white">Art. 457 §2 CLT · Lei 13.467/2017</span>
-      <span class="text-white/20">●</span>
-      <span>Economia de até 100% em encargos</span>
-      <span class="text-white/20">●</span>
-      <span>Beta limitado · 8 vagas restantes</span>
-      <span class="text-white/20">●</span>
-    </div>
-  </div>
-</div>
 
 <!-- ============ FLOATING NAV ============ -->
 <header id="floatingNav" class="fixed top-9 left-1/2 -translate-x-1/2 z-50 px-4 max-w-full">
@@ -192,22 +165,30 @@ tailwind.config = {
       <p class="mt-6 text-lg text-ink-700">Quando o colaborador pede demissão, é tarde demais. Quando você reconhece desempenho com prêmio formal — recorrente, mensurável, defensável — você evita o pedido. E ainda paga muito menos encargo do que pagaria em aumento de salário.</p>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-5">
-      <div class="bg-surface rounded-4xl p-7">
-        <div class="w-12 h-12 rounded-2xl bg-warn/10 grid place-items-center mb-5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-        <h3 class="font-extrabold text-lg">Sem desconto na folha</h3>
-        <p class="text-sm text-ink-700 mt-2">A cada R$ 1.000 pagos como prêmio bem estruturado, evita-se ~R$ 700 a R$ 1.000 em encargos. INSS patronal (~20%), FGTS (8%), férias e 13º proporcionais — tudo fora.</p>
-      </div>
-      <div class="bg-surface rounded-4xl p-7">
-        <div class="w-12 h-12 rounded-2xl bg-accent-50 grid place-items-center mb-5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
-        <h3 class="font-extrabold text-lg">Reduz turnover</h3>
-        <p class="text-sm text-ink-700 mt-2">Reconhecimento estruturado é pilar comprovado de retenção. Empresa que premia por desempenho superior tem ~30% menos pedidos de demissão de talentos-chave.</p>
-      </div>
-      <div class="bg-surface rounded-4xl p-7">
-        <div class="w-12 h-12 rounded-2xl bg-ok/10 grid place-items-center mb-5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <h3 class="font-extrabold text-lg">Defensável em juízo</h3>
-        <p class="text-sm text-ink-700 mt-2">Regulamento + métricas objetivas + atas mensais. Programa que sobrevive a fiscalização da Receita e ação trabalhista — sem voltar como salário disfarçado.</p>
-      </div>
+    <div class="border-t border-ink-900/10 mt-4">
+      <article class="grid lg:grid-cols-12 gap-x-8 gap-y-3 py-12 lg:py-16 border-b border-ink-900/10">
+        <div class="lg:col-span-1 font-display text-3xl lg:text-4xl text-accent-600 leading-none">a.</div>
+        <h3 class="lg:col-span-3 font-display text-2xl lg:text-3xl text-ink-900 leading-tight">Sem desconto na folha.</h3>
+        <p class="lg:col-span-8 lg:pl-8 lg:border-l lg:border-ink-900/10 text-base lg:text-lg text-ink-700 leading-relaxed">
+          A cada R$ 1.000 pagos como prêmio bem estruturado, evita-se entre R$ 700 e R$ 1.000 em encargos. INSS patronal (~20%), FGTS (8%), férias e 13º proporcionais — <span class="text-ink-900 font-semibold">tudo fora da base</span>. Não é truque tributário; é como o legislador desenhou o Art. 457 §2 em 2017.
+        </p>
+      </article>
+
+      <article class="grid lg:grid-cols-12 gap-x-8 gap-y-3 py-12 lg:py-16 border-b border-ink-900/10">
+        <div class="lg:col-span-1 font-display text-3xl lg:text-4xl text-accent-600 leading-none">b.</div>
+        <h3 class="lg:col-span-3 font-display text-2xl lg:text-3xl text-ink-900 leading-tight">Reduz turnover antes do pedido.</h3>
+        <p class="lg:col-span-8 lg:pl-8 lg:border-l lg:border-ink-900/10 text-base lg:text-lg text-ink-700 leading-relaxed">
+          Reconhecimento recorrente, mensurável e formal é pilar comprovado de retenção. Empresas com programa de premiação bem estruturado registram <span class="text-ink-900 font-semibold">~30% menos pedidos de demissão</span> em cargos-chave — sem precisar competir só por salário base.
+        </p>
+      </article>
+
+      <article class="grid lg:grid-cols-12 gap-x-8 gap-y-3 py-12 lg:py-16 border-b border-ink-900/10">
+        <div class="lg:col-span-1 font-display text-3xl lg:text-4xl text-accent-600 leading-none">c.</div>
+        <h3 class="lg:col-span-3 font-display text-2xl lg:text-3xl text-ink-900 leading-tight">Defensável em juízo.</h3>
+        <p class="lg:col-span-8 lg:pl-8 lg:border-l lg:border-ink-900/10 text-base lg:text-lg text-ink-700 leading-relaxed">
+          Regulamento, critérios objetivos, atas mensais aprovadas. O programa Innova é desenhado pra sobreviver à fiscalização da Receita Federal e à ação trabalhista — sem voltar a tributar como salário disfarçado. Toda evidência fica registrada e assinada.
+        </p>
+      </article>
     </div>
   </div>
 </section>
