@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { getSupabase, logAudit, type Company, type CompanyStatus, type PlanTier } from '@innova/supabase';
+import { getSupabase, logAudit, type Company, type CompanyStatus, type PlanTier, type SystemKey } from '@innova/supabase';
 import { Spinner, useToast, useConfirm } from '@innova/ui';
 
 export function Empresas() {
@@ -80,7 +80,7 @@ export function Empresas() {
               <tr>
                 <th>Empresa</th>
                 <th>CNPJ</th>
-                <th>Setor</th>
+                <th>Sistemas</th>
                 <th>Plano</th>
                 <th>Status</th>
                 <th>Mensal</th>
@@ -102,7 +102,7 @@ export function Empresas() {
                     </div>
                   </td>
                   <td className="text-xs">{formatCNPJ(c.cnpj)}</td>
-                  <td className="text-xs">{c.sector || '—'}</td>
+                  <td><SystemAccessPills systems={c.system_access || []} /></td>
                   <td><PlanBadge tier={c.plan_tier} /></td>
                   <td><StatusBadge status={c.status} /></td>
                   <td className="text-xs font-semibold">{c.monthly_value ? `R$ ${Number(c.monthly_value).toLocaleString('pt-BR')}` : '—'}</td>
@@ -145,7 +145,16 @@ function CompanyForm({ initial, onClose, onSaved }: { initial: Company | null; o
     plan_tier: (initial?.plan_tier || 'completa') as PlanTier,
     monthly_value: initial?.monthly_value?.toString() || '',
     status: (initial?.status || 'ativa') as CompanyStatus,
+    system_access: (initial?.system_access || ['nr1', 'premiacoes']) as SystemKey[],
   });
+
+  function toggleSystem(sys: SystemKey) {
+    setForm((f) => {
+      const has = f.system_access.includes(sys);
+      const next = has ? f.system_access.filter((s) => s !== sys) : [...f.system_access, sys];
+      return { ...f, system_access: next };
+    });
+  }
   const [saving, setSaving] = useState(false);
   const toast = useToast();
 
@@ -156,6 +165,11 @@ function CompanyForm({ initial, onClose, onSaved }: { initial: Company | null; o
     const cnpj = form.cnpj.replace(/\D/g, '');
     if (cnpj.length !== 14) {
       toast('CNPJ deve ter 14 dígitos', 'warn');
+      setSaving(false);
+      return;
+    }
+    if (form.system_access.length === 0) {
+      toast('Marque pelo menos um sistema (NR1 ou Premiações)', 'warn');
       setSaving(false);
       return;
     }
@@ -246,6 +260,27 @@ function CompanyForm({ initial, onClose, onSaved }: { initial: Company | null; o
               </div>
             </div>
 
+            <div className="border-t border-black/5 pt-4">
+              <label className="label mb-2">Sistemas liberados pra essa empresa *</label>
+              <p className="text-xs text-ink-500 mb-3">Marque pelo menos um. Define o que o usuário dessa empresa consegue acessar.</p>
+              <div className="grid grid-cols-2 gap-3">
+                <SystemCheckbox
+                  active={form.system_access.includes('nr1')}
+                  onClick={() => toggleSystem('nr1')}
+                  tag="NR1"
+                  title="Conformidade NR-1"
+                  desc="PGR, IPAR, S-2240, laudos, comunicação de perigo"
+                />
+                <SystemCheckbox
+                  active={form.system_access.includes('premiacoes')}
+                  onClick={() => toggleSystem('premiacoes')}
+                  tag="Premiações"
+                  title="Art. 457 §2 CLT"
+                  desc="Colaboradores, critérios, avaliações, folha de prêmios, calculadora"
+                />
+              </div>
+            </div>
+
             <div className="flex gap-3 pt-4">
               <button type="button" onClick={onClose} className="btn btn-ghost">Cancelar</button>
               <button type="submit" disabled={saving} className="btn btn-primary flex-1 justify-center">
@@ -280,4 +315,49 @@ function StatusBadge({ status }: { status: CompanyStatus }) {
 function formatCNPJ(c: string) {
   const v = c.replace(/\D/g, '').padStart(14, '0');
   return `${v.slice(0,2)}.${v.slice(2,5)}.${v.slice(5,8)}/${v.slice(8,12)}-${v.slice(12,14)}`;
+}
+
+function SystemCheckbox({
+  active, onClick, tag, title, desc,
+}: { active: boolean; onClick: () => void; tag: string; title: string; desc: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`text-left p-4 rounded-2xl border-2 transition ${
+        active
+          ? 'border-accent-500 bg-accent-50 shadow-sm'
+          : 'border-black/10 bg-white hover:border-accent-300 hover:bg-accent-50/30'
+      }`}
+    >
+      <div className="flex items-center justify-between mb-2">
+        <span className={`pill ${active ? 'pill-accent' : 'pill-gray'}`}>{tag}</span>
+        <div
+          className={`w-5 h-5 rounded-md border-2 grid place-items-center transition ${
+            active ? 'border-accent-500 bg-accent-500' : 'border-ink-300 bg-white'
+          }`}
+        >
+          {active && (
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          )}
+        </div>
+      </div>
+      <div className="font-bold text-sm text-ink-900">{title}</div>
+      <div className="text-xs text-ink-500 mt-0.5 leading-snug">{desc}</div>
+    </button>
+  );
+}
+
+function SystemAccessPills({ systems }: { systems: SystemKey[] }) {
+  if (!systems || systems.length === 0) {
+    return <span className="text-xs text-ink-300">—</span>;
+  }
+  return (
+    <div className="flex flex-wrap gap-1">
+      {systems.includes('nr1') && <span className="pill pill-accent text-[10px]">NR1</span>}
+      {systems.includes('premiacoes') && <span className="pill pill-warn text-[10px]">Premios</span>}
+    </div>
+  );
 }

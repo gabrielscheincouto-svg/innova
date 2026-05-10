@@ -45,6 +45,8 @@ export interface Company {
   created_by: string | null;
   created_at: string;
   updated_at: string;
+  // quais sistemas essa empresa contratou (nr1, premiacoes, ou ambos)
+  system_access: SystemKey[];
 }
 
 export interface UserCompany {
