@@ -84,9 +84,13 @@ export function Dashboard() {
 
   if (!currentCompanyId) {
     return (
-      <div className="card p-10 text-center">
-        <h2 className="font-display text-2xl mb-2">Selecione uma empresa</h2>
-        <p className="text-sm text-ink-500">Vá em <Link to="/configuracoes" className="text-accent-600 font-bold">Configurações</Link> e escolha a empresa que você vai operar.</p>
+      <div className="card py-16 text-center max-w-2xl mx-auto">
+        <div className="w-14 h-14 rounded-full bg-accent-50 grid place-items-center mx-auto mb-5">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6364E0" strokeWidth="2"><path d="M3 21h18M3 7v14M21 7v14M3 7l9-4 9 4M9 21V11M15 21V11M5 11h14M7 14h2M11 14h2M15 14h2"/></svg>
+        </div>
+        <h2 className="font-display text-2xl text-ink-900 mb-2">Selecione uma empresa</h2>
+        <p className="text-sm text-ink-700 max-w-md mx-auto mb-6">Antes de operar, escolha em qual empresa você vai trabalhar. Toda a operação (colaboradores, avaliações, folha) é dessa empresa.</p>
+        <Link to="/configuracoes" className="btn btn-primary inline-flex">Escolher empresa →</Link>
       </div>
     );
   }

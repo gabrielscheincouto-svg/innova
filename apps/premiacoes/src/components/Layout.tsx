@@ -1,11 +1,31 @@
+import { useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth, signOut } from '@innova/auth';
 import { LogoMark } from '@innova/ui';
+import { getSupabase } from '@innova/supabase';
+import { usePremios } from '../lib/store';
 
 export function Layout() {
   const profile = useAuth((s) => s.profile);
   const location = useLocation();
   const navigate = useNavigate();
+  const { currentCompanyId, setCompany } = usePremios();
+
+  // Auto-seleciona empresa se o usuário só tem 1 vinculada (caso comum B2B)
+  useEffect(() => {
+    if (currentCompanyId || !profile?.id) return;
+    (async () => {
+      const sb = getSupabase();
+      const { data } = await sb
+        .from('companies')
+        .select('id')
+        .contains('system_access', ['premiacoes'])
+        .limit(2);
+      if (data && data.length === 1) {
+        setCompany(data[0].id);
+      }
+    })();
+  }, [profile?.id, currentCompanyId, setCompany]);
 
   const items = [
     { to: '/', label: 'Dashboard', icon: <DashboardIcon /> },

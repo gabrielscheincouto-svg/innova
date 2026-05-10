@@ -136,28 +136,62 @@ tailwind.config = {
   <div class="hero-deco hidden md:block">innova</div>
 
   <div class="relative max-w-7xl mx-auto px-6 lg:px-10 pt-32 pb-20 lg:pt-40 lg:pb-28">
-    <div class="max-w-5xl">
-      <div class="flex flex-wrap items-center gap-3 mb-8">
-        <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full pl-3 pr-4 py-1.5 text-[11px] font-extrabold tracking-[0.15em] uppercase">
-          <span class="w-2 h-2 rounded-full bg-warn animate-pulse"></span>
-          Ecossistema · 3 produtos
-        </span>
-        <span class="inline-flex items-center bg-warn/15 backdrop-blur-md border border-warn/30 text-warn rounded-full px-4 py-1.5 text-[11px] font-extrabold tracking-[0.15em] uppercase gap-2">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          1.823 colaboradores ativos
-        </span>
+    <!-- Cabeçalho de documento · datestamp + número de processo -->
+    <div class="flex items-center gap-4 mb-10 text-[10px] uppercase tracking-[0.22em] font-mono text-white/50 border-b border-white/15 pb-4">
+      <span>Innova · doc 01/I</span>
+      <span class="text-white/25">/</span>
+      <span>Rev. 03</span>
+      <span class="text-white/25">/</span>
+      <span>São Paulo, mai 2026</span>
+      <span class="text-white/25 hidden md:inline">/</span>
+      <span class="hidden md:inline">Resp. técnico: G. Couto · RT-SST</span>
+      <span class="ml-auto text-warn flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>NR-1 punitiva · ativa</span>
+    </div>
+
+    <div class="grid lg:grid-cols-12 gap-x-12 gap-y-10">
+      <div class="lg:col-span-9">
+        <h1 class="font-display text-5xl lg:text-[112px] leading-[0.92] tracking-tight">
+          Todos vendem<br />
+          o laudo.<br />
+          <span class="italic text-warn">A gente vende prevenção.</span>
+        </h1>
+        <p class="mt-10 text-lg lg:text-xl text-white/85 max-w-2xl leading-relaxed">
+          Ecossistema que detecta o risco antes que vire afastamento, autuação ou processo. Plataforma + Controle de Disciplina mensal — não é só o documento assinado, é o ciclo de prevenção rodando.
+        </p>
+        <div class="mt-10 flex flex-wrap gap-3 items-center">
+          <a href="#produtos" class="bg-white text-accent-700 hover:bg-accent-50 rounded-full px-6 py-3.5 font-extrabold text-sm inline-flex items-center gap-2 shadow-lg shadow-black/10">
+            Conhecer os produtos
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#contato" class="bg-white/10 hover:bg-white/15 border border-white/25 backdrop-blur-sm rounded-full px-6 py-3.5 font-bold text-sm inline-flex items-center gap-2">
+            Falar com time comercial
+          </a>
+          <span class="text-[11px] text-white/55 font-mono ml-2 hidden md:inline">/ ou (51) 9 9999-0000</span>
+        </div>
       </div>
-      <h1 class="font-display text-5xl lg:text-8xl leading-[0.95] tracking-tight">Todos vendem o laudo.<br/><span class="italic relative inline-block">A gente vende prevenção.<svg viewBox="0 0 600 14" class="absolute left-0 -bottom-2 w-full h-3" preserveAspectRatio="none"><path d="M2 7 Q 100 2, 200 7 T 400 7 T 598 7" stroke="#FFC600" stroke-width="3" fill="none" stroke-linecap="round"/></svg></span></h1>
-      <p class="mt-8 text-lg lg:text-xl text-white/85 max-w-2xl">Ecossistema que detecta o risco antes que vire afastamento, autuação ou processo. Plataforma + Controle de Disciplina mensal — não é só o documento assinado, é o ciclo de prevenção rodando.</p>
-      <div class="mt-10 flex flex-wrap gap-3">
-        <a href="#produtos" class="bg-white text-accent-700 hover:bg-accent-50 rounded-full px-6 py-3.5 font-extrabold text-sm inline-flex items-center gap-2 shadow-lg shadow-black/10">
-          Conhecer os produtos
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </a>
-        <a href="#contato" class="bg-white/10 hover:bg-white/15 border border-white/25 backdrop-blur-sm rounded-full px-6 py-3.5 font-bold text-sm inline-flex items-center gap-2">
-          Falar com time comercial
-        </a>
-      </div>
+
+      <!-- Coluna lateral · anotação manuscrita estilo editorial -->
+      <aside class="lg:col-span-3 lg:pl-6 lg:border-l lg:border-white/15">
+        <div class="text-[10px] uppercase tracking-[0.22em] font-mono text-warn mb-3">Nota de margem</div>
+        <p class="font-display italic text-xl lg:text-2xl leading-[1.25] text-white/90 mb-6">
+          "Não vendo PDF.<br />Vendo a empresa<br />conformidade que dura."
+        </p>
+        <div class="flex items-center gap-3 pt-4 border-t border-white/15">
+          <svg width="60" height="22" viewBox="0 0 60 22" class="text-warn opacity-90" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 14c2-6 5-9 8-7s2 8 5 9 7-6 10-7 5 5 8 4 6-8 9-7 4 6 6 5 6-5 8-3" />
+          </svg>
+          <div class="text-[10px] font-mono text-white/55 leading-tight">G. Couto<br />RT-SST · CREA-RS</div>
+        </div>
+
+        <!-- contagem regressiva real -->
+        <div class="mt-8 pt-6 border-t border-white/15">
+          <div class="text-[10px] uppercase tracking-[0.22em] font-mono text-white/55 mb-2">Fiscalização NR-1</div>
+          <div class="flex items-baseline gap-2">
+            <span class="font-display text-5xl text-warn leading-none">16</span>
+            <span class="text-[11px] text-white/70 leading-tight">dias até<br />fiscalização<br />punitiva</span>
+          </div>
+        </div>
+      </aside>
     </div>
 
     <!-- Floating product mini-cards -->
@@ -180,6 +214,243 @@ tailwind.config = {
         <div class="text-xs text-white/70 mt-1">Pulse · ENPS · feedback · plano de ação</div>
         <div class="flex items-center gap-1 text-warn mt-4 text-xs font-extrabold uppercase tracking-wider group-hover:gap-2 transition-all">Conhecer <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BASTIDORES · mockup real do produto ============ -->
+<section class="py-24 lg:py-32 bg-surface border-y border-ink-900/5">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+
+    <div class="grid lg:grid-cols-12 gap-x-12 gap-y-8 items-end mb-12 lg:mb-16">
+      <div class="lg:col-span-2 hidden lg:block">
+        <div class="text-[10px] uppercase tracking-[0.3em] font-extrabold text-ink-500">Bastidores</div>
+      </div>
+      <div class="lg:col-span-7">
+        <h2 class="font-display text-[40px] sm:text-5xl lg:text-[64px] leading-[0.98] tracking-tight text-ink-900">
+          Não é vaporware.<br />
+          <span class="italic text-accent-600">O sistema é assim por dentro.</span>
+        </h2>
+      </div>
+      <div class="lg:col-span-3">
+        <p class="text-ink-700 text-[15px] leading-relaxed">
+          A matriz IPAR com classificação P×S automática, a folha de prêmios com aprovação por nível, a calculadora 457 §2 em tempo real — tudo construído na régua técnica.
+        </p>
+      </div>
+    </div>
+
+    <!-- Mockup 1 · Matriz IPAR (real, do produto NR1) -->
+    <article class="bg-white border border-ink-900/10 rounded-3xl overflow-hidden mb-8 shadow-card">
+      <!-- Barra estilo janela de aplicativo -->
+      <header class="flex items-center gap-3 px-5 py-3 border-b border-ink-900/10 bg-ink-900/[0.02]">
+        <div class="flex gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-danger/40"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-warn/50"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-ok/50"></span>
+        </div>
+        <span class="font-mono text-[11px] text-ink-500">innova.com.br/nr1/ipar · ACME Logística</span>
+        <span class="ml-auto pill pill-accent text-[10px]">5 perigos · classificação automática</span>
+      </header>
+
+      <div class="grid lg:grid-cols-[1fr_320px] gap-0">
+        <!-- Lado esquerdo: tabela IPAR realista -->
+        <div class="p-6 lg:p-8">
+          <div class="flex items-baseline justify-between mb-4 pb-3 border-b border-ink-900/10">
+            <h3 class="font-display text-2xl text-ink-900">Matriz IPAR · ciclo 2026</h3>
+            <span class="text-[11px] text-ink-500 font-mono">Atualizado há 4 min</span>
+          </div>
+
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-[10px] uppercase tracking-wider text-ink-500 border-b border-ink-900/5">
+                <th class="text-left py-2 font-bold">Perigo identificado</th>
+                <th class="text-center py-2 font-bold">P</th>
+                <th class="text-center py-2 font-bold">S</th>
+                <th class="text-center py-2 font-bold">P×S</th>
+                <th class="text-right py-2 font-bold">Classificação</th>
+              </tr>
+            </thead>
+            <tbody class="text-[13px]">
+              <tr class="border-b border-ink-900/5">
+                <td class="py-3"><div class="font-semibold">Ruído contínuo · setor produção</div><div class="text-[11px] text-ink-500">NR-15 · LAVG > 85 dB</div></td>
+                <td class="text-center"><span class="font-mono font-bold">4</span></td>
+                <td class="text-center"><span class="font-mono font-bold">3</span></td>
+                <td class="text-center"><span class="font-mono font-extrabold">12</span></td>
+                <td class="text-right"><span class="pill bg-danger/15 text-danger text-[10px] font-bold">Crítico</span></td>
+              </tr>
+              <tr class="border-b border-ink-900/5">
+                <td class="py-3"><div class="font-semibold">Postura forçada · empacotamento</div><div class="text-[11px] text-ink-500">NR-17 · análise ergonômica</div></td>
+                <td class="text-center"><span class="font-mono font-bold">3</span></td>
+                <td class="text-center"><span class="font-mono font-bold">3</span></td>
+                <td class="text-center"><span class="font-mono font-extrabold">9</span></td>
+                <td class="text-right"><span class="pill bg-warn/15 text-warn text-[10px] font-bold">Alto</span></td>
+              </tr>
+              <tr class="border-b border-ink-900/5">
+                <td class="py-3"><div class="font-semibold">Carga mental · telemarketing</div><div class="text-[11px] text-ink-500">NR-1 psicossocial · COPSOQ II</div></td>
+                <td class="text-center"><span class="font-mono font-bold">4</span></td>
+                <td class="text-center"><span class="font-mono font-bold">2</span></td>
+                <td class="text-center"><span class="font-mono font-extrabold">8</span></td>
+                <td class="text-right"><span class="pill bg-warn/15 text-warn text-[10px] font-bold">Alto</span></td>
+              </tr>
+              <tr class="border-b border-ink-900/5">
+                <td class="py-3"><div class="font-semibold">Movimentação · pátio</div><div class="text-[11px] text-ink-500">NR-12 · sinalização</div></td>
+                <td class="text-center"><span class="font-mono font-bold">2</span></td>
+                <td class="text-center"><span class="font-mono font-bold">3</span></td>
+                <td class="text-center"><span class="font-mono font-extrabold">6</span></td>
+                <td class="text-right"><span class="pill bg-accent-100 text-accent-700 text-[10px] font-bold">Médio</span></td>
+              </tr>
+              <tr>
+                <td class="py-3"><div class="font-semibold">Iluminação · expedição</div><div class="text-[11px] text-ink-500">NR-17 · luxímetro</div></td>
+                <td class="text-center"><span class="font-mono font-bold">2</span></td>
+                <td class="text-center"><span class="font-mono font-bold">2</span></td>
+                <td class="text-center"><span class="font-mono font-extrabold">4</span></td>
+                <td class="text-right"><span class="pill bg-ok/15 text-ok text-[10px] font-bold">Baixo</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Lado direito: matriz P×S visual -->
+        <aside class="bg-ink-900/[0.02] p-6 lg:p-8 border-l border-ink-900/10">
+          <div class="text-[10px] uppercase tracking-wider font-extrabold text-ink-500 mb-4">Matriz Probabilidade × Severidade</div>
+          <div class="grid grid-cols-5 gap-1 text-center text-[10px] font-mono mb-3">
+            <div></div>
+            <div class="text-ink-500">1</div>
+            <div class="text-ink-500">2</div>
+            <div class="text-ink-500">3</div>
+            <div class="text-ink-500">4</div>
+
+            <div class="text-ink-500 self-center">4</div>
+            <div class="bg-accent-100 text-accent-700 rounded p-1.5 font-bold">4</div>
+            <div class="bg-warn/15 text-warn rounded p-1.5 font-bold">8</div>
+            <div class="bg-danger/15 text-danger rounded p-1.5 font-bold ring-2 ring-danger">12</div>
+            <div class="bg-danger/20 text-danger rounded p-1.5 font-bold">16</div>
+
+            <div class="text-ink-500 self-center">3</div>
+            <div class="bg-ok/15 text-ok rounded p-1.5 font-bold">3</div>
+            <div class="bg-accent-100 text-accent-700 rounded p-1.5 font-bold">6</div>
+            <div class="bg-warn/15 text-warn rounded p-1.5 font-bold ring-2 ring-warn">9</div>
+            <div class="bg-danger/15 text-danger rounded p-1.5 font-bold">12</div>
+
+            <div class="text-ink-500 self-center">2</div>
+            <div class="bg-ok/15 text-ok rounded p-1.5 font-bold">2</div>
+            <div class="bg-ok/15 text-ok rounded p-1.5 font-bold ring-2 ring-ok">4</div>
+            <div class="bg-accent-100 text-accent-700 rounded p-1.5 font-bold">6</div>
+            <div class="bg-warn/15 text-warn rounded p-1.5 font-bold ring-2 ring-warn">8</div>
+
+            <div class="text-ink-500 self-center">1</div>
+            <div class="bg-ok/15 text-ok rounded p-1.5 font-bold">1</div>
+            <div class="bg-ok/15 text-ok rounded p-1.5 font-bold">2</div>
+            <div class="bg-ok/15 text-ok rounded p-1.5 font-bold">3</div>
+            <div class="bg-accent-100 text-accent-700 rounded p-1.5 font-bold">4</div>
+          </div>
+          <div class="text-[10px] text-ink-500 leading-relaxed">P: probabilidade · S: severidade. Cada perigo é plotado no quadrante e ganha classificação Baixo / Médio / Alto / Crítico — base da priorização do PGR.</div>
+        </aside>
+      </div>
+    </article>
+
+    <!-- Mockup 2 · folha de prêmios + assinatura -->
+    <div class="grid lg:grid-cols-12 gap-6">
+
+      <!-- Folha de prêmios (mock) -->
+      <article class="lg:col-span-7 bg-white border border-ink-900/10 rounded-3xl overflow-hidden shadow-card">
+        <header class="flex items-center gap-3 px-5 py-3 border-b border-ink-900/10 bg-ink-900/[0.02]">
+          <div class="flex gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-danger/40"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-warn/50"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-ok/50"></span>
+          </div>
+          <span class="font-mono text-[11px] text-ink-500">innova.com.br/premios/folha · COMAQ Agrícola</span>
+          <span class="ml-auto pill pill-warn text-[10px]">Maio/2026 · pendente</span>
+        </header>
+        <div class="p-6 lg:p-8">
+          <div class="flex items-baseline justify-between mb-5 pb-3 border-b border-ink-900/10">
+            <h3 class="font-display text-2xl text-ink-900">Folha de prêmios</h3>
+            <span class="text-[11px] font-mono text-ink-500">12 colaboradores</span>
+          </div>
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-[10px] uppercase tracking-wider text-ink-500 border-b border-ink-900/5">
+                <th class="text-left py-2 font-bold">Colaborador</th>
+                <th class="text-center py-2 font-bold">Score</th>
+                <th class="text-right py-2 font-bold">Prêmio</th>
+              </tr>
+            </thead>
+            <tbody class="text-[13px]">
+              <tr class="border-b border-ink-900/5">
+                <td class="py-2.5"><div class="font-semibold">João Silva</div><div class="text-[10px] text-ink-500">Op. logística</div></td>
+                <td class="text-center"><span class="pill bg-ok/15 text-ok text-[10px] font-bold">4.80</span></td>
+                <td class="text-right font-mono font-bold">R$ 480,00</td>
+              </tr>
+              <tr class="border-b border-ink-900/5">
+                <td class="py-2.5"><div class="font-semibold">Maria Santos</div><div class="text-[10px] text-ink-500">Op. logística</div></td>
+                <td class="text-center"><span class="pill bg-ok/15 text-ok text-[10px] font-bold">4.60</span></td>
+                <td class="text-right font-mono font-bold">R$ 460,00</td>
+              </tr>
+              <tr class="border-b border-ink-900/5">
+                <td class="py-2.5"><div class="font-semibold">Carlos Pereira</div><div class="text-[10px] text-ink-500">Conferente</div></td>
+                <td class="text-center"><span class="pill bg-accent-100 text-accent-700 text-[10px] font-bold">4.20</span></td>
+                <td class="text-right font-mono font-bold">R$ 420,00</td>
+              </tr>
+              <tr class="border-b border-ink-900/5">
+                <td class="py-2.5"><div class="font-semibold">Ana Lima</div><div class="text-[10px] text-ink-500">Aux. estoque</div></td>
+                <td class="text-center"><span class="pill bg-warn/15 text-warn text-[10px] font-bold">3.40</span></td>
+                <td class="text-right font-mono font-bold">R$ 340,00</td>
+              </tr>
+              <tr class="bg-surface-muted font-bold">
+                <td class="py-3 text-right" colspan="2">Total · 4 de 12 mostrados</td>
+                <td class="text-right font-mono">R$ 4.870,00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <!-- Card com cálculo de economia -->
+      <article class="lg:col-span-5 bg-ink-900 text-white rounded-3xl p-8 relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-warn/20 blur-2xl"></div>
+        <div class="relative">
+          <div class="text-[10px] uppercase tracking-[0.22em] font-mono text-warn mb-3">Cálculo em tempo real</div>
+          <h3 class="font-display text-3xl leading-tight mb-6">Economia Art. 457 §2</h3>
+
+          <div class="grid grid-cols-2 gap-3 mb-6">
+            <div>
+              <div class="text-[10px] uppercase tracking-wider text-white/50 mb-1">Folha bruta</div>
+              <div class="font-mono text-2xl">R$ 4.870</div>
+            </div>
+            <div>
+              <div class="text-[10px] uppercase tracking-wider text-white/50 mb-1">Se fosse salário</div>
+              <div class="font-mono text-2xl text-white/60 line-through">R$ 8.279</div>
+            </div>
+          </div>
+
+          <div class="border-t border-white/15 pt-4 space-y-1.5 text-xs text-white/70 font-mono">
+            <div class="flex justify-between"><span>− INSS patronal 20%</span><span>R$ 974,00</span></div>
+            <div class="flex justify-between"><span>− FGTS 8%</span><span>R$ 389,60</span></div>
+            <div class="flex justify-between"><span>− Férias + 13º</span><span>R$ 2.045,40</span></div>
+          </div>
+
+          <div class="mt-6 pt-5 border-t border-white/15 flex items-baseline justify-between">
+            <div>
+              <div class="text-[10px] uppercase tracking-wider text-warn">Economia</div>
+              <div class="font-display text-5xl text-warn">R$ 3.409</div>
+            </div>
+            <div class="text-right text-[10px] text-white/55 font-mono leading-tight">/mês<br />~70% off<br />ano R$ 40.908</div>
+          </div>
+
+          <div class="mt-6 text-[11px] text-white/55 leading-relaxed border-t border-white/10 pt-4">
+            Cálculo conforme Lei 13.467/2017 · base atualizada · valores reais que aparecem na folha do mês.
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Atribuição editorial -->
+    <div class="mt-10 grid lg:grid-cols-[auto_1fr_auto] items-center gap-4 text-[11px] font-mono text-ink-500">
+      <span class="border-r border-ink-900/15 pr-4">Screenshots reais do sistema · dados ofuscados</span>
+      <span class="hidden lg:block">Construído em React · TypeScript · Supabase · hospedado em VPC AWS São Paulo</span>
+      <a href="#produtos" class="text-accent-600 font-bold hover:text-accent-700">Ver os 3 produtos →</a>
     </div>
   </div>
 </section>

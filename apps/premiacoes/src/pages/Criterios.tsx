@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useEffect, useState, type FormEvent } from 'react';
 import { getSupabase, type PremiosCriterio } from '@innova/supabase';
 import { Spinner, useToast, useConfirm } from '@innova/ui';
@@ -43,8 +44,39 @@ export function Criterios() {
     else { toast('Critério excluído', 'ok'); load(); }
   }
 
+  async function seedDefaults() {
+    if (!currentCompanyId) return;
+    const sb = getSupabase();
+    const defaults = [
+      { name: 'Pontualidade', description: 'Cumprimento de horário de entrada, saída e intervalos. Considera faltas e atrasos no mês.', weight: 1.5 },
+      { name: 'Produtividade', description: 'Cumprimento de metas, qualidade de entrega e ritmo de trabalho dentro do esperado pra função.', weight: 2.0 },
+      { name: 'Conduta', description: 'Postura profissional, respeito com colegas e clientes, alinhamento com valores da empresa.', weight: 1.5 },
+      { name: 'Compromisso', description: 'Engajamento com o trabalho, iniciativa pra resolver problemas, cuidado com prazos e responsabilidades.', weight: 1.0 },
+      { name: 'Iniciativa', description: 'Proatividade pra propor melhorias, ajudar colegas e ir além das atribuições básicas do cargo.', weight: 1.0 },
+    ];
+    const payload = defaults.map((d, i) => ({
+      ...d,
+      company_id: currentCompanyId,
+      display_order: i,
+      scale_labels: { '1': 'Insuficiente', '2': 'Abaixo do esperado', '3': 'Regular', '4': 'Bom', '5': 'Excelente' },
+      is_active: true,
+    }));
+    const { error } = await sb.from('premios_criterios').insert(payload as never);
+    if (error) toast(error.message, 'danger');
+    else { toast(`${defaults.length} critérios padrão carregados`, 'ok'); load(); }
+  }
+
   if (!currentCompanyId) {
-    return <div className="card p-10 text-center"><p className="text-sm text-ink-500">Selecione uma empresa em Configurações.</p></div>;
+    return (
+      <div className="card py-16 text-center max-w-2xl mx-auto">
+        <div className="w-14 h-14 rounded-full bg-accent-50 grid place-items-center mx-auto mb-5">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6364E0" strokeWidth="2"><path d="M3 21h18M3 7v14M21 7v14M3 7l9-4 9 4M9 21V11M15 21V11M5 11h14M7 14h2M11 14h2M15 14h2"/></svg>
+        </div>
+        <h2 className="font-display text-2xl text-ink-900 mb-2">Selecione uma empresa</h2>
+        <p className="text-sm text-ink-700 max-w-md mx-auto mb-6">Antes de operar, escolha em qual empresa você vai trabalhar. Toda a operação (colaboradores, avaliações, folha) é dessa empresa.</p>
+        <Link to="/configuracoes" className="btn btn-primary inline-flex">Escolher empresa →</Link>
+      </div>
+    );
   }
 
   return (
@@ -60,9 +92,13 @@ export function Criterios() {
       {loading ? (
         <div className="card py-20 grid place-items-center"><Spinner size={28} className="text-accent-500" /></div>
       ) : list.length === 0 ? (
-        <div className="card py-12 text-center">
-          <p className="text-sm text-ink-500 mb-4">Nenhum critério cadastrado.</p>
-          <p className="text-xs text-ink-500">Sugestões comuns: Pontualidade · Produtividade · Conduta · Compromisso · Iniciativa</p>
+        <div className="card py-16 text-center max-w-2xl mx-auto">
+          <h3 className="font-display text-2xl text-ink-900 mb-2">Comece com os padrões</h3>
+          <p className="text-sm text-ink-700 max-w-md mx-auto mb-6">5 critérios típicos pra programa de premiação (Pontualidade · Produtividade · Conduta · Compromisso · Iniciativa) — você ajusta pesos e descrições depois.</p>
+          <div className="flex flex-wrap gap-2 justify-center">
+            <button onClick={seedDefaults} className="btn btn-primary">↻ Carregar critérios padrão (5)</button>
+            <button onClick={() => { setEditing(null); setShowForm(true); }} className="btn btn-ghost">+ Criar do zero</button>
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
