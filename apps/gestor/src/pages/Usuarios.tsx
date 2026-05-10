@@ -198,48 +198,32 @@ function UserForm({ initial, companies, onClose, onSaved }: {
       return;
     }
 
-    // CRIAR novo usuário: signUp via Supabase Auth, depois insert no profiles
+    // CRIAR novo usuário via RPC admin_invite_user (security definer no Postgres)
+    // Vantagem: mantém o gestor logado, valida no backend, cria tudo numa transação
     if (!form.password || form.password.length < 8) {
       toast('Senha deve ter no mínimo 8 caracteres', 'warn');
       setSaving(false);
       return;
     }
 
-    const { data: authData, error: authError } = await sb.auth.signUp({
-      email: form.email,
-      password: form.password,
-      options: { data: { full_name: form.full_name } },
+    const { error: rpcError } = await sb.rpc('admin_invite_user', {
+      p_email: form.email,
+      p_password: form.password,
+      p_full_name: form.full_name,
+      p_role: form.role,
+      p_cpf: form.cpf.replace(/\D/g, '') || null,
+      p_phone: form.phone || null,
+      p_company_id: form.company_id || null,
     });
-    if (authError || !authData.user) {
-      toast(authError?.message || 'Erro ao criar usuário', 'danger');
+
+    if (rpcError) {
+      // Erros comuns: email já cadastrado, senha curta, não-gestor tentando criar
+      toast(rpcError.message || 'Erro ao criar usuário', 'danger');
       setSaving(false);
       return;
     }
 
-    // Insert profile (RLS permite porque é gestor)
-    const { error: profileError } = await sb.from('profiles').insert({
-      id: authData.user.id,
-      email: form.email,
-      full_name: form.full_name,
-      role: form.role,
-      cpf: form.cpf.replace(/\D/g, '') || null,
-      phone: form.phone || null,
-      is_active: true,
-    } as never);
-    if (profileError) { toast(profileError.message, 'danger'); setSaving(false); return; }
-
-    // Vincular a empresa se selecionada
-    if (form.company_id) {
-      await sb.from('user_companies').insert({
-        profile_id: authData.user.id,
-        company_id: form.company_id,
-        is_primary: true,
-        system_access: ['nr1' as never],
-      } as never);
-    }
-
-    await logAudit({ action: 'user_create', resource_type: 'profile', resource_id: authData.user.id, meta: { email: form.email, role: form.role } });
-    toast('Usuário criado · senha enviada por e-mail', 'ok');
+    toast('Usuário criado com sucesso', 'ok');
     onSaved();
   }
 
