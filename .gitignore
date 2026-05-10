@@ -1,0 +1,39 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# build outputs
+dist/
+build/
+.vite/
+*.tsbuildinfo
+
+# env (NEVER commit)
+.env
+.env.local
+.env.*.local
+.env.production
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
+
+# editor / OS
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+Thumbs.db
+
+# Netlify
+.netlify/
+
+# Supabase
+supabase/.branches
+supabase/.temp
+supabase/.env

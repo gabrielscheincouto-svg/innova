@@ -1,0 +1,12 @@
+[build]
+  base = "apps/nr1"
+  command = "cd ../.. && npm install && npm run build:nr1"
+  publish = "apps/nr1/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

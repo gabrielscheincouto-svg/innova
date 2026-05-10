@@ -1,0 +1,12 @@
+[build]
+  base = "apps/premiacoes"
+  command = "cd ../.. && npm install && npm run build:premiacoes"
+  publish = "apps/premiacoes/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

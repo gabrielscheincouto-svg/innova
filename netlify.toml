@@ -1,0 +1,80 @@
+# ============================================================
+# Netlify config · Innova Capital (deploy único com subpaths)
+# ============================================================
+# Um único site Netlify (inovacapital.netlify.app) servindo
+# os 3 apps em subpaths:
+#   /gestor  → apps/gestor    (painel master)
+#   /nr1     → apps/nr1       (NR-1 / PGR / IPAR / colaborador)
+#   /premios → apps/premiacoes (programa de premiação 457 §2)
+#
+# Em Netlify Dashboard, configure:
+#   • Base directory: (raiz, deixe vazio)
+#   • Build command: bash scripts/build-all.sh
+#   • Publish directory: dist
+#   • Env vars: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY
+# ============================================================
+
+[build]
+  command = "bash scripts/build-all.sh"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_VERSION = "10"
+
+# ----------------------------------------------------------
+# Redirects · ordem importa, mais específico primeiro
+# ----------------------------------------------------------
+
+# Atalho: /c/<token> → área do colaborador (dentro do app NR1)
+# Permite que o link do convite seja curto: inovacapital.netlify.app/c/abc123
+[[redirects]]
+  from = "/c/*"
+  to = "/nr1/c/:splat"
+  status = 301
+  force = true
+
+# SPA fallback do GESTOR
+[[redirects]]
+  from = "/gestor/*"
+  to = "/gestor/index.html"
+  status = 200
+
+# SPA fallback do NR1
+[[redirects]]
+  from = "/nr1/*"
+  to = "/nr1/index.html"
+  status = 200
+
+# SPA fallback do PREMIOS
+[[redirects]]
+  from = "/premios/*"
+  to = "/premios/index.html"
+  status = 200
+
+# Headers de segurança em todas as respostas
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://*.supabase.co; connect-src 'self' https://*.supabase.co wss://*.supabase.co"
+
+# Cache aggressive em assets (Vite gera com hash em /gestor/assets, /nr1/assets, etc.)
+[[headers]]
+  for = "/gestor/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/nr1/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/premios/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

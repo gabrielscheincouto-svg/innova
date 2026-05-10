@@ -1,0 +1,15 @@
+# Config específico do Innova /Gestor
+# (herda os defaults do netlify.toml raiz)
+
+[build]
+  base = "apps/gestor"
+  command = "cd ../.. && npm install && npm run build:gestor"
+  publish = "apps/gestor/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

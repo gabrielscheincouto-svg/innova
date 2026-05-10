@@ -1,0 +1,32 @@
+{
+  "name": "innova-capital",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Innova Capital — ecossistema de plataformas de gestão de pessoas (NR1, Premiações, Gestor)",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:gestor": "npm run dev --workspace=@innova/gestor",
+    "dev:nr1": "npm run dev --workspace=@innova/nr1",
+    "dev:premiacoes": "npm run dev --workspace=@innova/premiacoes",
+    "build": "bash scripts/build-all.sh",
+    "build:gestor": "npm run build --workspace=@innova/gestor",
+    "build:nr1": "npm run build --workspace=@innova/nr1",
+    "build:premiacoes": "npm run build --workspace=@innova/premiacoes",
+    "build:all": "npm run build:gestor && npm run build:nr1 && npm run build:premiacoes",
+    "type-check": "npm run type-check --workspace=@innova/gestor && npm run type-check --workspace=@innova/nr1 && npm run type-check --workspace=@innova/premiacoes",
+    "preview:gestor": "npm run preview --workspace=@innova/gestor",
+    "preview:nr1": "npm run preview --workspace=@innova/nr1",
+    "preview:premiacoes": "npm run preview --workspace=@innova/premiacoes"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "@types/node": "^20.12.7"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
