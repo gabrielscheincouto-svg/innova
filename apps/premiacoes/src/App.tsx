@@ -5,8 +5,11 @@ import { Layout } from './components/Layout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
-import { Programas } from './pages/Programas';
-import { Atas } from './pages/Atas';
+import { Colaboradores } from './pages/Colaboradores';
+import { Criterios } from './pages/Criterios';
+import { Avaliacao } from './pages/Avaliacao';
+import { Folha } from './pages/Folha';
+import { Contratos } from './pages/Contratos';
 import { Calculadora } from './pages/Calculadora';
 import { Configuracoes } from './pages/Configuracoes';
 
@@ -25,8 +28,11 @@ export default function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/programas" element={<Programas />} />
-            <Route path="/atas" element={<Atas />} />
+            <Route path="/colaboradores" element={<Colaboradores />} />
+            <Route path="/criterios" element={<Criterios />} />
+            <Route path="/avaliacao" element={<Avaliacao />} />
+            <Route path="/folha" element={<Folha />} />
+            <Route path="/contratos" element={<Contratos />} />
             <Route path="/calculadora" element={<Calculadora />} />
             <Route path="/configuracoes" element={<Configuracoes />} />
           </Route>

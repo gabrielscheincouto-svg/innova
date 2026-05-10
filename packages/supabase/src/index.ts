@@ -14,6 +14,12 @@ export type {
   IparItem,
   ActionItem,
   HazardCommunication,
+  PremiosColaborador,
+  PremiosCriterio,
+  PremiosAvaliacao,
+  PremiosFolha,
+  PremiosFolhaStatus,
+  PremiosContrato,
   Database,
 } from './types';
 

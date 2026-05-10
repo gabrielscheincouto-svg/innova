@@ -1,110 +1,215 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getSupabase } from '@innova/supabase';
-import { Spinner } from '@innova/ui';
 import { useAuth } from '@innova/auth';
-
-interface Stats {
-  programs: number;
-  atas: number;
-  totalPaid: number;
-  beneficiaries: number;
-}
+import { getSupabase, type PremiosFolha } from '@innova/supabase';
+import { Spinner } from '@innova/ui';
+import { usePremios, formatCompetencia } from '../lib/store';
 
 export function Dashboard() {
   const profile = useAuth((s) => s.profile);
-  const [stats, setStats] = useState<Stats | null>(null);
+  const { currentCompanyId, currentCompetencia } = usePremios();
+  const [stats, setStats] = useState({
+    totalColaboradores: 0,
+    avaliacoesNoMes: 0,
+    valorFolhaMes: 0,
+    folhasAprovadas: 0,
+    folhasPagas: 0,
+    mediaScore: 0,
+    topColaboradores: [] as Array<{ nome: string; score: number; valor: number }>,
+  });
   const [loading, setLoading] = useState(true);
-  const [recentAtas, setRecentAtas] = useState<Array<{ id: string; period: string; total_amount: number; beneficiaries_count: number; status: string }>>([]);
 
   useEffect(() => {
-    async function load() {
-      const sb = getSupabase();
-      const [progRes, atasRes] = await Promise.all([
-        sb.from('premiacao_programs').select('id', { count: 'exact', head: true }).eq('status', 'ativo'),
-        sb.from('premiacao_atas').select('id, period, total_amount, beneficiaries_count, status').order('created_at', { ascending: false }).limit(20),
-      ]);
-      const atas = atasRes.data || [];
-      const totalPaid = atas.filter((a: { status: string }) => a.status === 'paga' || a.status === 'aprovada').reduce((s: number, a: { total_amount: number }) => s + Number(a.total_amount || 0), 0);
-      const beneficiaries = atas.reduce((s: number, a: { beneficiaries_count: number }) => s + (a.beneficiaries_count || 0), 0);
-      setStats({
-        programs: progRes.count || 0,
-        atas: atas.length,
-        totalPaid,
-        beneficiaries,
-      });
-      setRecentAtas(atas.slice(0, 5));
+    if (!currentCompanyId) {
       setLoading(false);
+      return;
     }
     load();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentCompanyId, currentCompetencia]);
 
-  if (loading) return <div className="grid place-items-center py-20"><Spinner size={32} className="text-accent-500" /></div>;
+  async function load() {
+    setLoading(true);
+    const sb = getSupabase();
+    try {
+      const { count: countColabs } = await sb
+        .from('premios_colaboradores')
+        .select('*', { count: 'exact', head: true })
+        .eq('company_id', currentCompanyId!)
+        .eq('is_active', true);
 
-  const fmt = (v: number) => 'R$ ' + Math.round(v).toLocaleString('pt-BR');
+      const { count: countAvals } = await sb
+        .from('premios_avaliacoes')
+        .select('*', { count: 'exact', head: true })
+        .eq('company_id', currentCompanyId!)
+        .eq('competencia', currentCompetencia);
+
+      const { data: folha } = await sb
+        .from('premios_folha')
+        .select('*, colaborador:premios_colaboradores(full_name)')
+        .eq('company_id', currentCompanyId!)
+        .eq('competencia', currentCompetencia);
+      const folhaItems = (folha || []) as Array<PremiosFolha & { colaborador: { full_name: string } }>;
+      const valorFolhaMes = folhaItems.reduce((acc, f) => acc + Number(f.premio_value || 0), 0);
+      const folhasAprovadas = folhaItems.filter((f) => f.status === 'aprovada' || f.status === 'paga').length;
+      const folhasPagas = folhaItems.filter((f) => f.status === 'paga').length;
+      const scores = folhaItems.map((f) => Number(f.final_score || 0)).filter((s) => s > 0);
+      const mediaScore = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+      const topColaboradores = folhaItems
+        .filter((f) => f.final_score && f.premio_value)
+        .sort((a, b) => Number(b.final_score) - Number(a.final_score))
+        .slice(0, 5)
+        .map((f) => ({
+          nome: f.colaborador?.full_name || '—',
+          score: Number(f.final_score),
+          valor: Number(f.premio_value),
+        }));
+
+      setStats({
+        totalColaboradores: countColabs ?? 0,
+        avaliacoesNoMes: countAvals ?? 0,
+        valorFolhaMes,
+        folhasAprovadas,
+        folhasPagas,
+        mediaScore,
+        topColaboradores,
+      });
+    } catch (e) {
+      console.warn('Dashboard load error', e);
+    }
+    setLoading(false);
+  }
+
+  if (loading) return <div className="py-20 grid place-items-center"><Spinner size={32} className="text-accent-500" /></div>;
+
+  if (!currentCompanyId) {
+    return (
+      <div className="card p-10 text-center">
+        <h2 className="font-display text-2xl mb-2">Selecione uma empresa</h2>
+        <p className="text-sm text-ink-500">Vá em <Link to="/configuracoes" className="text-accent-600 font-bold">Configurações</Link> e escolha a empresa que você vai operar.</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-end justify-between flex-wrap gap-3">
-        <div>
-          <h1 className="font-display text-4xl">Olá, {profile?.full_name?.split(' ')[0] || 'Gestor'}!</h1>
-          <p className="text-sm text-ink-700 mt-1">Visão do programa de premiação · Art. 457 §2 CLT</p>
-        </div>
-        <div className="flex gap-2">
-          <Link to="/calculadora" className="btn btn-ghost">Calculadora</Link>
-          <Link to="/atas" className="btn btn-primary">+ Nova ata</Link>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Kpi label="Programas ativos" value={stats!.programs.toString()} />
-        <Kpi label="Atas registradas" value={stats!.atas.toString()} />
-        <Kpi label="Pago em prêmios" value={fmt(stats!.totalPaid)} accent="ok" />
-        <Kpi label="Beneficiados" value={stats!.beneficiaries.toString()} />
-      </div>
-
-      <div className="grid lg:grid-cols-3 gap-5">
-        <div className="lg:col-span-2 card">
-          <div className="flex items-center justify-between mb-5">
-            <h3 className="font-extrabold text-base">Atas recentes</h3>
-            <Link to="/atas" className="text-xs font-bold text-accent-600">Ver todas →</Link>
+    <div className="space-y-5">
+      <div className="grid grid-cols-12 gap-5">
+        <div className="col-span-12 lg:col-span-5 bg-white rounded-4xl p-8 shadow-soft relative overflow-hidden">
+          <div className="absolute -top-10 -right-10 w-44 h-44 rounded-full bg-accent-50 opacity-70"></div>
+          <div className="absolute bottom-2 right-6 w-6 h-6 rounded-full bg-warn/20"></div>
+          <div className="relative">
+            <h1 className="text-4xl font-extrabold leading-tight tracking-tight">Olá, {profile?.full_name?.split(' ')[0]}!</h1>
+            <h2 className="text-3xl font-extrabold leading-tight tracking-tight mt-1">Como vai o programa<br />de prêmios hoje?</h2>
+            <p className="text-sm text-ink-500 mt-4 max-w-sm leading-relaxed">
+              Avaliações de <strong className="capitalize text-ink-900">{formatCompetencia(currentCompetencia)}</strong>, folha consolidada e calculadora 457 §2 num lugar só.
+            </p>
           </div>
-          {recentAtas.length === 0 ? (
-            <p className="text-sm text-ink-500 py-6 text-center">Nenhuma ata registrada. Crie a primeira.</p>
-          ) : (
-            <div className="space-y-3">
-              {recentAtas.map((a) => (
-                <div key={a.id} className="flex items-center gap-3 p-3 rounded-2xl hover:bg-surface-muted">
-                  <div className="w-10 h-10 rounded-xl bg-warn/10 grid place-items-center text-warn font-extrabold">★</div>
-                  <div className="flex-1">
-                    <div className="font-bold">{a.period}</div>
-                    <div className="text-xs text-ink-500">{a.beneficiaries_count} beneficiados · {fmt(a.total_amount)}</div>
-                  </div>
-                  <span className={`pill ${a.status === 'paga' ? 'pill-ok' : a.status === 'aprovada' ? 'pill-accent' : 'pill-warn'}`}>{a.status}</span>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
 
-        <div className="card bg-gradient-to-br from-accent-500 to-accent-700 text-white">
-          <h4 className="font-extrabold text-base">Economia estimada</h4>
-          <p className="text-xs text-white/70 mt-1">Encargos evitados (~72%)</p>
-          <div className="font-display text-5xl mt-4 leading-none">{fmt(stats!.totalPaid * 0.72)}</div>
-          <p className="text-xs text-white/70 mt-2">INSS + FGTS + 13º + férias proporcionais</p>
-          <Link to="/calculadora" className="mt-5 inline-flex bg-warn text-ink-900 rounded-2xl px-4 py-2 text-xs font-extrabold hover:bg-warn/90">Abrir calculadora →</Link>
+        <Link to="/avaliacao" className="col-span-6 lg:col-span-3 bg-white rounded-4xl p-5 shadow-soft hover:-translate-y-0.5 hover:shadow-md transition group block">
+          <svg viewBox="0 0 80 80" className="w-20 h-20 mb-2">
+            <rect x="14" y="10" width="46" height="58" rx="6" fill="#EFEFFE" stroke="#6364E0" strokeWidth="2" />
+            <rect x="22" y="6" width="30" height="10" rx="3" fill="#FFFFFF" stroke="#6364E0" strokeWidth="2" />
+            <line x1="22" y1="28" x2="52" y2="28" stroke="#A5A4F8" strokeWidth="2" strokeLinecap="round" />
+            <line x1="22" y1="36" x2="46" y2="36" stroke="#A5A4F8" strokeWidth="2" strokeLinecap="round" />
+            <circle cx="50" cy="52" r="10" fill="#FFFFFF" stroke="#6364E0" strokeWidth="2" />
+            <path d="M45 52 L49 56 L55 49" stroke="#6364E0" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="68" cy="20" r="4" fill="#F59E0B" />
+          </svg>
+          <div className="font-bold text-sm mt-1">Lançar avaliação</div>
+          <div className="text-xs text-ink-500 mt-1">Notas dos critérios do mês</div>
+        </Link>
+
+        <Link to="/folha" className="col-span-6 lg:col-span-2 bg-white rounded-4xl p-5 shadow-soft hover:-translate-y-0.5 hover:shadow-md transition block">
+          <div className="text-[11px] font-bold uppercase tracking-wider text-ink-500 mb-2">Folha do mês</div>
+          <div className="text-3xl font-extrabold tracking-tight">{stats.valorFolhaMes.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0 })}</div>
+          <div className="text-xs text-ink-500 mt-1">{stats.folhasAprovadas} aprovadas · {stats.folhasPagas} pagas</div>
+        </Link>
+
+        <Link to="/colaboradores" className="col-span-6 lg:col-span-2 bg-white rounded-4xl p-5 shadow-soft hover:-translate-y-0.5 hover:shadow-md transition block">
+          <div className="text-[11px] font-bold uppercase tracking-wider text-ink-500 mb-2">Colaboradores</div>
+          <div className="text-3xl font-extrabold tracking-tight">{stats.totalColaboradores}</div>
+          <div className="text-xs text-ink-500 mt-1">ativos no programa</div>
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-12 gap-5">
+        <div className="col-span-12 lg:col-span-5 card space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-wider text-ink-500">Performance do mês</div>
+              <div className="text-2xl font-extrabold mt-1">{stats.mediaScore.toFixed(1)} <span className="text-base text-ink-500 font-bold">/ 5</span></div>
+            </div>
+            <RingScore score={stats.mediaScore} />
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            <Stat label="Avaliações" value={stats.avaliacoesNoMes} />
+            <Stat label="Aprovadas" value={stats.folhasAprovadas} />
+            <Stat label="Pagas" value={stats.folhasPagas} />
+          </div>
+        </div>
+
+        <div className="col-span-12 lg:col-span-7 card">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-extrabold">Top 5 colaboradores · {formatCompetencia(currentCompetencia)}</h3>
+            <Link to="/folha" className="text-xs font-bold text-accent-600 hover:text-accent-700">Ver folha →</Link>
+          </div>
+          {stats.topColaboradores.length === 0 ? (
+            <p className="text-sm text-ink-500 text-center py-8">Sem avaliações no mês ainda. <Link to="/avaliacao" className="text-accent-600 font-bold">Lançar agora →</Link></p>
+          ) : (
+            <table className="data-table">
+              <thead>
+                <tr><th>#</th><th>Colaborador</th><th>Score</th><th>Prêmio</th></tr>
+              </thead>
+              <tbody>
+                {stats.topColaboradores.map((c, i) => (
+                  <tr key={i}>
+                    <td className="font-bold text-ink-500">#{i + 1}</td>
+                    <td className="font-semibold">{c.nome}</td>
+                    <td><ScoreBadge score={c.score} /></td>
+                    <td className="font-bold">{c.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-function Kpi({ label, value, accent }: { label: string; value: string; accent?: 'ok' | 'warn' | 'danger' }) {
-  const cls = accent === 'ok' ? 'text-ok' : accent === 'danger' ? 'text-danger' : '';
+function RingScore({ score }: { score: number }) {
+  const pct = Math.min(100, (score / 5) * 100);
+  const r = 36;
+  const c = 2 * Math.PI * r;
+  const off = c - (pct / 100) * c;
   return (
-    <div className="card">
-      <div className="text-[10px] uppercase tracking-wider font-extrabold text-ink-500">{label}</div>
-      <div className={`text-3xl font-extrabold mt-2 ${cls}`}>{value}</div>
+    <div className="relative w-24 h-24">
+      <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+        <circle cx="50" cy="50" r={r} fill="none" stroke="#E5E7EB" strokeWidth="10" />
+        <circle cx="50" cy="50" r={r} fill="none" stroke="#6364E0" strokeWidth="10" strokeLinecap="round" strokeDasharray={c} strokeDashoffset={off} />
+      </svg>
+      <div className="absolute inset-0 grid place-items-center font-extrabold text-lg">{Math.round(pct)}%</div>
     </div>
   );
+}
+
+function Stat({ label, value }: { label: string; value: number | string }) {
+  return (
+    <div className="bg-surface-muted rounded-2xl p-3">
+      <div className="text-[10px] font-bold uppercase tracking-wider text-ink-500">{label}</div>
+      <div className="text-xl font-extrabold mt-1">{value}</div>
+    </div>
+  );
+}
+
+function ScoreBadge({ score }: { score: number }) {
+  const rounded = Math.round(score);
+  const cls =
+    rounded >= 5 ? 'bg-ok/15 text-ok' :
+    rounded >= 4 ? 'bg-accent-100 text-accent-700' :
+    rounded >= 3 ? 'bg-warn/15 text-warn' :
+    'bg-danger/15 text-danger';
+  return <span className={`pill ${cls} font-bold`}>{score.toFixed(1)}</span>;
 }

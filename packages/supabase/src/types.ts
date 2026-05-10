@@ -139,6 +139,82 @@ export interface HazardCommunication {
 }
 
 // ============================================================
+// COMAQ Premiações · novos tipos
+// ============================================================
+
+export interface PremiosColaborador {
+  id: string;
+  company_id: string;
+  full_name: string;
+  cpf: string;
+  matricula: string | null;
+  cargo: string | null;
+  setor: string | null;
+  data_admissao: string | null;
+  salario_base: number | null;
+  is_active: boolean;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PremiosCriterio {
+  id: string;
+  company_id: string;
+  name: string;
+  description: string | null;
+  weight: number;
+  scale_labels: Record<string, string> | null;
+  display_order: number | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PremiosAvaliacao {
+  id: string;
+  company_id: string;
+  colaborador_id: string;
+  criterio_id: string;
+  competencia: string; // YYYY-MM-01
+  score: number; // 1-5
+  comments: string | null;
+  evaluated_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type PremiosFolhaStatus = 'pendente' | 'aprovada' | 'paga' | 'cancelada';
+
+export interface PremiosFolha {
+  id: string;
+  company_id: string;
+  competencia: string; // YYYY-MM-01
+  colaborador_id: string;
+  final_score: number | null;
+  premio_value: number;
+  ajustes: Array<{ tipo: string; valor: number; obs?: string }> | null;
+  status: PremiosFolhaStatus;
+  approved_by: string | null;
+  approved_at: string | null;
+  paid_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PremiosContrato {
+  id: string;
+  company_id: string;
+  colaborador_id: string;
+  program_id: string | null;
+  contract_date: string;
+  signed: boolean;
+  signed_at: string | null;
+  pdf_url: string | null;
+  created_at: string;
+}
+
+// ============================================================
 // Database type for Supabase client (formato esperado pela v2)
 // ============================================================
 // Insert types: required = sem default no SQL · optional = com default
