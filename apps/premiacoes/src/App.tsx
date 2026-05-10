@@ -3,6 +3,7 @@ import { useAuthInit, useAuth } from '@innova/auth';
 import { Toast, ConfirmDialog, Spinner } from '@innova/ui';
 import { Layout } from './components/Layout';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
 import { Colaboradores } from './pages/Colaboradores';
@@ -22,25 +23,25 @@ export default function App() {
   }
 
   return (
-    <>
+    <ErrorBoundary>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/colaboradores" element={<Colaboradores />} />
-            <Route path="/criterios" element={<Criterios />} />
-            <Route path="/avaliacao" element={<Avaliacao />} />
-            <Route path="/folha" element={<Folha />} />
-            <Route path="/contratos" element={<Contratos />} />
-            <Route path="/calculadora" element={<Calculadora />} />
-            <Route path="/configuracoes" element={<Configuracoes />} />
+            <Route path="/" element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
+            <Route path="/colaboradores" element={<ErrorBoundary><Colaboradores /></ErrorBoundary>} />
+            <Route path="/criterios" element={<ErrorBoundary><Criterios /></ErrorBoundary>} />
+            <Route path="/avaliacao" element={<ErrorBoundary><Avaliacao /></ErrorBoundary>} />
+            <Route path="/folha" element={<ErrorBoundary><Folha /></ErrorBoundary>} />
+            <Route path="/contratos" element={<ErrorBoundary><Contratos /></ErrorBoundary>} />
+            <Route path="/calculadora" element={<ErrorBoundary><Calculadora /></ErrorBoundary>} />
+            <Route path="/configuracoes" element={<ErrorBoundary><Configuracoes /></ErrorBoundary>} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Toast />
       <ConfirmDialog />
-    </>
+    </ErrorBoundary>
   );
 }

@@ -120,7 +120,8 @@ export function Contratos() {
   );
 }
 
-function formatCPF(c: string) {
+function formatCPF(c: string | null | undefined) {
+  if (!c) return '—';
   const v = c.replace(/\D/g, '').padStart(11, '0');
   return `${v.slice(0,3)}.${v.slice(3,6)}.${v.slice(6,9)}-${v.slice(9,11)}`;
 }

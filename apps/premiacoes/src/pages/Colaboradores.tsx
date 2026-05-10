@@ -45,7 +45,7 @@ export function Colaboradores() {
   }
 
   const filtered = list.filter((c) =>
-    !search || c.full_name.toLowerCase().includes(search.toLowerCase()) || c.cpf.includes(search.replace(/\D/g, ''))
+    !search || c.full_name.toLowerCase().includes(search.toLowerCase()) || (c.cpf || '').includes(search.replace(/\D/g, ''))
   );
 
   async function handleToggleActive(c: PremiosColaborador) {
@@ -661,7 +661,8 @@ function ColaboradorForm({
   );
 }
 
-function formatCPF(c: string) {
+function formatCPF(c: string | null | undefined) {
+  if (!c) return '—';
   const v = c.replace(/\D/g, '').padStart(11, '0');
   return `${v.slice(0,3)}.${v.slice(3,6)}.${v.slice(6,9)}-${v.slice(9,11)}`;
 }
