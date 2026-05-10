@@ -37,3 +37,7 @@ Thumbs.db
 supabase/.branches
 supabase/.temp
 supabase/.env
+
+# Scripts com token (nunca commitar!)
+scripts/deploy-with-token.sh
+scripts/*.token.sh
