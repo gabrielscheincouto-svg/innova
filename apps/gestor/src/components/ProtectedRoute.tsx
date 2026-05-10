@@ -1,14 +1,20 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '@innova/auth';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
+import { useAuth, signOut } from '@innova/auth';
 
 /**
  * Guard de rota: só deixa entrar se logado E for gestor.
  */
 export function ProtectedRoute() {
   const profile = useAuth((s) => s.profile);
+  const navigate = useNavigate();
 
   if (!profile) {
     return <Navigate to="/login" replace />;
+  }
+
+  async function handleSwitchUser() {
+    await signOut();
+    navigate('/login', { replace: true });
   }
 
   if (profile.role !== 'gestor') {
@@ -24,7 +30,23 @@ export function ProtectedRoute() {
           <p className="mt-2 text-sm text-ink-700">
             Esta área é apenas para usuários com perfil <strong>Gestor</strong>.
           </p>
-          <p className="mt-1 text-xs text-ink-500">Seu perfil: {profile.role}</p>
+          <p className="mt-1 text-xs text-ink-500 mb-6">
+            Logado como <strong>{profile.email || profile.id}</strong> · perfil: {profile.role}
+          </p>
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={handleSwitchUser}
+              className="bg-ink-900 text-white font-bold text-sm rounded-2xl px-5 py-3 hover:bg-accent-700 transition"
+            >
+              Entrar com outra conta
+            </button>
+            <a
+              href="/premios/"
+              className="text-xs text-ink-500 hover:text-ink-900 transition pt-1"
+            >
+              ou voltar para Premiações →
+            </a>
+          </div>
         </div>
       </div>
     );

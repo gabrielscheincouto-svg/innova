@@ -128,10 +128,16 @@ tailwind.config = {
 </header>
 
 <!-- ============ HERO ============ -->
-<section class="relative overflow-hidden bg-gradient-to-br from-accent-500 via-accent-600 to-accent-900 text-white">
-  <div class="absolute inset-0 grid-pattern opacity-30"></div>
-  <div class="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-accent-300/30 blur-3xl"></div>
-  <div class="absolute bottom-0 left-1/4 w-[400px] h-[400px] rounded-full bg-warn/20 blur-3xl"></div>
+<section class="relative overflow-hidden bg-ink-900 text-white">
+  <!-- imagem full-bleed metalúrgico (background) -->
+  <img
+    src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=2400&q=85&auto=format&fit=crop&crop=entropy"
+    alt="Metalúrgico esmerilhando peça em chão de fábrica"
+    class="absolute inset-0 w-full h-full object-cover"
+  />
+  <!-- overlays escuros pra legibilidade do texto -->
+  <div class="absolute inset-0 bg-gradient-to-r from-ink-900/85 via-ink-900/55 to-ink-900/30"></div>
+  <div class="absolute inset-0 bg-gradient-to-t from-ink-900/75 via-transparent to-ink-900/40"></div>
   <div class="hero-deco hidden md:block">innova</div>
 
   <div class="relative max-w-7xl mx-auto px-6 lg:px-10 pt-32 pb-20 lg:pt-40 lg:pb-28">
@@ -180,31 +186,6 @@ tailwind.config = {
         <div class="text-xs text-white/70 mt-1">Pulse · ENPS · feedback · plano de ação</div>
         <div class="flex items-center gap-1 text-warn mt-4 text-xs font-extrabold uppercase tracking-wider group-hover:gap-2 transition-all">Conhecer <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </a>
-    </div>
-  </div>
-</section>
-
-<!-- ============ FULL-BLEED · metalúrgico (faísca) ============ -->
-<section class="relative w-full overflow-hidden bg-ink-900">
-  <div class="relative w-full h-[60vh] lg:h-[78vh]">
-    <img
-      src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=2400&q=85&auto=format&fit=crop&crop=entropy"
-      alt="Metalúrgico esmerilhando peça em chão de fábrica"
-      class="absolute inset-0 w-full h-full object-cover"
-      loading="lazy"
-    />
-    <div class="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/40 to-ink-900/30"></div>
-    <div class="absolute inset-0 bg-gradient-to-r from-ink-900/70 via-transparent to-transparent"></div>
-
-    <div class="relative h-full max-w-7xl mx-auto px-6 lg:px-12 flex flex-col justify-end pb-12 lg:pb-20">
-      <div class="text-[10px] uppercase tracking-[0.3em] font-extrabold text-warn mb-4">Quem usa Innova</div>
-      <h2 class="font-display text-white text-[40px] sm:text-5xl lg:text-[72px] leading-[0.98] tracking-tight max-w-4xl">
-        12 empresas brasileiras.<br />
-        <span class="italic text-white/85">Da agricultura à metalurgia.</span>
-      </h2>
-      <p class="mt-6 text-white/75 text-base lg:text-lg max-w-xl leading-relaxed">
-        Onde tem risco real, tem ciclo de prevenção rodando. Onde tem chão de fábrica, tem matriz IPAR atualizada.
-      </p>
     </div>
   </div>
 </section>
