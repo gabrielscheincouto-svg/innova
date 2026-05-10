@@ -329,6 +329,26 @@ function ImportModal({
     return result;
   }
 
+  // Tenta ler como HTML (alguns ERPs brasileiros exportam HTML com .xls)
+  function tryParseHTML(text: string): unknown[][] | null {
+    if (!/<table|<tr|<td/i.test(text)) return null;
+    try {
+      const doc = new DOMParser().parseFromString(text, 'text/html');
+      const tables = doc.querySelectorAll('table');
+      if (!tables.length) return null;
+      // Pega a maior tabela
+      let bigTable = tables[0];
+      for (const t of tables) if (t.querySelectorAll('tr').length > bigTable.querySelectorAll('tr').length) bigTable = t;
+      const rows: unknown[][] = [];
+      bigTable.querySelectorAll('tr').forEach((tr) => {
+        const cells: unknown[] = [];
+        tr.querySelectorAll('td,th').forEach((td) => cells.push((td.textContent || '').trim()));
+        rows.push(cells);
+      });
+      return rows;
+    } catch { return null; }
+  }
+
   async function handleFiles(e: ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
@@ -339,9 +359,34 @@ function ImportModal({
     for (const file of files) {
       try {
         const buf = await file.arrayBuffer();
-        const wb = XLSX.read(buf, { type: 'array', cellDates: true, cellNF: false, raw: false });
-        const ws = wb.Sheets[wb.SheetNames[0]];
-        const data: unknown[][] = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '', blankrows: false });
+        let data: unknown[][] = [];
+
+        // Tentativa 1 · SheetJS
+        try {
+          const wb = XLSX.read(buf, { type: 'array', cellDates: true, cellNF: false, raw: false });
+          const ws = wb.Sheets[wb.SheetNames[0]];
+          if (ws) data = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '', blankrows: false });
+        } catch { /* segue pra tentativa 2 */ }
+
+        // Tentativa 2 · HTML (alguns ERPs salvam HTML com nome .xls)
+        if (data.length === 0) {
+          const text = new TextDecoder('utf-8', { fatal: false }).decode(buf);
+          const altText = new TextDecoder('windows-1252', { fatal: false }).decode(buf);
+          const html = tryParseHTML(text) || tryParseHTML(altText);
+          if (html) data = html;
+        }
+
+        // Não conseguiu ler de nenhuma forma
+        if (data.length === 0) {
+          allRows.push({
+            full_name: '', cpf: null, matricula: null, cargo: null, setor: null,
+            data_admissao: null, salario_base: null,
+            _source: file.name,
+            _error: 'Formato XLS muito antigo. Abra no Excel/Numbers, escolha Salvar Como → .xlsx, e tente de novo.',
+          });
+          continue;
+        }
+
         const parsed = parseFile(file.name, data);
         allRows.push(...parsed);
       } catch (err) {
@@ -355,7 +400,7 @@ function ImportModal({
     }
     setRows(allRows);
     if (allRows.filter((r) => !r._error).length === 0) {
-      toast('Não consegui ler nenhuma linha válida das planilhas', 'warn');
+      toast('Nenhuma linha válida encontrada. Verifique o formato dos arquivos.', 'warn');
     }
     setParsing(false);
   }

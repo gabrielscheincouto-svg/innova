@@ -136,61 +136,29 @@ tailwind.config = {
   <div class="hero-deco hidden md:block">innova</div>
 
   <div class="relative max-w-7xl mx-auto px-6 lg:px-10 pt-32 pb-20 lg:pt-40 lg:pb-28">
-    <!-- Cabeçalho de documento · datestamp + número de processo -->
-    <div class="flex items-center gap-4 mb-10 text-[10px] uppercase tracking-[0.22em] font-mono text-white/50 border-b border-white/15 pb-4">
-      <span>Innova · doc 01/I</span>
-      <span class="text-white/25">/</span>
-      <span>Rev. 03</span>
-      <span class="text-white/25">/</span>
-      <span>São Paulo, mai 2026</span>
-      <span class="text-white/25 hidden md:inline">/</span>
-      <span class="hidden md:inline">Resp. técnico: G. Couto · RT-SST</span>
-      <span class="ml-auto text-warn flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>NR-1 punitiva · ativa</span>
+
+    <!-- Linha de status discreta no topo · sem firula -->
+    <div class="flex items-center gap-3 mb-12 text-[11px] uppercase tracking-[0.22em] font-extrabold">
+      <span class="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full pl-3 pr-4 py-1.5"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span><span class="text-white">NR-1 punitiva · em vigor</span></span>
+      <span class="text-white/40 hidden md:inline">·</span>
+      <span class="text-white/60 hidden md:inline">3 produtos · 12 empresas atendidas</span>
     </div>
 
-    <div class="grid lg:grid-cols-12 gap-x-12 gap-y-10">
-      <div class="lg:col-span-9">
-        <h1 class="font-display text-5xl lg:text-[88px] leading-[0.98] tracking-tight">
-          Todos vendem o laudo.<br />
-          <span class="italic text-white/80">A gente vende <span class="text-white">prevenção</span>.</span>
-        </h1>
-        <p class="mt-10 text-lg lg:text-xl text-white/85 max-w-2xl leading-relaxed">
-          Ecossistema que detecta o risco antes que vire afastamento, autuação ou processo. Plataforma + Controle de Disciplina mensal — não é só o documento assinado, é o ciclo de prevenção rodando.
-        </p>
-        <div class="mt-10 flex flex-wrap gap-3 items-center">
-          <a href="#produtos" class="bg-white text-accent-700 hover:bg-accent-50 rounded-full px-6 py-3.5 font-extrabold text-sm inline-flex items-center gap-2 shadow-lg shadow-black/10">
-            Conhecer os produtos
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
-          <a href="#contato" class="bg-white/10 hover:bg-white/15 border border-white/25 backdrop-blur-sm rounded-full px-6 py-3.5 font-bold text-sm inline-flex items-center gap-2">
-            Falar com time comercial
-          </a>
-          <span class="text-[11px] text-white/55 font-mono ml-2 hidden md:inline">/ ou (51) 9 9999-0000</span>
-        </div>
-      </div>
-
-      <!-- Coluna lateral · anotação manuscrita estilo editorial -->
-      <aside class="lg:col-span-3 lg:pl-6 lg:border-l lg:border-white/15">
-        <div class="text-[10px] uppercase tracking-[0.22em] font-mono text-warn mb-3">Nota de margem</div>
-        <p class="font-display italic text-xl lg:text-2xl leading-[1.25] text-white/90 mb-6">
-          "Não vendo PDF.<br />Vendo a empresa<br />conformidade que dura."
-        </p>
-        <div class="flex items-center gap-3 pt-4 border-t border-white/15">
-          <svg width="60" height="22" viewBox="0 0 60 22" class="text-warn opacity-90" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M2 14c2-6 5-9 8-7s2 8 5 9 7-6 10-7 5 5 8 4 6-8 9-7 4 6 6 5 6-5 8-3" />
-          </svg>
-          <div class="text-[10px] font-mono text-white/55 leading-tight">G. Couto<br />RT-SST · CREA-RS</div>
-        </div>
-
-        <!-- contagem regressiva real -->
-        <div class="mt-8 pt-6 border-t border-white/15">
-          <div class="text-[10px] uppercase tracking-[0.22em] font-mono text-white/55 mb-2">Fiscalização NR-1</div>
-          <div class="flex items-baseline gap-2">
-            <span class="font-display text-5xl text-warn leading-none">16</span>
-            <span class="text-[11px] text-white/70 leading-tight">dias até<br />fiscalização<br />punitiva</span>
-          </div>
-        </div>
-      </aside>
+    <h1 class="font-display text-5xl lg:text-[104px] leading-[0.96] tracking-tight max-w-5xl">
+      Todos vendem o laudo.<br />
+      <span class="italic text-white/85">A gente vende <span class="text-white">prevenção</span>.</span>
+    </h1>
+    <p class="mt-10 text-lg lg:text-xl text-white/85 max-w-2xl leading-relaxed">
+      Ecossistema que detecta o risco antes que vire afastamento, autuação ou processo. Plataforma + Controle de Disciplina mensal — não é só o documento assinado, é o ciclo de prevenção rodando.
+    </p>
+    <div class="mt-10 flex flex-wrap gap-3 items-center">
+      <a href="#produtos" class="bg-white text-accent-700 hover:bg-accent-50 rounded-full px-6 py-3.5 font-extrabold text-sm inline-flex items-center gap-2 shadow-lg shadow-black/10">
+        Conhecer os produtos
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="#contato" class="bg-white/10 hover:bg-white/15 border border-white/25 backdrop-blur-sm rounded-full px-6 py-3.5 font-bold text-sm inline-flex items-center gap-2">
+        Falar com time comercial
+      </a>
     </div>
 
     <!-- Floating product mini-cards -->
@@ -213,6 +181,91 @@ tailwind.config = {
         <div class="text-xs text-white/70 mt-1">Pulse · ENPS · feedback · plano de ação</div>
         <div class="flex items-center gap-1 text-warn mt-4 text-xs font-extrabold uppercase tracking-wider group-hover:gap-2 transition-all">Conhecer <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REALIDADE · fotografia · contexto humano ============ -->
+<section class="relative">
+
+  <!-- Imagem 1 · full-bleed · operação real -->
+  <div class="relative h-[60vh] lg:h-[78vh] overflow-hidden">
+    <img
+      src="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?w=2000&q=80&auto=format&fit=crop"
+      alt="Operário em ambiente industrial usando EPI"
+      class="absolute inset-0 w-full h-full object-cover"
+      loading="lazy"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-ink-900/85 via-ink-900/30 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-ink-900/60 to-transparent"></div>
+
+    <!-- legenda editorial sobreposta -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 pb-12 lg:pb-20">
+        <div class="grid lg:grid-cols-12 gap-x-12 gap-y-6 items-end">
+          <div class="lg:col-span-7 text-white">
+            <div class="text-[11px] uppercase tracking-[0.25em] font-extrabold text-warn mb-4">Quem usa Innova</div>
+            <h2 class="font-display text-4xl lg:text-6xl leading-[1.0] tracking-tight">
+              Operações reais.<br />
+              <span class="italic text-white/85">Pessoas reais no canteiro.</span>
+            </h2>
+          </div>
+          <div class="lg:col-span-5 text-white/75 text-[15px] leading-relaxed">
+            12 empresas brasileiras, de logística agrícola a metalurgia, rodando o ciclo de prevenção todo mês. Operário, gestor SST, RH e diretoria — cada um com a sua janela do mesmo sistema.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 fotos em grid · setores diferentes -->
+  <div class="bg-white py-16 lg:py-20">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="grid lg:grid-cols-3 gap-5">
+
+        <figure class="relative aspect-[4/5] rounded-3xl overflow-hidden bg-ink-900 group">
+          <img
+            src="https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=1000&q=80&auto=format&fit=crop"
+            alt="Centro logístico com operários em pátio"
+            class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:scale-105 transition duration-700"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/90 via-ink-900/40 to-transparent"></div>
+          <figcaption class="absolute bottom-0 left-0 right-0 p-6 text-white">
+            <div class="text-[10px] uppercase tracking-[0.22em] font-extrabold text-warn mb-2">Logística agrícola</div>
+            <div class="font-display text-2xl leading-tight">Centros de distribuição com 80+ colaboradores rodando NR-1 + Premiações.</div>
+          </figcaption>
+        </figure>
+
+        <figure class="relative aspect-[4/5] rounded-3xl overflow-hidden bg-ink-900 group">
+          <img
+            src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1000&q=80&auto=format&fit=crop"
+            alt="Reunião de gestão SST em escritório"
+            class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:scale-105 transition duration-700"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/90 via-ink-900/40 to-transparent"></div>
+          <figcaption class="absolute bottom-0 left-0 right-0 p-6 text-white">
+            <div class="text-[10px] uppercase tracking-[0.22em] font-extrabold text-warn mb-2">Gestão SST</div>
+            <div class="font-display text-2xl leading-tight">Visita mensal de campo, reunião com liderança e ata documentada — não é só sistema.</div>
+          </figcaption>
+        </figure>
+
+        <figure class="relative aspect-[4/5] rounded-3xl overflow-hidden bg-ink-900 group">
+          <img
+            src="https://images.unsplash.com/photo-1606857521015-7f9fcf423740?w=1000&q=80&auto=format&fit=crop"
+            alt="Documento de PGR sendo analisado"
+            class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:scale-105 transition duration-700"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/90 via-ink-900/40 to-transparent"></div>
+          <figcaption class="absolute bottom-0 left-0 right-0 p-6 text-white">
+            <div class="text-[10px] uppercase tracking-[0.22em] font-extrabold text-warn mb-2">Defensável</div>
+            <div class="font-display text-2xl leading-tight">PGR assinado, trilha de auditoria de 20 anos, S-2240 no eSocial em 24h.</div>
+          </figcaption>
+        </figure>
+
+      </div>
     </div>
   </div>
 </section>
