@@ -1,0 +1,958 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Innova /NR1 · Conformidade com Controle de Disciplina mensal</title>
+<meta name="description" content="Innova /NR1: plataforma + Controle de Disciplina mensal para empresas brasileiras. Não é só o laudo — é o ciclo de prevenção rodando. PGR, COPSOQ II, plano de ação e envio do S-2240 ao eSocial." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['"DM Serif Display"', 'serif'] },
+      colors: {
+        ink: { 900: '#0F0F19', 700: '#3F3F50', 500: '#71718A', 300: '#B0B0C0' },
+        accent: { 50: '#EFEFFE', 100: '#E0E0FD', 300: '#A5A4F8', 500: '#6364E0', 600: '#4F50C9', 700: '#3F40A8', 900: '#1F1F66' },
+        surface: { DEFAULT: '#F4F4F8', muted: '#FAFAFC' },
+        ok: '#10B981', warn: '#F59E0B', danger: '#EF4444',
+      },
+      borderRadius: { '4xl': '2rem', '5xl': '2.5rem' },
+      boxShadow: { soft: '0 1px 3px rgba(15,15,25,.04), 0 1px 2px rgba(15,15,25,.03)', card: '0 8px 30px rgba(99,100,224,.08)' }
+    }
+  }
+}
+</script>
+<style>
+  body { background: #FAFAFC; font-family: 'Inter', sans-serif; color: #0F0F19; -webkit-font-smoothing: antialiased; }
+  .gradient-text { background: linear-gradient(135deg, #6364E0 0%, #3F40A8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .marquee { display: flex; gap: 48px; animation: marquee 30s linear infinite; }
+  .ticker { display: flex; gap: 40px; animation: marquee 60s linear infinite; }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  /* Floating nav scroll behavior */
+  #floatingNav { transition: top .3s cubic-bezier(.4,0,.2,1), padding .3s; }
+  #floatingNav.scrolled { top: 12px; }
+  #floatingNav.scrolled nav { padding-top: 6px; padding-bottom: 6px; }
+  /* Hero giant decorative number */
+  .hero-deco {
+    position: absolute;
+    top: 50%; right: -8%;
+    transform: translateY(-50%);
+    font-family: 'DM Serif Display', serif;
+    font-size: 40rem;
+    line-height: 0.8;
+    color: rgba(255,255,255,.04);
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.05em;
+    z-index: 0;
+  }
+  @media (max-width: 1024px) { .hero-deco { font-size: 28rem; right: -15%; } }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] .toggle { transform: rotate(45deg); }
+  .toggle { transition: transform .2s; }
+  .grid-pattern {
+    background-image:
+      linear-gradient(rgba(99,100,224,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(99,100,224,0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+</style>
+</head>
+<body class="text-ink-900">
+
+<!-- ============ MARQUEE TICKER (top) ============ -->
+<div class="bg-ink-900 text-white py-2.5 overflow-hidden border-b border-white/5 relative">
+  <div class="ticker">
+    <div class="flex items-center gap-10 whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60">
+      <span class="flex items-center gap-2 text-white"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>Fiscalização punitiva inicia em 16 dias</span>
+      <span class="text-white/20">●</span>
+      <span>Multa: R$ 6.708 por trabalhador exposto</span>
+      <span class="text-white/20">●</span>
+      <span>Em 30 dias seu cliente está conforme</span>
+      <span class="text-white/20">●</span>
+      <span class="flex items-center gap-2 text-warn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>0800 555 0000</span>
+      <span class="text-white/20">●</span>
+      <span>contato@conformidade.nr1</span>
+      <span class="text-white/20">●</span>
+      <span>SLA do S-2240 em 24h</span>
+      <span class="text-white/20">●</span>
+    </div>
+    <div class="flex items-center gap-10 whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60" aria-hidden="true">
+      <span class="flex items-center gap-2 text-white"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>Fiscalização punitiva inicia em 16 dias</span>
+      <span class="text-white/20">●</span>
+      <span>Multa: R$ 6.708 por trabalhador exposto</span>
+      <span class="text-white/20">●</span>
+      <span>Em 30 dias seu cliente está conforme</span>
+      <span class="text-white/20">●</span>
+      <span class="flex items-center gap-2 text-warn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>0800 555 0000</span>
+      <span class="text-white/20">●</span>
+      <span>contato@conformidade.nr1</span>
+      <span class="text-white/20">●</span>
+      <span>SLA do S-2240 em 24h</span>
+      <span class="text-white/20">●</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FLOATING CAPSULE NAV ============ -->
+<header id="floatingNav" class="fixed top-9 left-1/2 -translate-x-1/2 z-50 px-4 max-w-full">
+  <nav class="flex items-center bg-white/75 backdrop-blur-xl border border-white/60 rounded-full shadow-2xl shadow-accent-900/20 pl-3 pr-2 py-2.5">
+    <!-- Logo Innova /NR1 -->
+    <a href="innova.html" class="flex items-center gap-2.5 pr-4 lg:border-r lg:border-ink-300/30">
+      <svg width="34" height="34" viewBox="0 0 44 44">
+        <defs><linearGradient id="ng" x1="0" y1="0" x2="44" y2="44"><stop offset="0" stop-color="#6364E0"/><stop offset="1" stop-color="#3F40A8"/></linearGradient></defs>
+        <path d="M22 2L40 12V32L22 42L4 32V12Z" fill="url(#ng)"/>
+        <rect x="13" y="22" width="3" height="9" rx="1" fill="white"/>
+        <rect x="20.5" y="18" width="3" height="13" rx="1" fill="white"/>
+        <rect x="28" y="14" width="3" height="17" rx="1" fill="white"/>
+        <circle cx="34" cy="13" r="2.5" fill="#FFC600"/>
+      </svg>
+      <span class="hidden sm:inline font-extrabold tracking-tight text-[15px] leading-none">INNOVA <span class="text-accent-600">/NR1</span></span>
+    </a>
+    <!-- Nav links (desktop) -->
+    <ul class="hidden xl:flex items-center gap-0.5 px-4 text-[13px] font-semibold text-ink-700">
+      <li class="relative group">
+        <button class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition flex items-center gap-1.5">
+          Produtos
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="group-hover:rotate-180 transition"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="absolute top-full left-0 mt-3 w-80 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition">
+          <div class="bg-white rounded-3xl shadow-2xl shadow-accent-900/20 border border-ink-300/20 p-2">
+            <a href="innova-nr1.html" class="flex items-start gap-3 p-3 rounded-2xl bg-accent-50">
+              <div class="w-10 h-10 rounded-2xl bg-accent-500 grid place-items-center flex-shrink-0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div class="min-w-0"><div class="font-extrabold text-[14px] text-accent-700">Innova /NR1</div><div class="text-[11px] text-accent-600 mt-0.5 font-bold">Você está aqui</div></div>
+            </a>
+            <a href="innova-premiacoes.html" class="flex items-start gap-3 p-3 rounded-2xl hover:bg-accent-50 transition">
+              <div class="w-10 h-10 rounded-2xl bg-accent-500 grid place-items-center flex-shrink-0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+              <div class="min-w-0"><div class="font-extrabold text-[14px] text-ink-900">Innova /Premiações</div><div class="text-[11px] text-ink-500 mt-0.5">Art. 457 §2 CLT</div></div>
+            </a>
+            <a href="innova-rh.html" class="flex items-start gap-3 p-3 rounded-2xl hover:bg-accent-50 transition">
+              <div class="w-10 h-10 rounded-2xl bg-accent-500 grid place-items-center flex-shrink-0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+              <div class="min-w-0"><div class="font-extrabold text-[14px] text-ink-900">Innova /RH</div><div class="text-[11px] text-ink-500 mt-0.5">Clima · pulse · ENPS</div></div>
+            </a>
+          </div>
+        </div>
+      </li>
+      <li><a href="#produto" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-warn"></span>Prevenção</a></li>
+      <li><a href="#fluxo" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition">Implantação</a></li>
+      <li><a href="#preco" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition">Pacotes</a></li>
+      <li><a href="#faq" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition">FAQ</a></li>
+    </ul>
+    <!-- CTAs -->
+    <div class="flex items-center gap-1 lg:pl-4 lg:border-l lg:border-ink-300/30">
+      <a href="profissional.html" class="hidden sm:inline-flex items-center gap-1.5 text-[13px] font-bold text-ink-900 hover:text-accent-600 px-3 py-2 transition">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Entrar
+      </a>
+      <a href="#preco" class="bg-ink-900 text-white rounded-full pl-4 pr-1.5 py-1.5 text-[13px] font-extrabold inline-flex items-center gap-2 hover:bg-black transition group">
+        <span class="hidden sm:inline">Falar com time</span>
+        <span class="sm:hidden">Começar</span>
+        <span class="w-7 h-7 rounded-full bg-accent-500 grid place-items-center group-hover:bg-warn group-hover:rotate-[-45deg] transition-all">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="relative overflow-hidden bg-gradient-to-br from-accent-500 via-accent-600 to-accent-900 text-white">
+  <div class="absolute inset-0 grid-pattern opacity-30"></div>
+  <div class="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-accent-300/30 blur-3xl"></div>
+  <div class="absolute bottom-0 left-1/3 w-[400px] h-[400px] rounded-full bg-warn/20 blur-3xl"></div>
+  <!-- Giant decorative number -->
+  <div class="hero-deco hidden md:block">1419</div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10 pt-28 pb-16 lg:pt-36 lg:pb-24 grid lg:grid-cols-12 gap-10 items-center">
+    <div class="lg:col-span-7">
+      <!-- Designer-style: dual badge (status + countdown) -->
+      <div class="flex flex-wrap items-center gap-3 mb-6">
+        <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full pl-3 pr-4 py-1.5 text-[11px] font-extrabold tracking-[0.15em] uppercase">
+          <span class="w-2 h-2 rounded-full bg-warn animate-pulse"></span>
+          Portaria MTE 1.419/2024
+        </span>
+        <span class="inline-flex items-center bg-warn text-ink-900 rounded-full pl-1 pr-3 py-1 text-[11px] font-extrabold tracking-wider uppercase gap-2">
+          <span class="bg-ink-900 text-warn rounded-full w-7 h-7 grid place-items-center font-mono text-[14px] font-extrabold">16</span>
+          dias para a multa
+        </span>
+      </div>
+      <h1 class="font-display text-5xl lg:text-7xl leading-[0.98] tracking-tight">Não é só o <span class="italic relative inline-block">laudo<svg viewBox="0 0 120 12" class="absolute left-0 -bottom-1 w-full h-3" preserveAspectRatio="none"><path d="M2 6 Q 30 2, 60 6 T 118 6" stroke="#FFC600" stroke-width="3" fill="none" stroke-linecap="round"/></svg></span>.<br/>É o <span class="italic">ciclo de prevenção</span> rodando.</h1>
+      <p class="mt-6 text-base lg:text-lg text-white/85 max-w-xl">Innova /NR1 = plataforma + <strong class="text-white">Controle de Disciplina mensal</strong>. A gente entra todo mês na operação para detectar o risco antes do afastamento, da CAT e da autuação. Conformidade não é o destino — é o subproduto.</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="#preco" class="bg-white text-accent-700 hover:bg-accent-50 rounded-full px-6 py-3.5 font-extrabold text-sm inline-flex items-center gap-2 shadow-lg shadow-black/10">
+          Quero implantar agora
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="profissional.html" class="bg-white/10 hover:bg-white/15 border border-white/25 backdrop-blur-sm rounded-full px-6 py-3.5 font-bold text-sm inline-flex items-center gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Ver demo do sistema
+        </a>
+      </div>
+      <div class="mt-12 grid grid-cols-3 gap-4 max-w-lg">
+        <div class="border-l-2 border-white/30 pl-4">
+          <div class="text-2xl font-extrabold">30 dias</div>
+          <div class="text-[11px] text-white/70 mt-1 uppercase tracking-wider font-semibold">implantação</div>
+        </div>
+        <div class="border-l-2 border-white/30 pl-4">
+          <div class="text-2xl font-extrabold">R$ 6.708</div>
+          <div class="text-[11px] text-white/70 mt-1 uppercase tracking-wider font-semibold">multa por func.</div>
+        </div>
+        <div class="border-l-2 border-white/30 pl-4">
+          <div class="text-2xl font-extrabold">20 anos</div>
+          <div class="text-[11px] text-white/70 mt-1 uppercase tracking-wider font-semibold">auditoria</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero card mockup -->
+    <div class="lg:col-span-5 relative">
+      <div class="absolute -top-6 -right-6 w-32 h-32 rounded-full bg-warn/30 blur-2xl"></div>
+      <div class="relative bg-white rounded-4xl shadow-2xl p-6 text-ink-900">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-accent-100 grid place-items-center text-accent-700 font-extrabold">AC</div>
+            <div>
+              <div class="font-bold text-sm">Acme Logística</div>
+              <div class="text-[10px] text-ink-500">142 colaboradores</div>
+            </div>
+          </div>
+          <span class="px-2.5 py-1 bg-ok/10 text-ok rounded-full text-[10px] font-extrabold uppercase tracking-wider">Em coleta</span>
+        </div>
+        <div class="grid grid-cols-3 gap-2 mb-5">
+          <div class="bg-surface rounded-2xl p-3"><div class="text-[10px] text-ink-500 font-bold uppercase tracking-wider">Convidados</div><div class="text-xl font-extrabold mt-1">142</div></div>
+          <div class="bg-accent-50 rounded-2xl p-3"><div class="text-[10px] text-accent-700 font-bold uppercase tracking-wider">Resp.</div><div class="text-xl font-extrabold mt-1 text-accent-700">98</div></div>
+          <div class="bg-warn/10 rounded-2xl p-3"><div class="text-[10px] text-warn font-bold uppercase tracking-wider">Dias</div><div class="text-xl font-extrabold mt-1 text-warn">5</div></div>
+        </div>
+        <div class="text-[11px] font-bold text-ink-500 uppercase tracking-wider mb-2">Risco psicossocial · 8 dimensões</div>
+        <div class="flex items-end gap-1 h-20 mb-2">
+          <div class="flex-1 bg-danger/80 rounded-t-md" style="height:100%"></div>
+          <div class="flex-1 bg-warn rounded-t-md" style="height:60%"></div>
+          <div class="flex-1 bg-ok/80 rounded-t-md" style="height:35%"></div>
+          <div class="flex-1 bg-ok/80 rounded-t-md" style="height:32%"></div>
+          <div class="flex-1 bg-warn rounded-t-md" style="height:50%"></div>
+          <div class="flex-1 bg-danger/80 rounded-t-md" style="height:80%"></div>
+          <div class="flex-1 bg-ok/80 rounded-t-md" style="height:25%"></div>
+          <div class="flex-1 bg-warn rounded-t-md" style="height:45%"></div>
+        </div>
+        <div class="bg-surface rounded-2xl p-3 mt-4 flex items-center justify-between">
+          <div>
+            <div class="text-[10px] text-ink-500 font-bold uppercase tracking-wider">Token único · expira em 5 dias</div>
+            <div class="text-xs font-mono font-bold mt-1 truncate">nr1.app/c/acme-2026q2-x4f9k</div>
+          </div>
+          <button class="bg-accent-500 hover:bg-accent-600 text-white rounded-xl px-3 py-1.5 text-xs font-bold">Copiar</button>
+        </div>
+      </div>
+      <!-- Floating mini cards -->
+      <div class="absolute -bottom-4 -left-6 bg-white rounded-2xl p-3 shadow-xl flex items-center gap-2 hidden md:flex">
+        <div class="w-8 h-8 rounded-xl bg-ok/15 grid place-items-center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="text-xs"><div class="font-bold">S-2240 transmitido</div><div class="text-ink-500 text-[10px]">protocolo · agora</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust strip -->
+  <div class="relative border-t border-white/10 mt-8">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-6 flex items-center justify-between flex-wrap gap-4 text-white/60 text-xs uppercase tracking-wider font-bold">
+      <span>Seguro pela construção:</span>
+      <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> TLS 1.3</span>
+      <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> AES-256</span>
+      <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> LGPD</span>
+      <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> ICP-Brasil</span>
+      <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> WORM 20 anos</span>
+      <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="16" r="1"/><rect x="3" y="10" width="18" height="12" rx="2" ry="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg> 2FA</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARQUEE clientes/setores ============ -->
+<section class="bg-white py-10 border-y border-black/5 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 mb-6 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <span class="w-10 h-1 bg-accent-500 rounded-full"></span>
+      <span class="text-[11px] uppercase tracking-wider font-extrabold text-ink-500">Setores que atendemos</span>
+    </div>
+    <span class="text-xs text-ink-500 hidden md:inline">Todos os portes · CLT 1+</span>
+  </div>
+  <div class="overflow-hidden">
+    <div class="marquee">
+      <div class="flex items-center gap-12 text-xl font-display text-ink-300 whitespace-nowrap">
+        <span>Telemarketing</span><span class="text-accent-500">●</span>
+        <span>Saúde</span><span class="text-accent-500">●</span>
+        <span>Bancos</span><span class="text-accent-500">●</span>
+        <span>Indústria</span><span class="text-accent-500">●</span>
+        <span>Logística</span><span class="text-accent-500">●</span>
+        <span>Educação</span><span class="text-accent-500">●</span>
+        <span>Construção</span><span class="text-accent-500">●</span>
+        <span>Varejo</span><span class="text-accent-500">●</span>
+      </div>
+      <div class="flex items-center gap-12 text-xl font-display text-ink-300 whitespace-nowrap" aria-hidden="true">
+        <span>Telemarketing</span><span class="text-accent-500">●</span>
+        <span>Saúde</span><span class="text-accent-500">●</span>
+        <span>Bancos</span><span class="text-accent-500">●</span>
+        <span>Indústria</span><span class="text-accent-500">●</span>
+        <span>Logística</span><span class="text-accent-500">●</span>
+        <span>Educação</span><span class="text-accent-500">●</span>
+        <span>Construção</span><span class="text-accent-500">●</span>
+        <span>Varejo</span><span class="text-accent-500">●</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATEGORIAS / soluções (Cimed-style grid) ============ -->
+<section id="categorias" class="py-20">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="flex items-end justify-between flex-wrap gap-4 mb-12">
+      <div>
+        <span class="text-[11px] uppercase tracking-wider font-extrabold text-accent-600">Soluções</span>
+        <h2 class="font-display text-4xl lg:text-5xl mt-2 leading-[1.05] tracking-tight">Tudo o que sua empresa precisa<br/>para a NR-1, num só lugar.</h2>
+      </div>
+      <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-accent-600 hover:text-accent-700">Ver todas as soluções →</a>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="bg-white rounded-4xl p-6 hover:-translate-y-1 hover:shadow-card transition cursor-pointer group">
+        <div class="w-16 h-16 rounded-3xl bg-accent-50 grid place-items-center mb-5 group-hover:bg-accent-500 group-hover:rotate-6 transition">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#6364E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-white transition">
+            <circle cx="16" cy="16" r="12"/><path d="M16 8v8l4 4"/>
+          </svg>
+        </div>
+        <h3 class="font-extrabold text-lg">Diagnóstico COPSOQ II</h3>
+        <p class="text-sm text-ink-700 mt-1">Anônimo, 8 dimensões, regra dos 5 respondentes.</p>
+        <div class="mt-4 pt-4 border-t border-black/5 flex items-center justify-between">
+          <span class="text-xs text-ink-500 font-semibold">142 perguntas validadas</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-4xl p-6 hover:-translate-y-1 hover:shadow-card transition cursor-pointer group">
+        <div class="w-16 h-16 rounded-3xl bg-warn/10 grid place-items-center mb-5 group-hover:bg-warn group-hover:rotate-6 transition">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-white transition">
+            <path d="M21 14h-3l-2-6-4 12-2-6H7"/><path d="M3 18h2"/><path d="M27 14h2"/>
+          </svg>
+        </div>
+        <h3 class="font-extrabold text-lg">IPAR · Inventário de Riscos</h3>
+        <p class="text-sm text-ink-700 mt-1">Identifica, classifica e prioriza por matriz P×S 5×5.</p>
+        <div class="mt-4 pt-4 border-t border-black/5 flex items-center justify-between">
+          <span class="text-xs text-ink-500 font-semibold">Gerado automaticamente</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-4xl p-6 hover:-translate-y-1 hover:shadow-card transition cursor-pointer group">
+        <div class="w-16 h-16 rounded-3xl bg-ok/10 grid place-items-center mb-5 group-hover:bg-ok group-hover:rotate-6 transition">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-white transition">
+            <path d="M20 4H8a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V10z"/><polyline points="20 4 20 10 26 10"/><polyline points="10 16 14 20 22 12"/>
+          </svg>
+        </div>
+        <h3 class="font-extrabold text-lg">Laudo PGR Pronto</h3>
+        <p class="text-sm text-ink-700 mt-1">PDF assinado pelo RT, formatado e auditável.</p>
+        <div class="mt-4 pt-4 border-t border-black/5 flex items-center justify-between">
+          <span class="text-xs text-ink-500 font-semibold">Gerado em 1 clique</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-4xl p-6 hover:-translate-y-1 hover:shadow-card transition cursor-pointer group">
+        <div class="w-16 h-16 rounded-3xl bg-accent-50 grid place-items-center mb-5 group-hover:bg-accent-500 group-hover:rotate-6 transition">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#6364E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-white transition">
+            <polyline points="29 5 29 13 21 13"/><polyline points="3 27 3 19 11 19"/><path d="M5.5 12a11 11 0 0 1 18.1-4.1L29 13M3 19l5.4 5.1A11 11 0 0 0 26.5 20"/>
+          </svg>
+        </div>
+        <h3 class="font-extrabold text-lg">eSocial S-2240</h3>
+        <p class="text-sm text-ink-700 mt-1">Transmissão direta com protocolo e fila de retentativa.</p>
+        <div class="mt-4 pt-4 border-t border-black/5 flex items-center justify-between">
+          <span class="text-xs text-ink-500 font-semibold">SLA 24h</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-4xl p-6 hover:-translate-y-1 hover:shadow-card transition cursor-pointer group">
+        <div class="w-16 h-16 rounded-3xl bg-danger/10 grid place-items-center mb-5 group-hover:bg-danger group-hover:rotate-6 transition">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-white transition">
+            <path d="M28 21a2.7 2.7 0 0 1-2.7 2.7H9.3L4 29V8a2.7 2.7 0 0 1 2.7-2.7h18.6A2.7 2.7 0 0 1 28 8z"/>
+          </svg>
+        </div>
+        <h3 class="font-extrabold text-lg">Comunicação de Perigo</h3>
+        <p class="text-sm text-ink-700 mt-1">Canal aberto, anônimo, com protocolo de retorno.</p>
+        <div class="mt-4 pt-4 border-t border-black/5 flex items-center justify-between">
+          <span class="text-xs text-ink-500 font-semibold">SLA 3 dias úteis</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-4xl p-6 hover:-translate-y-1 hover:shadow-card transition cursor-pointer group">
+        <div class="w-16 h-16 rounded-3xl bg-accent-50 grid place-items-center mb-5 group-hover:bg-accent-500 group-hover:rotate-6 transition">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#6364E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-white transition">
+            <line x1="24" y1="27" x2="24" y2="14"/><line x1="16" y1="27" x2="16" y2="5"/><line x1="8" y1="27" x2="8" y2="19"/>
+          </svg>
+        </div>
+        <h3 class="font-extrabold text-lg">Indicadores SST</h3>
+        <p class="text-sm text-ink-700 mt-1">Proativos e reativos · TF, TG, absenteísmo, B91/B92.</p>
+        <div class="mt-4 pt-4 border-t border-black/5 flex items-center justify-between">
+          <span class="text-xs text-ink-500 font-semibold">Atualizados mensal</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-4xl p-6 hover:-translate-y-1 hover:shadow-card transition cursor-pointer group">
+        <div class="w-16 h-16 rounded-3xl bg-warn/10 grid place-items-center mb-5 group-hover:bg-warn group-hover:rotate-6 transition">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-white transition">
+            <rect x="4" y="6" width="24" height="22" rx="2"/><line x1="22" y1="2" x2="22" y2="10"/><line x1="10" y1="2" x2="10" y2="10"/><line x1="4" y1="14" x2="28" y2="14"/>
+          </svg>
+        </div>
+        <h3 class="font-extrabold text-lg">Ciclo Contínuo</h3>
+        <p class="text-sm text-ink-700 mt-1">Reaplicação semestral + atualização anual + treinamentos.</p>
+        <div class="mt-4 pt-4 border-t border-black/5 flex items-center justify-between">
+          <span class="text-xs text-ink-500 font-semibold">Calendário automático</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-4xl p-6 hover:-translate-y-1 hover:shadow-card transition cursor-pointer group">
+        <div class="w-16 h-16 rounded-3xl bg-ok/10 grid place-items-center mb-5 group-hover:bg-ok group-hover:rotate-6 transition">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-white transition">
+            <path d="M16 28s10-5 10-13V6L16 2 6 6v9c0 8 10 13 10 13z"/>
+          </svg>
+        </div>
+        <h3 class="font-extrabold text-lg">Defesa Jurídica</h3>
+        <p class="text-sm text-ink-700 mt-1">Trilha de auditoria 20 anos · hash SHA-256 · WORM.</p>
+        <div class="mt-4 pt-4 border-t border-black/5 flex items-center justify-between">
+          <span class="text-xs text-ink-500 font-semibold">Pronta p/ fiscalização</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARQUITETURA · 2 ÁREAS ============ -->
+<section id="produto" class="bg-ink-900 text-white py-20 lg:py-28 relative overflow-hidden">
+  <div class="absolute inset-0 grid-pattern opacity-20"></div>
+  <div class="absolute top-1/2 -translate-y-1/2 -left-40 w-[400px] h-[400px] rounded-full bg-accent-500/30 blur-3xl"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="max-w-3xl mb-14">
+      <span class="text-[11px] uppercase tracking-wider font-extrabold text-warn">Arquitetura</span>
+      <h2 class="font-display text-4xl lg:text-5xl mt-2 leading-[1.05]">Duas áreas integradas.<br/><span class="italic gradient-text bg-gradient-to-r from-accent-300 to-warn">Uma única plataforma.</span></h2>
+      <p class="mt-5 text-white/70 text-lg">Sua equipe técnica trabalha de um lado. Os colaboradores recebem um link seguro do outro. Tudo se conecta automaticamente.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-5">
+      <!-- Profissional -->
+      <div class="bg-white text-ink-900 rounded-4xl p-8 lg:p-10 relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-accent-50"></div>
+        <div class="relative">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-14 h-14 rounded-2xl bg-ink-900 grid place-items-center text-white">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <div>
+              <div class="text-[11px] uppercase tracking-wider font-extrabold text-accent-600">Para a equipe técnica</div>
+              <h3 class="text-2xl font-extrabold">Área do Profissional</h3>
+            </div>
+          </div>
+          <p class="text-sm text-ink-700">Sistema de implantação completo, com gestão de carteira, workflow técnico e geração de laudo pronto.</p>
+          <ul class="space-y-2 mt-6 text-sm">
+            <li class="flex gap-2.5"><span class="text-accent-500 font-bold">›</span>Dashboard agregado da carteira</li>
+            <li class="flex gap-2.5"><span class="text-accent-500 font-bold">›</span>Cadastro e importação de funcionários (CSV/Excel)</li>
+            <li class="flex gap-2.5"><span class="text-accent-500 font-bold">›</span>Geração de link da avaliação com token único</li>
+            <li class="flex gap-2.5"><span class="text-accent-500 font-bold">›</span>IPAR + Plano de Ação automatizados</li>
+            <li class="flex gap-2.5"><span class="text-accent-500 font-bold">›</span>Biblioteca de relatórios e exportação</li>
+            <li class="flex gap-2.5"><span class="text-accent-500 font-bold">›</span>Laudo PGR pronto, assinado pelo RT</li>
+            <li class="flex gap-2.5"><span class="text-accent-500 font-bold">›</span>Envio do S-2240 ao eSocial</li>
+            <li class="flex gap-2.5"><span class="text-accent-500 font-bold">›</span>Gestão de equipe técnica e permissões</li>
+          </ul>
+          <a href="profissional.html" class="mt-6 inline-flex items-center gap-2 text-sm font-extrabold text-accent-600 hover:text-accent-700">Acessar área do profissional <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Colaborador -->
+      <div class="bg-gradient-to-br from-accent-500 to-accent-700 text-white rounded-4xl p-8 lg:p-10 relative overflow-hidden">
+        <div class="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-white/10"></div>
+        <div class="absolute top-8 right-8 w-3 h-3 rounded-full bg-warn"></div>
+        <div class="relative">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-14 h-14 rounded-2xl bg-white grid place-items-center">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            </div>
+            <div>
+              <div class="text-[11px] uppercase tracking-wider font-extrabold text-warn">Para o funcionário do cliente</div>
+              <h3 class="text-2xl font-extrabold">Área do Colaborador</h3>
+            </div>
+          </div>
+          <p class="text-sm text-white/80">Recebe um link único, valida com CPF + data de nascimento, e responde de forma 100% anônima e segura.</p>
+          <ul class="space-y-2 mt-6 text-sm">
+            <li class="flex gap-2.5"><span class="text-warn font-bold">›</span>Acesso por link único · token de 14 dias</li>
+            <li class="flex gap-2.5"><span class="text-warn font-bold">›</span>Validação por CPF + data de nascimento</li>
+            <li class="flex gap-2.5"><span class="text-warn font-bold">›</span>TCLE digital obrigatório (LGPD)</li>
+            <li class="flex gap-2.5"><span class="text-warn font-bold">›</span>Diagnóstico COPSOQ II (8 dimensões)</li>
+            <li class="flex gap-2.5"><span class="text-warn font-bold">›</span>Comunicação de perigo com ou sem identificação</li>
+            <li class="flex gap-2.5"><span class="text-warn font-bold">›</span>Anonimato em três camadas garantido</li>
+            <li class="flex gap-2.5"><span class="text-warn font-bold">›</span>Regra dos 5 respondentes</li>
+            <li class="flex gap-2.5"><span class="text-warn font-bold">›</span>Mobile-first com acessibilidade nativa</li>
+          </ul>
+          <a href="colaborador.html" class="mt-6 inline-flex items-center gap-2 text-sm font-extrabold text-white hover:text-warn">Ver demo do colaborador <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connection arrow row -->
+    <div class="flex items-center justify-center gap-3 mt-8 text-xs uppercase tracking-wider font-extrabold text-white/60">
+      <span>Profissional gera link</span>
+      <svg width="40" height="14" viewBox="0 0 40 14" fill="none" stroke="#FFC600" stroke-width="2"><line x1="0" y1="7" x2="35" y2="7" stroke-dasharray="3 3"/><polyline points="32 2 38 7 32 12"/></svg>
+      <span>Colaborador recebe e responde</span>
+      <svg width="40" height="14" viewBox="0 0 40 14" fill="none" stroke="#FFC600" stroke-width="2"><line x1="40" y1="7" x2="5" y2="7" stroke-dasharray="3 3"/><polyline points="8 2 2 7 8 12"/></svg>
+      <span>Resultados consolidados</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FLUXOGRAMA ============ -->
+<section id="fluxo" class="py-20">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="max-w-3xl mb-12">
+      <span class="text-[11px] uppercase tracking-wider font-extrabold text-accent-600">Fluxograma · 30 dias</span>
+      <h2 class="font-display text-4xl lg:text-5xl mt-2 leading-[1.05]">Do kickoff ao S-2240 transmitido<br/>em quatro semanas.</h2>
+    </div>
+
+    <div class="grid lg:grid-cols-7 gap-3 lg:gap-2">
+      <div class="bg-ink-900 text-white rounded-3xl p-5 hover:-translate-y-1 transition relative">
+        <div class="text-[10px] uppercase tracking-wider font-extrabold text-warn">Dia 0</div>
+        <h4 class="font-extrabold mt-2">Kickoff</h4>
+        <p class="text-xs text-white/70 mt-1">Brief técnico + assinatura do contrato.</p>
+      </div>
+      <div class="bg-white border border-accent-100 rounded-3xl p-5 hover:-translate-y-1 hover:shadow-card transition">
+        <div class="text-[10px] uppercase tracking-wider font-extrabold text-accent-600">Dia 1–5</div>
+        <h4 class="font-extrabold mt-2 text-sm">Setup</h4>
+        <p class="text-xs text-ink-700 mt-1">Cadastro e importação da base.</p>
+      </div>
+      <div class="bg-accent-500 text-white rounded-3xl p-5 hover:-translate-y-1 transition">
+        <div class="text-[10px] uppercase tracking-wider font-extrabold text-warn">Dia 6–10</div>
+        <h4 class="font-extrabold mt-2 text-sm">Lançamento</h4>
+        <p class="text-xs text-white/85 mt-1">Link enviado por e-mail/WhatsApp.</p>
+      </div>
+      <div class="bg-white border border-accent-100 rounded-3xl p-5 hover:-translate-y-1 hover:shadow-card transition">
+        <div class="text-[10px] uppercase tracking-wider font-extrabold text-accent-600">Dia 11–25</div>
+        <h4 class="font-extrabold mt-2 text-sm">Coleta</h4>
+        <p class="text-xs text-ink-700 mt-1">Janela de resposta + tabulação.</p>
+      </div>
+      <div class="bg-white border border-accent-100 rounded-3xl p-5 hover:-translate-y-1 hover:shadow-card transition">
+        <div class="text-[10px] uppercase tracking-wider font-extrabold text-accent-600">Dia 26–28</div>
+        <h4 class="font-extrabold mt-2 text-sm">Análise</h4>
+        <p class="text-xs text-ink-700 mt-1">IPAR + Plano de Ação.</p>
+      </div>
+      <div class="bg-ink-900 text-white rounded-3xl p-5 hover:-translate-y-1 transition">
+        <div class="text-[10px] uppercase tracking-wider font-extrabold text-warn">Dia 29</div>
+        <h4 class="font-extrabold mt-2 text-sm">Devolutiva</h4>
+        <p class="text-xs text-white/70 mt-1">Reunião + assinatura do laudo.</p>
+      </div>
+      <div class="bg-gradient-to-br from-warn to-danger text-white rounded-3xl p-5 hover:-translate-y-1 transition">
+        <div class="text-[10px] uppercase tracking-wider font-extrabold text-white">Dia 30</div>
+        <h4 class="font-extrabold mt-2 text-sm">Entrega</h4>
+        <p class="text-xs text-white/85 mt-1">S-2240 + WORM ativo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BLOG / RECURSOS Cimed style ============ -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="flex items-end justify-between flex-wrap gap-4 mb-12">
+      <div>
+        <span class="text-[11px] uppercase tracking-wider font-extrabold text-accent-600">Recursos · Blog NR-1</span>
+        <h2 class="font-display text-4xl lg:text-5xl mt-2 leading-[1.05]">Conteúdo aprofundado<br/>direto da equipe técnica.</h2>
+      </div>
+      <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-accent-600 hover:text-accent-700">Ver todo o blog →</a>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-5">
+      <article class="bg-white rounded-4xl overflow-hidden hover:-translate-y-1 hover:shadow-card transition border border-black/5">
+        <div class="aspect-[16/10] bg-gradient-to-br from-accent-300 to-accent-700 relative">
+          <svg class="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 200 130" fill="none" preserveAspectRatio="xMidYMid slice">
+            <circle cx="40" cy="40" r="30" fill="#FFC600" opacity="0.5"/>
+            <rect x="100" y="60" width="60" height="40" rx="8" fill="white" opacity="0.4"/>
+            <path d="M20 100 Q 60 80, 100 90 T 180 95" stroke="white" stroke-width="2" fill="none"/>
+          </svg>
+          <span class="absolute top-4 left-4 px-3 py-1 bg-white text-accent-700 rounded-full text-[10px] font-extrabold uppercase tracking-wider">Norma</span>
+        </div>
+        <div class="p-6">
+          <div class="text-[10px] uppercase tracking-wider font-extrabold text-ink-500">10 abr 2026 · 8 min de leitura</div>
+          <h3 class="font-display text-xl mt-2 leading-tight">Portaria 1.419/2024: o que mudou para o seu PGR</h3>
+          <p class="text-sm text-ink-700 mt-2">Análise do texto integral, o que entrou no escopo psicossocial e os 12 pontos que você deve revisar no inventário de riscos.</p>
+        </div>
+      </article>
+
+      <article class="bg-white rounded-4xl overflow-hidden hover:-translate-y-1 hover:shadow-card transition border border-black/5">
+        <div class="aspect-[16/10] bg-gradient-to-br from-warn to-danger relative">
+          <svg class="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 200 130" fill="none" preserveAspectRatio="xMidYMid slice">
+            <path d="M30 90 L60 50 L90 75 L130 30 L170 55" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="170" cy="55" r="6" fill="white"/>
+          </svg>
+          <span class="absolute top-4 left-4 px-3 py-1 bg-white text-warn rounded-full text-[10px] font-extrabold uppercase tracking-wider">Multas</span>
+        </div>
+        <div class="p-6">
+          <div class="text-[10px] uppercase tracking-wider font-extrabold text-ink-500">2 abr 2026 · 6 min de leitura</div>
+          <h3 class="font-display text-xl mt-2 leading-tight">Calculadora: quanto sua empresa pode perder em maio</h3>
+          <p class="text-sm text-ink-700 mt-2">Simulação por porte e setor da multa por trabalhador exposto, com base em casos reais já julgados pela auditoria-fiscal.</p>
+        </div>
+      </article>
+
+      <article class="bg-white rounded-4xl overflow-hidden hover:-translate-y-1 hover:shadow-card transition border border-black/5">
+        <div class="aspect-[16/10] bg-gradient-to-br from-ok to-emerald-700 relative">
+          <svg class="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 200 130" fill="none" preserveAspectRatio="xMidYMid slice">
+            <rect x="20" y="20" width="160" height="90" rx="10" stroke="white" stroke-width="2" fill="none"/>
+            <line x1="20" y1="50" x2="180" y2="50" stroke="white" stroke-width="2"/>
+            <circle cx="40" cy="35" r="5" fill="white"/>
+            <line x1="60" y1="35" x2="160" y2="35" stroke="white" stroke-width="2"/>
+            <line x1="40" y1="70" x2="160" y2="70" stroke="white" stroke-width="1.5"/>
+            <line x1="40" y1="85" x2="120" y2="85" stroke="white" stroke-width="1.5"/>
+          </svg>
+          <span class="absolute top-4 left-4 px-3 py-1 bg-white text-ok rounded-full text-[10px] font-extrabold uppercase tracking-wider">Modelo</span>
+        </div>
+        <div class="p-6">
+          <div class="text-[10px] uppercase tracking-wider font-extrabold text-ink-500">28 mar 2026 · 12 min de leitura</div>
+          <h3 class="font-display text-xl mt-2 leading-tight">Modelo de PGR conforme NR-1: anatomia de um laudo aceito</h3>
+          <p class="text-sm text-ink-700 mt-2">Cada seção do PGR explicada: o que o auditor procura, o que defende em ação trabalhista e o que NÃO pode faltar.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NÚMEROS / IMPACTO ============ -->
+<section class="py-20 bg-surface">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid md:grid-cols-4 gap-5">
+      <div class="bg-white rounded-4xl p-7 text-center">
+        <div class="font-display text-5xl text-accent-600">1.823</div>
+        <div class="text-xs text-ink-500 font-extrabold uppercase tracking-wider mt-2">Colaboradores sob conformidade</div>
+      </div>
+      <div class="bg-white rounded-4xl p-7 text-center">
+        <div class="font-display text-5xl text-accent-600">12</div>
+        <div class="text-xs text-ink-500 font-extrabold uppercase tracking-wider mt-2">Empresas ativas na plataforma</div>
+      </div>
+      <div class="bg-white rounded-4xl p-7 text-center">
+        <div class="font-display text-5xl text-accent-600">98%</div>
+        <div class="text-xs text-ink-500 font-extrabold uppercase tracking-wider mt-2">SLA de envio do S-2240</div>
+      </div>
+      <div class="bg-white rounded-4xl p-7 text-center">
+        <div class="font-display text-5xl text-accent-600">0</div>
+        <div class="text-xs text-ink-500 font-extrabold uppercase tracking-wider mt-2">Vazamentos de dados (LGPD)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section id="preco" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent-600">Pacotes de prevenção</span>
+      <h2 class="font-display text-4xl lg:text-6xl mt-3 leading-[1.0]">Escolha o nível<br/>de prevenção.</h2>
+      <p class="mt-5 text-ink-700">Dois planos. Em ambos você fica em conformidade. A diferença é o quanto a gente previne <em>ao seu lado</em> — não só o documento entregue.</p>
+    </div>
+
+    <!-- 2 main plans + Farmácia -->
+    <div class="grid lg:grid-cols-2 gap-5 max-w-5xl mx-auto">
+
+      <!-- Gestão Básica -->
+      <div class="bg-surface-muted border border-ink-300/30 rounded-4xl p-8">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-ink-500">Plano</span>
+          <span class="bg-ink-900 text-white rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider">Básica</span>
+        </div>
+        <h3 class="font-display text-3xl mt-3">Gestão Básica</h3>
+        <p class="text-sm text-ink-700 mt-2">Acesso à plataforma + suporte e orientação mensal. Você fica em conformidade — nós damos o suporte por chat e e-mail.</p>
+
+        <div class="mt-7 space-y-3 pb-6 border-b border-ink-300/30">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-ink-700">Até 10 colaboradores</span>
+            <span class="text-2xl font-extrabold">R$ 360<span class="text-sm text-ink-500">/mês</span></span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-ink-700">Até 20 colaboradores</span>
+            <span class="text-2xl font-extrabold">R$ 410<span class="text-sm text-ink-500">/mês</span></span>
+          </div>
+          <div class="flex items-center justify-between text-xs text-ink-500">
+            <span>Implantação + treinamento</span>
+            <span class="font-extrabold text-ink-700">R$ 1.000 único</span>
+          </div>
+        </div>
+
+        <ul class="mt-6 space-y-2.5 text-sm text-ink-700">
+          <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Acesso completo à plataforma</li>
+          <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>PGR + IPAR + plano de ação gerados</li>
+          <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Laudo PDF assinado pelo RT</li>
+          <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Envio do S-2240 ao eSocial</li>
+          <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Suporte mensal por e-mail e chat</li>
+          <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Trilha de auditoria 20 anos</li>
+        </ul>
+
+        <a href="profissional.html" class="mt-8 w-full inline-flex items-center justify-center gap-2 bg-ink-900 text-white rounded-full px-5 py-3 font-extrabold text-sm hover:bg-black">
+          Começar com Gestão Básica
+        </a>
+      </div>
+
+      <!-- Gestão Completa (Recomendado) -->
+      <div class="bg-gradient-to-br from-accent-500 to-accent-900 text-white rounded-4xl p-8 relative overflow-hidden shadow-2xl shadow-accent-500/20">
+        <div class="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-warn/20 blur-3xl"></div>
+        <div class="absolute -bottom-12 -left-12 w-48 h-48 rounded-full bg-accent-300/20 blur-2xl"></div>
+        <div class="relative">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-white/80">Plano</span>
+            <span class="bg-warn text-ink-900 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider">Recomendado</span>
+          </div>
+          <h3 class="font-display text-3xl mt-3 text-white">Gestão Completa</h3>
+          <p class="text-sm text-white/85 mt-2"><strong>Plataforma + Controle de Disciplina mensal.</strong> A gente entra todo mês na operação para prevenir o que ainda não virou problema.</p>
+
+          <div class="mt-7 space-y-3 pb-6 border-b border-white/15">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-white/85">Até 10 colaboradores</span>
+              <span class="text-2xl font-extrabold text-white">R$ 450<span class="text-sm text-white/60">/mês</span></span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-white/85">Até 20 colaboradores</span>
+              <span class="text-2xl font-extrabold text-white">R$ 550<span class="text-sm text-white/60">/mês</span></span>
+            </div>
+            <div class="flex items-center justify-between text-xs text-white/70">
+              <span>Implantação + treinamento</span>
+              <span class="font-extrabold text-white/90">R$ 1.000 único</span>
+            </div>
+          </div>
+
+          <ul class="mt-6 space-y-2.5 text-sm text-white">
+            <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Tudo do plano básico, mais:</li>
+            <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg><strong>Controle de Disciplina mensal</strong> (visita ou reunião)</li>
+            <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Plano de ação executado em conjunto</li>
+            <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Indicadores de prevenção (TF, TG, B91/B92)</li>
+            <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Reunião executiva trimestral com a liderança</li>
+            <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Atendimento prioritário em fiscalização</li>
+          </ul>
+
+          <a href="profissional.html" class="mt-8 w-full inline-flex items-center justify-center gap-2 bg-warn hover:bg-warn/90 text-ink-900 rounded-full px-5 py-3 font-extrabold text-sm">
+            Quero a prevenção completa →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pacote Farmácia -->
+    <div class="max-w-5xl mx-auto mt-8 bg-ink-900 text-white rounded-4xl p-8 lg:p-10 relative overflow-hidden">
+      <div class="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-warn/30 blur-3xl"></div>
+      <div class="absolute -bottom-10 left-1/4 w-36 h-36 rounded-full bg-accent-500/30 blur-2xl"></div>
+      <div class="grid md:grid-cols-2 gap-8 items-center relative">
+        <div>
+          <div class="flex flex-wrap items-center gap-2 mb-4">
+            <span class="bg-warn text-ink-900 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider">Pacote especial · Farmácia</span>
+            <span class="text-[11px] font-extrabold uppercase tracking-[0.15em] text-warn">~1.000 farmácias atendidas</span>
+          </div>
+          <h3 class="font-display text-3xl lg:text-4xl text-white leading-tight">Pricing especial<br/>para farmácia pequena.</h3>
+          <p class="text-sm text-white/80 mt-3">Conhecemos a realidade do varejo farmacêutico. Cobrança por CNPJ (respeitando grupo econômico), implantação reduzida e mensalidade adaptada para a operação enxuta de até 10 funcionários.</p>
+          <div class="mt-5 inline-flex items-center gap-2 text-xs text-warn font-extrabold uppercase tracking-wider">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Grupo econômico cobrado por CNPJ — sem inflar
+          </div>
+        </div>
+        <div class="bg-white/10 rounded-3xl p-6 border border-white/10 backdrop-blur-sm">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <div class="text-[10px] uppercase tracking-wider font-extrabold text-warn mb-1">Mensalidade</div>
+              <div class="font-display text-3xl text-white leading-none">R$ 120<span class="text-sm text-white/60"> a </span>R$ 300</div>
+              <div class="text-[11px] text-white/60 mt-2">por CNPJ · até 10 funcionários</div>
+            </div>
+            <div>
+              <div class="text-[10px] uppercase tracking-wider font-extrabold text-warn mb-1">Implantação</div>
+              <div class="font-display text-3xl text-white leading-none">R$ 500</div>
+              <div class="text-[11px] text-white/60 mt-2">único · 50% off do padrão</div>
+            </div>
+          </div>
+          <a href="#contato" class="mt-5 w-full inline-flex items-center justify-center gap-2 bg-warn hover:bg-warn/90 text-ink-900 rounded-full px-5 py-2.5 font-extrabold text-xs">
+            Falar com time da farmácia →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-center text-xs text-ink-500 mt-8 max-w-2xl mx-auto">Acima de 20 colaboradores? Pacotes customizados sob consulta. <a href="#contato" class="text-accent-600 font-bold hover:underline">Fale com a gente →</a></p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq" class="py-20 bg-surface">
+  <div class="max-w-3xl mx-auto px-6 lg:px-10">
+    <div class="text-center mb-12">
+      <span class="text-[11px] uppercase tracking-wider font-extrabold text-accent-600">Dúvidas frequentes</span>
+      <h2 class="font-display text-4xl lg:text-5xl mt-2 leading-[1.05]">Tudo o que perguntam<br/>antes de assinar.</h2>
+    </div>
+    <div class="space-y-3">
+      <details class="bg-white rounded-3xl p-6" open>
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>Quem precisa cumprir a nova NR-1?</span>
+          <span class="toggle w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700 leading-relaxed">Toda empresa com ao menos um trabalhador CLT. A Portaria MTE 1.419/2024 incluiu fatores psicossociais no GRO da NR-1, e a obrigação se aplica a qualquer porte e setor.</p>
+      </details>
+      <details class="bg-white rounded-3xl p-6">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>Como funciona o link enviado ao colaborador?</span>
+          <span class="toggle w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700 leading-relaxed">O profissional cria a avaliação na sua área e gera um link único com token. O link é enviado por e-mail ou WhatsApp. Ao abrir, o colaborador valida com CPF + data de nascimento (apenas para garantir que é trabalhador da empresa) e então responde de forma 100% anônima.</p>
+      </details>
+      <details class="bg-white rounded-3xl p-6">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>Validar com CPF não quebra o anonimato?</span>
+          <span class="toggle w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700 leading-relaxed">Não. A validação serve apenas para confirmar que o respondente faz parte da base de funcionários autorizados. Após a validação, o sistema descarta a associação CPF↔resposta. Os dados ficam armazenados em camadas separadas e não há tabela de junção. Anonimato em três camadas: técnica (IP off, hash de validação descartado), operacional (regra dos 5) e jurídica (TCLE LGPD).</p>
+      </details>
+      <details class="bg-white rounded-3xl p-6">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>Vocês geram o evento S-2240 do eSocial?</span>
+          <span class="toggle w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700 leading-relaxed">Sim. A plataforma transmite o S-2240 ao eSocial automaticamente, com confirmação de recebimento e fila de retransmissão. SLA de 24h após a aprovação do cliente.</p>
+      </details>
+      <details class="bg-white rounded-3xl p-6">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>O laudo sai pronto para entregar ao cliente?</span>
+          <span class="toggle w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700 leading-relaxed">Sim. Com 1 clique o sistema gera o PDF do laudo PGR completo: capa, sumário executivo, IPAR consolidado, plano de ação, mapa de conformidade NR, anexos do COPSOQ II e termo de assinatura digital pelo responsável técnico (engenheiro de segurança ou médico do trabalho do quadro).</p>
+      </details>
+      <details class="bg-white rounded-3xl p-6">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>É escalável para empresas grandes?</span>
+          <span class="toggle w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700 leading-relaxed">Sim. A arquitetura suporta multi-empresa, multi-unidade, gestão de equipe técnica com perfis e permissões, importação em massa via CSV/Excel, integração com sistemas de folha (TOTVS, Senior, Sankhya) e API para integrações customizadas.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA FINAL ============ -->
+<section class="py-20">
+  <div class="max-w-5xl mx-auto px-6 lg:px-10">
+    <div class="bg-ink-900 text-white rounded-5xl p-10 lg:p-16 text-center relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-accent-500/40 blur-3xl"></div>
+      <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-warn/20 blur-3xl"></div>
+      <div class="relative">
+        <h2 class="font-display text-4xl lg:text-6xl leading-[1.05]">A janela é curta.<br/>Quem implanta primeiro,<br/><span class="italic gradient-text bg-gradient-to-r from-warn to-accent-300">protege primeiro.</span></h2>
+        <p class="mt-6 text-white/70 max-w-xl mx-auto">A partir de 26 de maio, o auditor-fiscal pode autuar. Quem está conforme dorme tranquilo — e ainda fica à frente da concorrência.</p>
+        <div class="mt-8 flex flex-wrap gap-3 justify-center">
+          <a href="profissional.html" class="bg-warn hover:bg-warn/90 text-ink-900 rounded-full px-8 py-4 font-extrabold text-sm inline-flex items-center gap-2">
+            Acessar área do profissional <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="colaborador.html" class="bg-white/10 hover:bg-white/15 border border-white/20 backdrop-blur-sm rounded-full px-8 py-4 font-bold text-sm">Ver demo do colaborador</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER · multi-coluna estilo Cimed ============ -->
+<footer class="bg-ink-900 text-white/70 pt-16 pb-8 mt-10">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+      <!-- Brand col -->
+      <div>
+        <a href="innova.html" class="flex items-center gap-3 mb-5">
+          <svg width="40" height="40" viewBox="0 0 44 44">
+            <defs><linearGradient id="logo-grad-foot" x1="0" y1="0" x2="44" y2="44"><stop offset="0" stop-color="#A5A4F8"/><stop offset="1" stop-color="#6364E0"/></linearGradient></defs>
+            <path d="M22 2L40 12V32L22 42L4 32V12Z" fill="url(#logo-grad-foot)"/>
+            <rect x="13" y="22" width="3" height="9" rx="1" fill="white"/>
+            <rect x="20.5" y="18" width="3" height="13" rx="1" fill="white"/>
+            <rect x="28" y="14" width="3" height="17" rx="1" fill="white"/>
+            <circle cx="34" cy="13" r="2.5" fill="#FFC600"/>
+          </svg>
+          <span class="font-extrabold text-white text-lg tracking-tight">INNOVA <span class="text-accent-300">/NR1</span></span>
+        </a>
+        <p class="text-sm leading-relaxed">Plataforma + Controle de Disciplina mensal para conformidade à Portaria MTE 1.419/2024. Não é o laudo — é a prevenção rodando.</p>
+        <div class="flex gap-3 mt-5">
+          <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-accent-500 grid place-items-center transition"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.04c-5.5 0-10 4.49-10 10.02 0 5 3.66 9.15 8.44 9.9v-7H7.9v-2.9h2.54V9.85c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.45 2.9h-2.33v7a10 10 0 0 0 8.44-9.9c0-5.53-4.5-10.02-10-10.02"/></svg></a>
+          <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-accent-500 grid place-items-center transition"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/></svg></a>
+          <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-accent-500 grid place-items-center transition"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93zM6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37z"/></svg></a>
+          <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-accent-500 grid place-items-center transition"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4zm9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Produtos Innova -->
+      <div>
+        <h4 class="text-white font-extrabold text-sm uppercase tracking-wider mb-4">Produtos</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="innova-nr1.html" class="hover:text-white text-accent-300 font-bold">Innova /NR1 ←</a></li>
+          <li><a href="innova-premiacoes.html" class="hover:text-white">Innova /Premiações</a></li>
+          <li><a href="innova-rh.html" class="hover:text-white">Innova /RH</a></li>
+          <li><a href="profissional.html" class="hover:text-white">Área do profissional</a></li>
+          <li><a href="colaborador.html" class="hover:text-white">Área do colaborador</a></li>
+        </ul>
+      </div>
+
+      <!-- Recursos -->
+      <div>
+        <h4 class="text-white font-extrabold text-sm uppercase tracking-wider mb-4">Recursos</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#" class="hover:text-white">Blog NR-1</a></li>
+          <li><a href="#" class="hover:text-white">Calculadora de risco</a></li>
+          <li><a href="#" class="hover:text-white">Modelo de PGR</a></li>
+          <li><a href="#" class="hover:text-white">Glossário SST</a></li>
+          <li><a href="#" class="hover:text-white">Webinars</a></li>
+          <li><a href="#" class="hover:text-white">Central de ajuda</a></li>
+        </ul>
+      </div>
+
+      <!-- Empresa & contato -->
+      <div>
+        <h4 class="text-white font-extrabold text-sm uppercase tracking-wider mb-4">Contato</h4>
+        <ul class="space-y-3 text-sm">
+          <li class="flex gap-2.5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0 mt-0.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 0800 555 0000</li>
+          <li class="flex gap-2.5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0 mt-0.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> contato@innova.com.br</li>
+          <li class="flex gap-2.5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0 mt-0.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Av. Paulista, 1000 · São Paulo/SP</li>
+          <li class="flex gap-2.5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Seg–Sex 8h–19h</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 pt-6 flex flex-wrap items-center justify-between gap-4 text-xs">
+      <div>© 2026 Innova · CNPJ 00.000.000/0001-00 · Todos os direitos reservados.</div>
+      <div class="flex gap-5">
+        <a href="#" class="hover:text-white">Termos de uso</a>
+        <a href="#" class="hover:text-white">Política de privacidade</a>
+        <a href="#" class="hover:text-white">LGPD</a>
+        <a href="#" class="hover:text-white">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Floating capsule scroll behavior — encolhe e cola no topo ao rolar
+  const fNav = document.getElementById('floatingNav');
+  let last = 0;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y > 80) fNav.classList.add('scrolled');
+    else fNav.classList.remove('scrolled');
+    last = y;
+  }, { passive: true });
+
+  // Smooth section navigation
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+
+</body>
+</html>

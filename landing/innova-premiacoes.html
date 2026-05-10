@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Innova /Premiações · Programa Art. 457 §2 CLT</title>
+<meta name="description" content="Innova /Premiações: programa de premiação por desempenho enquadrado no Art. 457 §2 CLT. Reconhecimento que previne turnover e fica fora da base de encargos." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['"DM Serif Display"', 'serif'] },
+    colors: {
+      ink: { 900: '#0F0F19', 700: '#3F3F50', 500: '#71718A', 300: '#B0B0C0' },
+      accent: { 50: '#EFEFFE', 100: '#E0E0FD', 300: '#A5A4F8', 500: '#6364E0', 600: '#4F50C9', 700: '#3F40A8', 900: '#1F1F66' },
+      surface: { DEFAULT: '#F4F4F8', muted: '#FAFAFC' },
+      ok: '#10B981', warn: '#F59E0B', danger: '#EF4444',
+    },
+    borderRadius: { '4xl': '2rem', '5xl': '2.5rem' },
+    boxShadow: { soft: '0 1px 3px rgba(15,15,25,.04), 0 1px 2px rgba(15,15,25,.03)', card: '0 8px 30px rgba(99,100,224,.08)' }
+  }}
+}
+</script>
+<style>
+  body { background: #FAFAFC; font-family: 'Inter', sans-serif; color: #0F0F19; -webkit-font-smoothing: antialiased; }
+  .gradient-text { background: linear-gradient(135deg, #6364E0 0%, #3F40A8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .ticker { display: flex; gap: 40px; animation: marquee 60s linear infinite; }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  #floatingNav { transition: top .3s cubic-bezier(.4,0,.2,1), padding .3s; }
+  #floatingNav.scrolled { top: 12px; }
+  #floatingNav.scrolled nav { padding-top: 6px; padding-bottom: 6px; }
+  details > summary::-webkit-details-marker { display: none; }
+  .grid-pattern { background-image: linear-gradient(rgba(99,100,224,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(99,100,224,0.06) 1px, transparent 1px); background-size: 32px 32px; }
+  .hero-deco { position: absolute; bottom: -100px; right: -10%; font-family: 'DM Serif Display', serif; font-size: 36rem; line-height: 0.8; color: rgba(255,255,255,.05); pointer-events: none; user-select: none; letter-spacing: -0.05em; z-index: 0; }
+  @media (max-width: 1024px) { .hero-deco { font-size: 22rem; } }
+</style>
+</head>
+<body class="text-ink-900">
+
+<!-- ============ TICKER ============ -->
+<div class="bg-ink-900 text-white py-2.5 overflow-hidden border-b border-white/5 relative">
+  <div class="ticker">
+    <div class="flex items-center gap-10 whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60">
+      <span class="flex items-center gap-2 text-warn"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>Reconhecimento que previne · não só prêmio</span>
+      <span class="text-white/20">●</span>
+      <span class="text-white">Art. 457 §2 CLT · Lei 13.467/2017</span>
+      <span class="text-white/20">●</span>
+      <span>Economia de até 100% em encargos</span>
+      <span class="text-white/20">●</span>
+      <span>Beta limitado · 8 vagas restantes</span>
+      <span class="text-white/20">●</span>
+    </div>
+    <div class="flex items-center gap-10 whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60" aria-hidden="true">
+      <span class="flex items-center gap-2 text-warn"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>Reconhecimento que previne · não só prêmio</span>
+      <span class="text-white/20">●</span>
+      <span class="text-white">Art. 457 §2 CLT · Lei 13.467/2017</span>
+      <span class="text-white/20">●</span>
+      <span>Economia de até 100% em encargos</span>
+      <span class="text-white/20">●</span>
+      <span>Beta limitado · 8 vagas restantes</span>
+      <span class="text-white/20">●</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FLOATING NAV ============ -->
+<header id="floatingNav" class="fixed top-9 left-1/2 -translate-x-1/2 z-50 px-4 max-w-full">
+  <nav class="flex items-center bg-white/75 backdrop-blur-xl border border-white/60 rounded-full shadow-2xl shadow-accent-900/20 pl-3 pr-2 py-2.5">
+    <a href="innova.html" class="flex items-center gap-2.5 pr-4 lg:border-r lg:border-ink-300/30">
+      <svg width="34" height="34" viewBox="0 0 44 44">
+        <defs><linearGradient id="ng" x1="0" y1="0" x2="44" y2="44"><stop offset="0" stop-color="#6364E0"/><stop offset="1" stop-color="#3F40A8"/></linearGradient></defs>
+        <path d="M22 2L40 12V32L22 42L4 32V12Z" fill="url(#ng)"/>
+        <rect x="13" y="22" width="3" height="9" rx="1" fill="white"/>
+        <rect x="20.5" y="18" width="3" height="13" rx="1" fill="white"/>
+        <rect x="28" y="14" width="3" height="17" rx="1" fill="white"/>
+        <circle cx="34" cy="13" r="2.5" fill="#FFC600"/>
+      </svg>
+      <span class="hidden sm:inline font-extrabold tracking-tight text-[15px] leading-none">INNOVA <span class="text-accent-600">/Premiações</span></span>
+    </a>
+    <ul class="hidden xl:flex items-center gap-0.5 px-4 text-[13px] font-semibold text-ink-700">
+      <li class="relative group">
+        <button class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition flex items-center gap-1.5">Produtos
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="group-hover:rotate-180 transition"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="absolute top-full left-0 mt-3 w-80 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition">
+          <div class="bg-white rounded-3xl shadow-2xl shadow-accent-900/20 border border-ink-300/20 p-2">
+            <a href="innova-nr1.html" class="flex items-start gap-3 p-3 rounded-2xl hover:bg-accent-50 transition">
+              <div class="w-10 h-10 rounded-2xl bg-accent-500 grid place-items-center flex-shrink-0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div class="min-w-0"><div class="font-extrabold text-[14px] text-ink-900">Innova /NR1</div><div class="text-[11px] text-ink-500 mt-0.5">Conformidade NR-1</div></div>
+            </a>
+            <a href="innova-premiacoes.html" class="flex items-start gap-3 p-3 rounded-2xl bg-accent-50">
+              <div class="w-10 h-10 rounded-2xl bg-accent-500 grid place-items-center flex-shrink-0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+              <div class="min-w-0"><div class="font-extrabold text-[14px] text-accent-700">Innova /Premiações</div><div class="text-[11px] text-accent-600 mt-0.5 font-bold">Você está aqui</div></div>
+            </a>
+            <a href="innova-rh.html" class="flex items-start gap-3 p-3 rounded-2xl hover:bg-accent-50 transition">
+              <div class="w-10 h-10 rounded-2xl bg-accent-500 grid place-items-center flex-shrink-0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+              <div class="min-w-0"><div class="font-extrabold text-[14px] text-ink-900">Innova /RH</div><div class="text-[11px] text-ink-500 mt-0.5">Clima · pulse · ENPS</div></div>
+            </a>
+          </div>
+        </div>
+      </li>
+      <li><a href="#como" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition">Como funciona</a></li>
+      <li><a href="#calc" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-warn"></span>Calculadora</a></li>
+      <li><a href="#defesa" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition">Defesa jurídica</a></li>
+      <li><a href="#faq" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition">FAQ</a></li>
+    </ul>
+    <div class="flex items-center gap-1 lg:pl-4 lg:border-l lg:border-ink-300/30">
+      <a href="innova.html" class="hidden sm:inline-flex items-center gap-1.5 text-[13px] font-bold text-ink-900 hover:text-accent-600 px-3 py-2 transition">
+        ← Innova
+      </a>
+      <a href="#espera" class="bg-ink-900 text-white rounded-full pl-4 pr-1.5 py-1.5 text-[13px] font-extrabold inline-flex items-center gap-2 hover:bg-black transition group">
+        <span>Lista de espera</span>
+        <span class="w-7 h-7 rounded-full bg-accent-500 grid place-items-center group-hover:bg-warn group-hover:rotate-[-45deg] transition-all">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="relative overflow-hidden bg-gradient-to-br from-accent-500 via-accent-600 to-accent-900 text-white">
+  <div class="absolute inset-0 grid-pattern opacity-30"></div>
+  <div class="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-warn/30 blur-3xl"></div>
+  <div class="hero-deco hidden md:block">457</div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10 pt-32 pb-20 lg:pt-40 lg:pb-28 grid lg:grid-cols-12 gap-10 items-center">
+    <div class="lg:col-span-7">
+      <div class="flex flex-wrap items-center gap-3 mb-6">
+        <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full pl-3 pr-4 py-1.5 text-[11px] font-extrabold tracking-[0.15em] uppercase">
+          <span class="w-2 h-2 rounded-full bg-warn animate-pulse"></span>Beta · 8 vagas restantes
+        </span>
+        <span class="bg-warn text-ink-900 rounded-full px-4 py-1.5 text-[11px] font-extrabold tracking-[0.15em] uppercase">Art. 457 §2 CLT</span>
+      </div>
+      <h1 class="font-display text-5xl lg:text-7xl leading-[0.98] tracking-tight">Reconhecimento<br/>que <span class="italic relative inline-block">não vira encargo<svg viewBox="0 0 300 12" class="absolute left-0 -bottom-1 w-full h-3" preserveAspectRatio="none"><path d="M2 6 Q 75 2, 150 6 T 298 6" stroke="#FFC600" stroke-width="3" fill="none" stroke-linecap="round"/></svg></span>.<br/><span class="italic">E previne demissão.</span></h1>
+      <p class="mt-7 text-lg text-white/85 max-w-xl">Programa de premiação por desempenho superior, enquadrado no Art. 457 §2 CLT. Os prêmios ficam <strong>fora da base de INSS, FGTS, férias e 13º</strong> — e a empresa retém talento ao reconhecer antes do pedido de demissão chegar.</p>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <a href="#espera" class="bg-warn hover:bg-warn/90 text-ink-900 rounded-full px-6 py-3.5 font-extrabold text-sm inline-flex items-center gap-2">
+          Entrar na lista de espera <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="#calc" class="bg-white/10 hover:bg-white/15 border border-white/25 backdrop-blur-sm rounded-full px-6 py-3.5 font-bold text-sm">Calcular minha economia</a>
+      </div>
+      <div class="mt-12 grid grid-cols-3 gap-4 max-w-lg">
+        <div class="border-l-2 border-white/30 pl-4"><div class="text-2xl font-extrabold">~70%</div><div class="text-[11px] text-white/70 mt-1 uppercase tracking-wider font-semibold">de economia</div></div>
+        <div class="border-l-2 border-white/30 pl-4"><div class="text-2xl font-extrabold">3 pilares</div><div class="text-[11px] text-white/70 mt-1 uppercase tracking-wider font-semibold">defesa jurídica</div></div>
+        <div class="border-l-2 border-white/30 pl-4"><div class="text-2xl font-extrabold">20 anos</div><div class="text-[11px] text-white/70 mt-1 uppercase tracking-wider font-semibold">trilha auditável</div></div>
+      </div>
+    </div>
+
+    <!-- Hero card -->
+    <div class="lg:col-span-5">
+      <div class="bg-white rounded-4xl p-7 shadow-2xl text-ink-900">
+        <div class="flex items-center justify-between mb-1"><span class="text-[10px] font-extrabold uppercase tracking-[0.15em] text-ink-500">Atinha de premiação · março/2026</span><span class="bg-ok/10 text-ok rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider">Aprovada</span></div>
+        <h3 class="font-display text-2xl mt-2 leading-tight">Q1 2026 · Logística</h3>
+        <div class="mt-5 grid grid-cols-2 gap-3">
+          <div class="bg-surface rounded-2xl p-4">
+            <div class="text-[10px] uppercase tracking-wider font-extrabold text-ink-500">Prêmio total</div>
+            <div class="text-2xl font-extrabold mt-1">R$ 18.200</div>
+            <div class="text-[10px] text-ink-500 mt-0.5">14 colaboradores</div>
+          </div>
+          <div class="bg-ok/10 rounded-2xl p-4 border border-ok/20">
+            <div class="text-[10px] uppercase tracking-wider font-extrabold text-ok">Encargos evitados</div>
+            <div class="text-2xl font-extrabold text-ok mt-1">R$ 13.104</div>
+            <div class="text-[10px] text-ink-500 mt-0.5">~72% de economia</div>
+          </div>
+        </div>
+        <div class="mt-5 pt-4 border-t border-black/5">
+          <div class="text-[10px] uppercase tracking-wider font-extrabold text-ink-500 mb-2">KPI gatilho · objetivo + auditável</div>
+          <div class="bg-accent-50 rounded-xl p-3 text-xs">
+            <div class="font-bold">SLA de entrega ≥ 95%</div>
+            <div class="text-ink-700 mt-1">Atingido: 96.4% · Meta superada</div>
+          </div>
+        </div>
+        <div class="mt-4 inline-flex items-center gap-2 text-[10px] text-accent-600 font-extrabold uppercase tracking-wider">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Assinada digitalmente · ICP-Brasil
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ POR QUE PREVENIR ============ -->
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="max-w-3xl mb-16">
+      <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent-600">Tese da Innova /Premiações</span>
+      <h2 class="font-display text-4xl lg:text-6xl mt-3 leading-[1.0]">Premiar é o jeito mais<br/>barato de <span class="italic gradient-text">prevenir</span> turnover.</h2>
+      <p class="mt-6 text-lg text-ink-700">Quando o colaborador pede demissão, é tarde demais. Quando você reconhece desempenho com prêmio formal — recorrente, mensurável, defensável — você evita o pedido. E ainda paga muito menos encargo do que pagaria em aumento de salário.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="bg-surface rounded-4xl p-7">
+        <div class="w-12 h-12 rounded-2xl bg-warn/10 grid place-items-center mb-5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <h3 class="font-extrabold text-lg">Sem desconto na folha</h3>
+        <p class="text-sm text-ink-700 mt-2">A cada R$ 1.000 pagos como prêmio bem estruturado, evita-se ~R$ 700 a R$ 1.000 em encargos. INSS patronal (~20%), FGTS (8%), férias e 13º proporcionais — tudo fora.</p>
+      </div>
+      <div class="bg-surface rounded-4xl p-7">
+        <div class="w-12 h-12 rounded-2xl bg-accent-50 grid place-items-center mb-5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+        <h3 class="font-extrabold text-lg">Reduz turnover</h3>
+        <p class="text-sm text-ink-700 mt-2">Reconhecimento estruturado é pilar comprovado de retenção. Empresa que premia por desempenho superior tem ~30% menos pedidos de demissão de talentos-chave.</p>
+      </div>
+      <div class="bg-surface rounded-4xl p-7">
+        <div class="w-12 h-12 rounded-2xl bg-ok/10 grid place-items-center mb-5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3 class="font-extrabold text-lg">Defensável em juízo</h3>
+        <p class="text-sm text-ink-700 mt-2">Regulamento + métricas objetivas + atas mensais. Programa que sobrevive a fiscalização da Receita e ação trabalhista — sem voltar como salário disfarçado.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CALCULADORA ============ -->
+<section id="calc" class="py-24 bg-ink-900 text-white relative overflow-hidden">
+  <div class="absolute inset-0 grid-pattern opacity-15"></div>
+  <div class="absolute top-1/2 -right-40 w-[500px] h-[500px] rounded-full bg-warn/20 blur-3xl"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-warn">Calculadora de economia</span>
+        <h2 class="font-display text-4xl lg:text-6xl mt-3 leading-[1.0]">Quanto sua empresa<br/>está <span class="italic gradient-text bg-gradient-to-r from-warn to-accent-300">deixando na mesa.</span></h2>
+        <p class="mt-6 text-white/75">Preencha ao lado a sua folha atual de prêmios, comissões e bônus. A calculadora estima quanto você poderia <strong class="text-white">economizar em encargos</strong> reestruturando esse pagamento sob o Art. 457 §2 CLT.</p>
+        <div class="mt-8 space-y-3 text-sm">
+          <div class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg><span><strong>INSS patronal</strong> ~20% sobre folha</span></div>
+          <div class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg><span><strong>FGTS</strong> 8% sobre remuneração</span></div>
+          <div class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Férias proporcional + 1/3</strong> sobre o valor anualizado</span></div>
+          <div class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg><span><strong>13º proporcional</strong> sobre o valor anualizado</span></div>
+        </div>
+      </div>
+
+      <div class="bg-white text-ink-900 rounded-4xl p-8 shadow-2xl">
+        <div class="text-[10px] font-extrabold uppercase tracking-[0.15em] text-ink-500 mb-4">Sua folha de prêmios atual</div>
+        <div class="space-y-4">
+          <div>
+            <label class="text-xs font-bold text-ink-700 mb-1.5 block">Quantos colaboradores recebem variável?</label>
+            <input id="qtdColab" type="number" value="20" oninput="recalc()" class="w-full bg-surface-muted border border-black/5 rounded-2xl px-4 py-3 text-base font-extrabold focus:outline-none focus:border-accent-500" />
+          </div>
+          <div>
+            <label class="text-xs font-bold text-ink-700 mb-1.5 block">Valor médio mensal pago por colaborador (R$)</label>
+            <input id="valorMedio" type="number" value="1500" oninput="recalc()" class="w-full bg-surface-muted border border-black/5 rounded-2xl px-4 py-3 text-base font-extrabold focus:outline-none focus:border-accent-500" />
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-br from-accent-500 to-accent-700 rounded-3xl p-6 mt-6 text-white relative overflow-hidden">
+          <div class="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-warn/30 blur-2xl"></div>
+          <div class="relative">
+            <div class="text-[10px] uppercase tracking-[0.15em] font-extrabold text-warn">Economia anual estimada</div>
+            <div id="economia" class="font-display text-5xl mt-2">R$ 252.000</div>
+            <div class="text-[11px] text-white/70 mt-1">a cada ano</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 mt-3">
+          <div class="bg-surface rounded-xl p-3 text-center"><div class="text-[10px] text-ink-500 font-bold uppercase tracking-wider">INSS</div><div id="ec-inss" class="text-sm font-extrabold mt-1">R$ 72k</div></div>
+          <div class="bg-surface rounded-xl p-3 text-center"><div class="text-[10px] text-ink-500 font-bold uppercase tracking-wider">FGTS</div><div id="ec-fgts" class="text-sm font-extrabold mt-1">R$ 28.8k</div></div>
+          <div class="bg-surface rounded-xl p-3 text-center"><div class="text-[10px] text-ink-500 font-bold uppercase tracking-wider">13º + férias</div><div id="ec-outros" class="text-sm font-extrabold mt-1">R$ 151.2k</div></div>
+        </div>
+
+        <a href="#espera" class="mt-6 w-full inline-flex items-center justify-center gap-2 bg-ink-900 text-white rounded-2xl px-5 py-3 font-extrabold text-sm hover:bg-black">Quero implantar isso →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMO FUNCIONA ============ -->
+<section id="como" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="max-w-3xl mb-16">
+      <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent-600">Como funciona</span>
+      <h2 class="font-display text-4xl lg:text-6xl mt-3 leading-[1.0]">Quatro passos.<br/>Programa rodando em 30 dias.</h2>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-3">
+      <div class="bg-surface rounded-3xl p-6 hover:-translate-y-1 transition">
+        <div class="w-12 h-12 rounded-full bg-accent-500 text-white grid place-items-center font-extrabold mb-4">1</div>
+        <h4 class="font-extrabold">Diagnóstico da folha</h4>
+        <p class="text-sm text-ink-700 mt-2">Mapeamos comissões, bônus, gratificações habituais e premiações atuais. Identificamos o que pode entrar no Art. 457.</p>
+      </div>
+      <div class="bg-surface rounded-3xl p-6 hover:-translate-y-1 transition">
+        <div class="w-12 h-12 rounded-full bg-accent-500 text-white grid place-items-center font-extrabold mb-4">2</div>
+        <h4 class="font-extrabold">Definição de KPIs</h4>
+        <p class="text-sm text-ink-700 mt-2">KPIs objetivos, mensuráveis, atrelados a desempenho superior — não habituais. Métricas que defendem o programa em juízo.</p>
+      </div>
+      <div class="bg-surface rounded-3xl p-6 hover:-translate-y-1 transition">
+        <div class="w-12 h-12 rounded-full bg-accent-500 text-white grid place-items-center font-extrabold mb-4">3</div>
+        <h4 class="font-extrabold">Regulamento</h4>
+        <p class="text-sm text-ink-700 mt-2">Documento jurídico do programa com governança, gatilhos, formas de pagamento e exceções. Validado por advogado trabalhista.</p>
+      </div>
+      <div class="bg-gradient-to-br from-accent-500 to-accent-700 text-white rounded-3xl p-6 hover:-translate-y-1 transition">
+        <div class="w-12 h-12 rounded-full bg-warn text-ink-900 grid place-items-center font-extrabold mb-4">4</div>
+        <h4 class="font-extrabold">Atas mensais</h4>
+        <p class="text-sm text-white/85 mt-2">Toda premiação gera ata assinada pela liderança, com KPIs comprovados. Trilha de auditoria 20 anos para defesa em fiscalização.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEFESA JURÍDICA ============ -->
+<section id="defesa" class="py-24 bg-surface">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent-600">Defesa jurídica</span>
+        <h2 class="font-display text-4xl lg:text-6xl mt-3 leading-[1.0]">Os 3 pilares que<br/>a Receita procura.</h2>
+        <p class="mt-6 text-ink-700">Programa de prêmios mal estruturado é descaracterizado em fiscalização e os encargos voltam com correção, multa e juros. Os 3 pilares blindam a empresa contra esse risco.</p>
+      </div>
+      <div class="space-y-4">
+        <div class="bg-white rounded-3xl p-6 border-l-4 border-accent-500">
+          <div class="flex items-center gap-3 mb-2"><div class="w-9 h-9 rounded-xl bg-accent-50 text-accent-700 grid place-items-center font-extrabold">1</div><h4 class="font-extrabold">Regulamento robusto</h4></div>
+          <p class="text-sm text-ink-700">Política escrita, critérios objetivos, governança definida. Documento que pode ser anexado a qualquer fiscalização ou ação.</p>
+        </div>
+        <div class="bg-white rounded-3xl p-6 border-l-4 border-accent-500">
+          <div class="flex items-center gap-3 mb-2"><div class="w-9 h-9 rounded-xl bg-accent-50 text-accent-700 grid place-items-center font-extrabold">2</div><h4 class="font-extrabold">Métricas objetivas</h4></div>
+          <p class="text-sm text-ink-700">KPIs mensuráveis, ligados a desempenho superior. Não habituais — não confundíveis com salário disfarçado.</p>
+        </div>
+        <div class="bg-white rounded-3xl p-6 border-l-4 border-accent-500">
+          <div class="flex items-center gap-3 mb-2"><div class="w-9 h-9 rounded-xl bg-accent-50 text-accent-700 grid place-items-center font-extrabold">3</div><h4 class="font-extrabold">Evidências documentais</h4></div>
+          <p class="text-sm text-ink-700">Atas, registros de avaliação, lista de prêmios pagos. Trilha auditável que comprova tudo, mês a mês, ano após ano.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq" class="py-24 bg-white">
+  <div class="max-w-3xl mx-auto px-6 lg:px-10">
+    <div class="text-center mb-12">
+      <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent-600">Dúvidas frequentes</span>
+      <h2 class="font-display text-4xl lg:text-5xl mt-3 leading-[1.05]">Perguntas que<br/>todo gestor faz.</h2>
+    </div>
+    <div class="space-y-3">
+      <details class="bg-surface rounded-3xl p-6" open>
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>Toda empresa pode usar o Art. 457 §2?</span>
+          <span class="w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700">Sim, qualquer empresa CLT. A Lei 13.467/2017 (Reforma Trabalhista) reescreveu o §2 do Art. 457 e abriu essa possibilidade para todos os portes e setores. O que muda é a estrutura do programa, que precisa ser desenhada conforme a operação.</p>
+      </details>
+      <details class="bg-surface rounded-3xl p-6">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>Preciso desligar a folha atual de comissões?</span>
+          <span class="w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700">Não necessariamente. Fazemos o diagnóstico e identificamos quais pagamentos podem migrar para o programa 457 sem prejudicar o colaborador. O salário-base e os benefícios obrigatórios continuam intocados.</p>
+      </details>
+      <details class="bg-surface rounded-3xl p-6">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>E se a Receita questionar o programa?</span>
+          <span class="w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700">Você apresenta o pacote completo: regulamento assinado, atas mensais, KPIs objetivos comprovados, lista de prêmios pagos, registros de avaliação. Os 3 pilares de defesa garantem que o programa sobreviva a auditoria e ação trabalhista.</p>
+      </details>
+      <details class="bg-surface rounded-3xl p-6">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>Como o /Premiações se conecta com o /NR1?</span>
+          <span class="w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700">Reconhecimento estruturado é pilar reconhecido de saúde mental no trabalho. As atas de premiação alimentam diretamente o IPAR psicossocial do /NR1, mostrando que a empresa age sobre fatores de risco — não só identifica.</p>
+      </details>
+      <details class="bg-surface rounded-3xl p-6">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>Vocês são contadores ou advogados?</span>
+          <span class="w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700">A Innova entrega o software, o regulamento padronizado e o framework de governança. O contador da empresa cliente continua fazendo o fechamento da folha — agora com o programa estruturado e auditável. Para validação jurídica do programa, temos advogado trabalhista parceiro.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LISTA DE ESPERA ============ -->
+<section id="espera" class="py-24">
+  <div class="max-w-5xl mx-auto px-6 lg:px-10">
+    <div class="bg-gradient-to-br from-accent-500 to-accent-900 text-white rounded-5xl p-10 lg:p-16 text-center relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-warn/30 blur-3xl"></div>
+      <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-accent-300/20 blur-3xl"></div>
+      <div class="relative">
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full pl-3 pr-4 py-1.5 text-[11px] font-extrabold tracking-[0.15em] uppercase mb-6"><span class="w-2 h-2 rounded-full bg-warn animate-pulse"></span>Beta limitado · 8 vagas restantes</div>
+        <h2 class="font-display text-4xl lg:text-6xl leading-[1.05]">Entre na lista de espera.</h2>
+        <p class="mt-6 text-white/80 max-w-xl mx-auto">A Innova /Premiações está em beta com 8 empresas selecionadas. Vagas limitadas para garantir a qualidade do onboarding e da defesa jurídica do programa.</p>
+
+        <form onsubmit="event.preventDefault(); alert('Inscrição registrada! Time comercial vai entrar em contato em até 1 dia útil.');" class="mt-8 max-w-md mx-auto space-y-3">
+          <input type="email" required placeholder="seu e-mail corporativo" class="w-full bg-white/10 border border-white/20 backdrop-blur-md rounded-2xl px-4 py-3.5 text-sm text-white placeholder-white/50 focus:outline-none focus:border-warn focus:bg-white/15" />
+          <input type="text" placeholder="empresa · quantos colaboradores" class="w-full bg-white/10 border border-white/20 backdrop-blur-md rounded-2xl px-4 py-3.5 text-sm text-white placeholder-white/50 focus:outline-none focus:border-warn focus:bg-white/15" />
+          <button type="submit" class="w-full bg-warn hover:bg-warn/90 text-ink-900 rounded-2xl px-5 py-3.5 font-extrabold text-sm">Quero entrar na lista →</button>
+        </form>
+
+        <div class="mt-8 pt-8 border-t border-white/10 flex flex-wrap items-center justify-center gap-6 text-sm text-white/70">
+          <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07"/></svg>0800 555 0000</span>
+          <span>·</span>
+          <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>contato@innova.com.br</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER GLOBAL ============ -->
+<footer class="bg-ink-900 text-white/70 pt-16 pb-8">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+      <div>
+        <a href="innova.html" class="flex items-center gap-3 mb-5">
+          <svg width="40" height="40" viewBox="0 0 44 44">
+            <defs><linearGradient id="lg-foot-p" x1="0" y1="0" x2="44" y2="44"><stop offset="0" stop-color="#A5A4F8"/><stop offset="1" stop-color="#6364E0"/></linearGradient></defs>
+            <path d="M22 2L40 12V32L22 42L4 32V12Z" fill="url(#lg-foot-p)"/>
+            <rect x="13" y="22" width="3" height="9" rx="1" fill="white"/>
+            <rect x="20.5" y="18" width="3" height="13" rx="1" fill="white"/>
+            <rect x="28" y="14" width="3" height="17" rx="1" fill="white"/>
+            <circle cx="34" cy="13" r="2.5" fill="#FFC600"/>
+          </svg>
+          <span class="font-extrabold text-white text-lg tracking-tight">INNOVA <span class="text-accent-300">/Premiações</span></span>
+        </a>
+        <p class="text-sm leading-relaxed">Programa de premiação Art. 457 §2 CLT. Reconhecimento que previne turnover e fica fora da base de encargos.</p>
+      </div>
+      <div>
+        <h4 class="text-white font-extrabold text-xs uppercase tracking-wider mb-4">Produtos</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="innova-nr1.html" class="hover:text-white">Innova /NR1</a></li>
+          <li><a href="innova-premiacoes.html" class="hover:text-white text-accent-300 font-bold">Innova /Premiações ←</a></li>
+          <li><a href="innova-rh.html" class="hover:text-white">Innova /RH</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-extrabold text-xs uppercase tracking-wider mb-4">Empresa</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="innova.html" class="hover:text-white">Sobre a Innova</a></li>
+          <li><a href="innova.html#manifesto" class="hover:text-white">Manifesto</a></li>
+          <li><a href="#" class="hover:text-white">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-extrabold text-xs uppercase tracking-wider mb-4">Contato</h4>
+        <ul class="space-y-3 text-sm">
+          <li class="flex gap-2.5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0 mt-0.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07"/></svg>0800 555 0000</li>
+          <li class="flex gap-2.5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0 mt-0.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>contato@innova.com.br</li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/10 pt-6 flex flex-wrap items-center justify-between gap-4 text-xs">
+      <div>© 2026 Innova · CNPJ 00.000.000/0001-00</div>
+      <div class="flex gap-5">
+        <a href="#" class="hover:text-white">Termos</a>
+        <a href="#" class="hover:text-white">Privacidade</a>
+        <a href="#" class="hover:text-white">LGPD</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const fNav = document.getElementById('floatingNav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) fNav.classList.add('scrolled');
+    else fNav.classList.remove('scrolled');
+  }, { passive: true });
+
+  function recalc() {
+    const n = parseFloat(document.getElementById('qtdColab').value) || 0;
+    const v = parseFloat(document.getElementById('valorMedio').value) || 0;
+    const folhaAnual = n * v * 12;
+    const inss = folhaAnual * 0.20;
+    const fgts = folhaAnual * 0.08;
+    const outros = folhaAnual * (1/12 + 1/12 * 1/3); // 13º + férias + 1/3
+    const economia = inss + fgts + outros;
+    const fmt = x => 'R$ ' + Math.round(x).toLocaleString('pt-BR');
+    const fmtK = x => x >= 1000 ? 'R$ ' + (x/1000).toFixed(x>=10000?0:1) + 'k' : fmt(x);
+    document.getElementById('economia').textContent = fmt(economia);
+    document.getElementById('ec-inss').textContent = fmtK(inss);
+    document.getElementById('ec-fgts').textContent = fmtK(fgts);
+    document.getElementById('ec-outros').textContent = fmtK(outros);
+  }
+  recalc();
+</script>
+
+</body>
+</html>

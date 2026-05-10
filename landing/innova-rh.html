@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Innova /RH · Clima organizacional · pulse · ENPS</title>
+<meta name="description" content="Innova /RH: pulse contínuo, ENPS, clima organizacional e feedback 360. Detecte o risco antes que vire pedido de demissão." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['"DM Serif Display"', 'serif'] },
+    colors: {
+      ink: { 900: '#0F0F19', 700: '#3F3F50', 500: '#71718A', 300: '#B0B0C0' },
+      accent: { 50: '#EFEFFE', 100: '#E0E0FD', 300: '#A5A4F8', 500: '#6364E0', 600: '#4F50C9', 700: '#3F40A8', 900: '#1F1F66' },
+      surface: { DEFAULT: '#F4F4F8', muted: '#FAFAFC' },
+      ok: '#10B981', warn: '#F59E0B', danger: '#EF4444',
+    },
+    borderRadius: { '4xl': '2rem', '5xl': '2.5rem' },
+    boxShadow: { soft: '0 1px 3px rgba(15,15,25,.04), 0 1px 2px rgba(15,15,25,.03)', card: '0 8px 30px rgba(99,100,224,.08)' }
+  }}
+}
+</script>
+<style>
+  body { background: #FAFAFC; font-family: 'Inter', sans-serif; color: #0F0F19; -webkit-font-smoothing: antialiased; }
+  .gradient-text { background: linear-gradient(135deg, #6364E0 0%, #3F40A8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .ticker { display: flex; gap: 40px; animation: marquee 60s linear infinite; }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  #floatingNav { transition: top .3s cubic-bezier(.4,0,.2,1), padding .3s; }
+  #floatingNav.scrolled { top: 12px; }
+  #floatingNav.scrolled nav { padding-top: 6px; padding-bottom: 6px; }
+  details > summary::-webkit-details-marker { display: none; }
+  .grid-pattern { background-image: linear-gradient(rgba(99,100,224,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(99,100,224,0.06) 1px, transparent 1px); background-size: 32px 32px; }
+  .hero-deco { position: absolute; bottom: -100px; right: -10%; font-family: 'DM Serif Display', serif; font-size: 36rem; line-height: 0.8; color: rgba(255,255,255,.05); pointer-events: none; user-select: none; letter-spacing: -0.05em; z-index: 0; }
+  @media (max-width: 1024px) { .hero-deco { font-size: 22rem; } }
+  /* Pulse heartbeat animation */
+  @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 1; } 80%, 100% { transform: scale(1.5); opacity: 0; } }
+  .pulse-ring::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #FFC600; animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; }
+</style>
+</head>
+<body class="text-ink-900">
+
+<!-- ============ TICKER ============ -->
+<div class="bg-ink-900 text-white py-2.5 overflow-hidden border-b border-white/5 relative">
+  <div class="ticker">
+    <div class="flex items-center gap-10 whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60">
+      <span class="flex items-center gap-2 text-warn"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>Em breve · lançamento maio/2026</span>
+      <span class="text-white/20">●</span>
+      <span class="text-white">Pulse semanal · ENPS · clima · feedback 360</span>
+      <span class="text-white/20">●</span>
+      <span>Detectar antes da demissão silenciosa</span>
+      <span class="text-white/20">●</span>
+      <span>Lista de espera aberta</span>
+      <span class="text-white/20">●</span>
+    </div>
+    <div class="flex items-center gap-10 whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60" aria-hidden="true">
+      <span class="flex items-center gap-2 text-warn"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>Em breve · lançamento maio/2026</span>
+      <span class="text-white/20">●</span>
+      <span class="text-white">Pulse semanal · ENPS · clima · feedback 360</span>
+      <span class="text-white/20">●</span>
+      <span>Detectar antes da demissão silenciosa</span>
+      <span class="text-white/20">●</span>
+      <span>Lista de espera aberta</span>
+      <span class="text-white/20">●</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FLOATING NAV ============ -->
+<header id="floatingNav" class="fixed top-9 left-1/2 -translate-x-1/2 z-50 px-4 max-w-full">
+  <nav class="flex items-center bg-white/75 backdrop-blur-xl border border-white/60 rounded-full shadow-2xl shadow-accent-900/20 pl-3 pr-2 py-2.5">
+    <a href="innova.html" class="flex items-center gap-2.5 pr-4 lg:border-r lg:border-ink-300/30">
+      <svg width="34" height="34" viewBox="0 0 44 44">
+        <defs><linearGradient id="ng" x1="0" y1="0" x2="44" y2="44"><stop offset="0" stop-color="#6364E0"/><stop offset="1" stop-color="#3F40A8"/></linearGradient></defs>
+        <path d="M22 2L40 12V32L22 42L4 32V12Z" fill="url(#ng)"/>
+        <rect x="13" y="22" width="3" height="9" rx="1" fill="white"/>
+        <rect x="20.5" y="18" width="3" height="13" rx="1" fill="white"/>
+        <rect x="28" y="14" width="3" height="17" rx="1" fill="white"/>
+        <circle cx="34" cy="13" r="2.5" fill="#FFC600"/>
+      </svg>
+      <span class="hidden sm:inline font-extrabold tracking-tight text-[15px] leading-none">INNOVA <span class="text-accent-600">/RH</span></span>
+    </a>
+    <ul class="hidden xl:flex items-center gap-0.5 px-4 text-[13px] font-semibold text-ink-700">
+      <li class="relative group">
+        <button class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition flex items-center gap-1.5">Produtos
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="group-hover:rotate-180 transition"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="absolute top-full left-0 mt-3 w-80 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition">
+          <div class="bg-white rounded-3xl shadow-2xl shadow-accent-900/20 border border-ink-300/20 p-2">
+            <a href="innova-nr1.html" class="flex items-start gap-3 p-3 rounded-2xl hover:bg-accent-50 transition">
+              <div class="w-10 h-10 rounded-2xl bg-accent-500 grid place-items-center flex-shrink-0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div class="min-w-0"><div class="font-extrabold text-[14px] text-ink-900">Innova /NR1</div><div class="text-[11px] text-ink-500 mt-0.5">Conformidade NR-1</div></div>
+            </a>
+            <a href="innova-premiacoes.html" class="flex items-start gap-3 p-3 rounded-2xl hover:bg-accent-50 transition">
+              <div class="w-10 h-10 rounded-2xl bg-accent-500 grid place-items-center flex-shrink-0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+              <div class="min-w-0"><div class="font-extrabold text-[14px] text-ink-900">Innova /Premiações</div><div class="text-[11px] text-ink-500 mt-0.5">Art. 457 §2 CLT</div></div>
+            </a>
+            <a href="innova-rh.html" class="flex items-start gap-3 p-3 rounded-2xl bg-accent-50">
+              <div class="w-10 h-10 rounded-2xl bg-accent-500 grid place-items-center flex-shrink-0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+              <div class="min-w-0"><div class="font-extrabold text-[14px] text-accent-700">Innova /RH</div><div class="text-[11px] text-accent-600 mt-0.5 font-bold">Você está aqui</div></div>
+            </a>
+          </div>
+        </div>
+      </li>
+      <li><a href="#tipos" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition">Tipos de pulse</a></li>
+      <li><a href="#ciclo" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-warn"></span>Ciclo de prevenção</a></li>
+      <li><a href="#integracao" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition">Integração</a></li>
+      <li><a href="#faq" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition">FAQ</a></li>
+    </ul>
+    <div class="flex items-center gap-1 lg:pl-4 lg:border-l lg:border-ink-300/30">
+      <a href="innova.html" class="hidden sm:inline-flex items-center gap-1.5 text-[13px] font-bold text-ink-900 hover:text-accent-600 px-3 py-2 transition">
+        ← Innova
+      </a>
+      <a href="#espera" class="bg-ink-900 text-white rounded-full pl-4 pr-1.5 py-1.5 text-[13px] font-extrabold inline-flex items-center gap-2 hover:bg-black transition group">
+        <span>Lista de espera</span>
+        <span class="w-7 h-7 rounded-full bg-accent-500 grid place-items-center group-hover:bg-warn group-hover:rotate-[-45deg] transition-all">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="relative overflow-hidden bg-gradient-to-br from-accent-500 via-accent-600 to-accent-900 text-white">
+  <div class="absolute inset-0 grid-pattern opacity-30"></div>
+  <div class="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-warn/20 blur-3xl"></div>
+  <div class="hero-deco hidden md:block">pulse</div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10 pt-32 pb-20 lg:pt-40 lg:pb-28 grid lg:grid-cols-12 gap-10 items-center">
+    <div class="lg:col-span-7">
+      <div class="flex flex-wrap items-center gap-3 mb-6">
+        <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full pl-3 pr-4 py-1.5 text-[11px] font-extrabold tracking-[0.15em] uppercase">
+          <span class="relative w-2.5 h-2.5"><span class="absolute inset-0 rounded-full bg-warn animate-pulse"></span></span>
+          Em breve · maio/2026
+        </span>
+        <span class="bg-warn text-ink-900 rounded-full px-4 py-1.5 text-[11px] font-extrabold tracking-[0.15em] uppercase">Lista de espera aberta</span>
+      </div>
+      <h1 class="font-display text-5xl lg:text-7xl leading-[0.98] tracking-tight">O <span class="italic relative inline-block">pulse<svg viewBox="0 0 100 12" class="absolute left-0 -bottom-1 w-full h-3" preserveAspectRatio="none"><path d="M2 6 Q 25 2, 50 6 T 98 6" stroke="#FFC600" stroke-width="3" fill="none" stroke-linecap="round"/></svg></span> que <span class="italic">previne</span><br/>a demissão silenciosa.</h1>
+      <p class="mt-7 text-lg text-white/85 max-w-xl">Pesquisa de clima contínua, ENPS mensal, feedback 360 e enquetes-relâmpago. Os sinais aparecem cedo — quando ainda dá pra agir, não quando o pedido de demissão já chegou no seu RH.</p>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <a href="#espera" class="bg-warn hover:bg-warn/90 text-ink-900 rounded-full px-6 py-3.5 font-extrabold text-sm inline-flex items-center gap-2">
+          Entrar na lista de espera <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="#tipos" class="bg-white/10 hover:bg-white/15 border border-white/25 backdrop-blur-sm rounded-full px-6 py-3.5 font-bold text-sm">Conhecer tipos de pulse</a>
+      </div>
+      <div class="mt-12 grid grid-cols-3 gap-4 max-w-lg">
+        <div class="border-l-2 border-white/30 pl-4"><div class="text-2xl font-extrabold">4 tipos</div><div class="text-[11px] text-white/70 mt-1 uppercase tracking-wider font-semibold">de pesquisa</div></div>
+        <div class="border-l-2 border-white/30 pl-4"><div class="text-2xl font-extrabold">2 min</div><div class="text-[11px] text-white/70 mt-1 uppercase tracking-wider font-semibold">para responder</div></div>
+        <div class="border-l-2 border-white/30 pl-4"><div class="text-2xl font-extrabold">→ /NR1</div><div class="text-[11px] text-white/70 mt-1 uppercase tracking-wider font-semibold">alimenta o ipar</div></div>
+      </div>
+    </div>
+
+    <!-- Hero ENPS card -->
+    <div class="lg:col-span-5">
+      <div class="bg-white text-ink-900 rounded-4xl p-7 shadow-2xl">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2"><div class="w-9 h-9 rounded-2xl bg-accent-100 grid place-items-center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div><div class="font-bold text-sm">ENPS · abril/2026</div><div class="text-[10px] text-ink-500">98 respondentes</div></div></div>
+          <span class="bg-ok/10 text-ok rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider">↑ +12 pts</span>
+        </div>
+        <div class="flex items-end gap-3 mt-2">
+          <div class="font-display text-7xl text-accent-600 leading-none">+47</div>
+          <div class="text-xs text-ink-500 mb-2">de -100 a +100<br/><strong class="text-ok">excelente</strong></div>
+        </div>
+        <div class="mt-5 grid grid-cols-3 gap-2 text-center">
+          <div class="bg-ok/10 rounded-xl p-2.5"><div class="text-[9px] text-ok font-extrabold uppercase tracking-wider">Promotores</div><div class="text-lg font-extrabold text-ok mt-0.5">62%</div></div>
+          <div class="bg-warn/10 rounded-xl p-2.5"><div class="text-[9px] text-warn font-extrabold uppercase tracking-wider">Neutros</div><div class="text-lg font-extrabold text-warn mt-0.5">23%</div></div>
+          <div class="bg-danger/10 rounded-xl p-2.5"><div class="text-[9px] text-danger font-extrabold uppercase tracking-wider">Detratores</div><div class="text-lg font-extrabold text-danger mt-0.5">15%</div></div>
+        </div>
+        <div class="mt-5 pt-4 border-t border-black/5">
+          <div class="text-[10px] uppercase tracking-wider font-extrabold text-ink-500 mb-2">Setor em alerta · Atendimento</div>
+          <div class="bg-danger/10 rounded-xl p-3 text-xs">
+            <div class="font-bold text-danger">eNPS -18 · 32 respondentes</div>
+            <div class="text-ink-700 mt-1">3 detratores citaram "pressão por metas"</div>
+          </div>
+        </div>
+        <div class="mt-3 inline-flex items-center gap-2 text-[10px] text-accent-600 font-extrabold uppercase tracking-wider">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Cruzado com IPAR psicossocial · /NR1
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIPOS DE PULSE ============ -->
+<section id="tipos" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="max-w-3xl mb-16">
+      <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent-600">Tipos de pulse</span>
+      <h2 class="font-display text-4xl lg:text-6xl mt-3 leading-[1.0]">Cadência diferente.<br/><span class="italic gradient-text">Mesmo objetivo: prevenir.</span></h2>
+      <p class="mt-6 text-lg text-ink-700">A Innova /RH não é uma pesquisa anual gigante que ninguém responde — são pulses curtos, frequentes, com perguntas certas no momento certo.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-5">
+      <div class="bg-surface rounded-4xl p-7 hover:-translate-y-0.5 transition">
+        <div class="flex items-center gap-3 mb-4"><div class="w-12 h-12 rounded-2xl bg-accent-50 grid place-items-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div><div class="text-[10px] uppercase tracking-wider font-extrabold text-accent-600">Mensal</div><h3 class="font-extrabold text-xl">ENPS</h3></div></div>
+        <p class="text-sm text-ink-700">Employee Net Promoter Score. Uma pergunta única — "Em uma escala de 0 a 10, o quanto você recomendaria essa empresa para um amigo trabalhar?" — aplicada todo mês.</p>
+        <div class="mt-4 pt-4 border-t border-black/10 grid grid-cols-3 gap-2 text-center text-xs">
+          <div><div class="font-bold text-ink-900">1 pergunta</div><div class="text-ink-500 text-[10px]">cadência mensal</div></div>
+          <div><div class="font-bold text-ink-900">95%+</div><div class="text-ink-500 text-[10px]">taxa de resposta</div></div>
+          <div><div class="font-bold text-ink-900">Anônimo</div><div class="text-ink-500 text-[10px]">3 camadas</div></div>
+        </div>
+      </div>
+
+      <div class="bg-surface rounded-4xl p-7 hover:-translate-y-0.5 transition">
+        <div class="flex items-center gap-3 mb-4"><div class="w-12 h-12 rounded-2xl bg-warn/10 grid place-items-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="text-[10px] uppercase tracking-wider font-extrabold text-warn">Semanal</div><h3 class="font-extrabold text-xl">Pulse curto</h3></div></div>
+        <p class="text-sm text-ink-700">3 a 5 perguntas que rotacionam a cada semana, focadas em sinais de alerta: carga, autonomia, reconhecimento, relação com liderança. Detecta deterioração antes da pesquisa anual.</p>
+        <div class="mt-4 pt-4 border-t border-black/10 grid grid-cols-3 gap-2 text-center text-xs">
+          <div><div class="font-bold text-ink-900">3-5 perguntas</div><div class="text-ink-500 text-[10px]">cadência semanal</div></div>
+          <div><div class="font-bold text-ink-900">~2 min</div><div class="text-ink-500 text-[10px]">para responder</div></div>
+          <div><div class="font-bold text-ink-900">Rotativas</div><div class="text-ink-500 text-[10px]">8 dimensões</div></div>
+        </div>
+      </div>
+
+      <div class="bg-surface rounded-4xl p-7 hover:-translate-y-0.5 transition">
+        <div class="flex items-center gap-3 mb-4"><div class="w-12 h-12 rounded-2xl bg-ok/10 grid place-items-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><div><div class="text-[10px] uppercase tracking-wider font-extrabold text-ok">Anual / Semestral</div><h3 class="font-extrabold text-xl">Clima organizacional</h3></div></div>
+        <p class="text-sm text-ink-700">Pesquisa profunda baseada em metodologia validada (similar ao COPSOQ II do /NR1). Compara contra benchmark de mercado, gera plano de ação por área.</p>
+        <div class="mt-4 pt-4 border-t border-black/10 grid grid-cols-3 gap-2 text-center text-xs">
+          <div><div class="font-bold text-ink-900">40+ perguntas</div><div class="text-ink-500 text-[10px]">cadência semestral</div></div>
+          <div><div class="font-bold text-ink-900">Benchmark</div><div class="text-ink-500 text-[10px]">mercado BR</div></div>
+          <div><div class="font-bold text-ink-900">Por setor</div><div class="text-ink-500 text-[10px]">recortes</div></div>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-accent-500 to-accent-700 text-white rounded-4xl p-7 hover:-translate-y-0.5 transition relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-white/10"></div>
+        <div class="relative">
+          <div class="flex items-center gap-3 mb-4"><div class="w-12 h-12 rounded-2xl bg-white grid place-items-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div><div><div class="text-[10px] uppercase tracking-wider font-extrabold text-warn">Sob demanda</div><h3 class="font-extrabold text-xl text-white">Feedback 360</h3></div></div>
+          <p class="text-sm text-white/85">Avaliação multidirecional para liderança e talentos-chave. Cada pessoa recebe feedback de pares, subordinados e gestores. Insumo para PDI e plano de retenção.</p>
+          <div class="mt-4 pt-4 border-t border-white/20 grid grid-cols-3 gap-2 text-center text-xs">
+            <div><div class="font-bold text-white">~20 perguntas</div><div class="text-white/60 text-[10px]">por avaliação</div></div>
+            <div><div class="font-bold text-white">Multi-fonte</div><div class="text-white/60 text-[10px]">par/sub/gestor</div></div>
+            <div><div class="font-bold text-white">Anônimo</div><div class="text-white/60 text-[10px]">para o avaliado</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CICLO DE PREVENÇÃO ============ -->
+<section id="ciclo" class="py-24 bg-ink-900 text-white relative overflow-hidden">
+  <div class="absolute inset-0 grid-pattern opacity-15"></div>
+  <div class="absolute top-1/2 -left-40 w-[500px] h-[500px] rounded-full bg-warn/15 blur-3xl"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="max-w-3xl mb-16">
+      <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-warn">Ciclo de prevenção</span>
+      <h2 class="font-display text-4xl lg:text-6xl mt-3 leading-[1.0]">Mede.<br/>Detecta.<br/><span class="italic gradient-text bg-gradient-to-r from-warn to-accent-300">Age antes do problema.</span></h2>
+      <p class="mt-6 text-white/75">Pesquisa sem ação é desperdício de tempo do colaborador. A Innova /RH fecha o ciclo: cada sinal vira plano de ação, cada plano gera evidência de execução.</p>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-3">
+      <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6">
+        <div class="w-12 h-12 rounded-full bg-accent-500 text-white grid place-items-center font-extrabold mb-4">1</div>
+        <h4 class="font-extrabold">Mede</h4>
+        <p class="text-sm text-white/70 mt-2">Pulse semanal + ENPS mensal + clima semestral. Múltiplos sinais, sem fadiga de pesquisa.</p>
+      </div>
+      <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6">
+        <div class="w-12 h-12 rounded-full bg-accent-500 text-white grid place-items-center font-extrabold mb-4">2</div>
+        <h4 class="font-extrabold">Detecta</h4>
+        <p class="text-sm text-white/70 mt-2">Algoritmos identificam queda em recortes (setor, gestor, função). Alerta vai pro RH antes do trimestre fechar.</p>
+      </div>
+      <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6">
+        <div class="w-12 h-12 rounded-full bg-accent-500 text-white grid place-items-center font-extrabold mb-4">3</div>
+        <h4 class="font-extrabold">Age</h4>
+        <p class="text-sm text-white/70 mt-2">Plano de ação automático com sugestão de intervenção. Conversa 1:1, treinamento de gestor, revisão de meta.</p>
+      </div>
+      <div class="bg-gradient-to-br from-warn to-danger text-white rounded-3xl p-6">
+        <div class="w-12 h-12 rounded-full bg-ink-900 text-warn grid place-items-center font-extrabold mb-4">4</div>
+        <h4 class="font-extrabold">Mede de novo</h4>
+        <p class="text-sm text-white/85 mt-2">Próximo pulse confirma se a ação funcionou. Ciclo fechado. Evidência arquivada por 20 anos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INTEGRAÇÃO COM /NR1 ============ -->
+<section id="integracao" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent-600">Integração nativa</span>
+        <h2 class="font-display text-4xl lg:text-6xl mt-3 leading-[1.0]">Os dados do /RH<br/>alimentam o <span class="italic gradient-text">/NR1</span>.</h2>
+        <p class="mt-6 text-ink-700">A NR-1 atualizada exige monitoramento contínuo de fatores psicossociais. Um clima ruim detectado pelo /RH vira automaticamente perigo no IPAR do /NR1 — fechando o ciclo regulatório e prevencional num só lugar.</p>
+        <div class="mt-8 space-y-4">
+          <div class="flex gap-4"><div class="w-10 h-10 rounded-2xl bg-accent-50 grid place-items-center text-accent-700 font-extrabold flex-shrink-0">1</div><div><h4 class="font-bold">ENPS baixo em setor X</h4><p class="text-sm text-ink-700">Alerta automático no /RH</p></div></div>
+          <div class="flex gap-4"><div class="w-10 h-10 rounded-2xl bg-accent-50 grid place-items-center text-accent-700 font-extrabold flex-shrink-0">2</div><div><h4 class="font-bold">Cruzamento com IPAR</h4><p class="text-sm text-ink-700">/NR1 já tem perigo "carga mental" mapeado</p></div></div>
+          <div class="flex gap-4"><div class="w-10 h-10 rounded-2xl bg-accent-50 grid place-items-center text-accent-700 font-extrabold flex-shrink-0">3</div><div><h4 class="font-bold">Plano de ação consolidado</h4><p class="text-sm text-ink-700">Uma ação resolve clima E conformidade NR-1</p></div></div>
+        </div>
+      </div>
+      <div class="bg-surface rounded-4xl p-8 border border-ink-300/30">
+        <div class="flex items-center justify-center gap-4 mb-8">
+          <div class="bg-white rounded-2xl p-4 shadow-soft text-center w-32">
+            <div class="w-10 h-10 rounded-xl bg-accent-500 text-white grid place-items-center mx-auto mb-2 font-extrabold">RH</div>
+            <div class="text-xs font-extrabold">Pulse · ENPS</div>
+            <div class="text-[10px] text-ink-500 mt-1">Clima organizacional</div>
+          </div>
+          <svg width="40" height="20" viewBox="0 0 40 20" fill="none" stroke="#6364E0" stroke-width="2.5"><line x1="0" y1="10" x2="35" y2="10" stroke-dasharray="3 3"/><polyline points="32 4 38 10 32 16"/></svg>
+          <div class="bg-white rounded-2xl p-4 shadow-soft text-center w-32">
+            <div class="w-10 h-10 rounded-xl bg-accent-500 text-white grid place-items-center mx-auto mb-2 font-extrabold">NR1</div>
+            <div class="text-xs font-extrabold">IPAR psicossocial</div>
+            <div class="text-[10px] text-ink-500 mt-1">Plano de ação</div>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl p-5 border border-accent-100">
+          <div class="text-[10px] uppercase tracking-wider font-extrabold text-accent-600 mb-2">Exemplo real</div>
+          <div class="space-y-2 text-xs">
+            <div class="bg-danger/5 border-l-2 border-danger rounded p-2"><strong class="text-danger">eNPS Atendimento: -18</strong><div class="text-ink-500">12 detratores mencionaram "pressão"</div></div>
+            <div class="text-center text-ink-500">↓</div>
+            <div class="bg-warn/5 border-l-2 border-warn rounded p-2"><strong class="text-warn">IPAR atualizado:</strong><div class="text-ink-500">Perigo "Pressão por metas" reclassificado: Médio → <strong>Alto</strong></div></div>
+            <div class="text-center text-ink-500">↓</div>
+            <div class="bg-ok/5 border-l-2 border-ok rounded p-2"><strong class="text-ok">Ação no Plano:</strong><div class="text-ink-500">Treinamento de gestores em escuta · prazo 30 dias</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq" class="py-24 bg-surface">
+  <div class="max-w-3xl mx-auto px-6 lg:px-10">
+    <div class="text-center mb-12">
+      <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent-600">Dúvidas frequentes</span>
+      <h2 class="font-display text-4xl lg:text-5xl mt-3 leading-[1.05]">Perguntas sobre<br/>o /RH.</h2>
+    </div>
+    <div class="space-y-3">
+      <details class="bg-white rounded-3xl p-6" open>
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>Quando o /RH lança?</span>
+          <span class="w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700">Lançamento previsto para maio/2026 com 8 empresas-piloto. Lista de espera aberta — quem entra agora ganha 3 meses gratuitos no plano anual.</p>
+      </details>
+      <details class="bg-white rounded-3xl p-6">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>Preciso ter o /NR1 para usar o /RH?</span>
+          <span class="w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700">Não. O /RH funciona standalone. Mas a integração com o /NR1 é onde a mágica acontece — o pulse ruim já vira automaticamente perigo no IPAR. Recomendamos usar os dois.</p>
+      </details>
+      <details class="bg-white rounded-3xl p-6">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>Como garantir que o pessoal responde?</span>
+          <span class="w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700">Pulses curtos (2 minutos), envio por WhatsApp, lembretes não-invasivos, anonimato em 3 camadas e — principalmente — a empresa precisa <em>agir</em> sobre o que recebe. Ciclo fechado mantém adesão alta.</p>
+      </details>
+      <details class="bg-white rounded-3xl p-6">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>É anônimo de verdade?</span>
+          <span class="w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700">Sim. Mesma arquitetura do /NR1: 3 camadas de anonimato (técnica, operacional via regra dos 5 respondentes, e jurídica via TCLE LGPD). Validação por CPF + nascimento, vínculo descartado após validação.</p>
+      </details>
+      <details class="bg-white rounded-3xl p-6">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-extrabold">
+          <span>Quanto vai custar?</span>
+          <span class="w-7 h-7 rounded-full bg-accent-50 text-accent-600 grid place-items-center text-xl font-light flex-shrink-0">+</span>
+        </summary>
+        <p class="mt-4 text-sm text-ink-700">Pricing definitivo será divulgado no lançamento. Quem entrar na lista de espera tem condições especiais e participa da definição. Modelo deve seguir os pacotes do /NR1: Gestão Básica e Gestão Completa, por porte da empresa.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LISTA DE ESPERA ============ -->
+<section id="espera" class="py-24">
+  <div class="max-w-5xl mx-auto px-6 lg:px-10">
+    <div class="bg-gradient-to-br from-accent-500 to-accent-900 text-white rounded-5xl p-10 lg:p-16 text-center relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-warn/30 blur-3xl"></div>
+      <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-accent-300/20 blur-3xl"></div>
+      <div class="relative">
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full pl-3 pr-4 py-1.5 text-[11px] font-extrabold tracking-[0.15em] uppercase mb-6">
+          <span class="relative w-2.5 h-2.5"><span class="absolute inset-0 rounded-full bg-warn animate-pulse"></span></span>
+          Lista de espera · ganha 3 meses grátis
+        </div>
+        <h2 class="font-display text-4xl lg:text-6xl leading-[1.05]">Pulse contínuo,<br/>retenção contínua.</h2>
+        <p class="mt-6 text-white/80 max-w-xl mx-auto">Empresas piloto da Innova /RH ganham 3 meses do plano anual gratuitos no lançamento e participam da definição do produto. Vagas limitadas a 8.</p>
+
+        <form onsubmit="event.preventDefault(); alert('Inscrição registrada! Time vai te chamar antes do lançamento em maio.');" class="mt-8 max-w-md mx-auto space-y-3">
+          <input type="email" required placeholder="seu e-mail corporativo" class="w-full bg-white/10 border border-white/20 backdrop-blur-md rounded-2xl px-4 py-3.5 text-sm text-white placeholder-white/50 focus:outline-none focus:border-warn focus:bg-white/15" />
+          <input type="text" placeholder="empresa · quantos colaboradores" class="w-full bg-white/10 border border-white/20 backdrop-blur-md rounded-2xl px-4 py-3.5 text-sm text-white placeholder-white/50 focus:outline-none focus:border-warn focus:bg-white/15" />
+          <button type="submit" class="w-full bg-warn hover:bg-warn/90 text-ink-900 rounded-2xl px-5 py-3.5 font-extrabold text-sm">Quero entrar na lista →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="bg-ink-900 text-white/70 pt-16 pb-8">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+      <div>
+        <a href="innova.html" class="flex items-center gap-3 mb-5">
+          <svg width="40" height="40" viewBox="0 0 44 44">
+            <defs><linearGradient id="lg-foot-rh" x1="0" y1="0" x2="44" y2="44"><stop offset="0" stop-color="#A5A4F8"/><stop offset="1" stop-color="#6364E0"/></linearGradient></defs>
+            <path d="M22 2L40 12V32L22 42L4 32V12Z" fill="url(#lg-foot-rh)"/>
+            <rect x="13" y="22" width="3" height="9" rx="1" fill="white"/>
+            <rect x="20.5" y="18" width="3" height="13" rx="1" fill="white"/>
+            <rect x="28" y="14" width="3" height="17" rx="1" fill="white"/>
+            <circle cx="34" cy="13" r="2.5" fill="#FFC600"/>
+          </svg>
+          <span class="font-extrabold text-white text-lg tracking-tight">INNOVA <span class="text-accent-300">/RH</span></span>
+        </a>
+        <p class="text-sm leading-relaxed">Pulse contínuo, ENPS, clima organizacional e feedback 360. Detecte o risco antes que vire pedido de demissão.</p>
+      </div>
+      <div>
+        <h4 class="text-white font-extrabold text-xs uppercase tracking-wider mb-4">Produtos</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="innova-nr1.html" class="hover:text-white">Innova /NR1</a></li>
+          <li><a href="innova-premiacoes.html" class="hover:text-white">Innova /Premiações</a></li>
+          <li><a href="innova-rh.html" class="hover:text-white text-accent-300 font-bold">Innova /RH ←</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-extrabold text-xs uppercase tracking-wider mb-4">Empresa</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="innova.html" class="hover:text-white">Sobre a Innova</a></li>
+          <li><a href="innova.html#manifesto" class="hover:text-white">Manifesto</a></li>
+          <li><a href="#" class="hover:text-white">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-extrabold text-xs uppercase tracking-wider mb-4">Contato</h4>
+        <ul class="space-y-3 text-sm">
+          <li class="flex gap-2.5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0 mt-0.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07"/></svg>0800 555 0000</li>
+          <li class="flex gap-2.5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0 mt-0.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>contato@innova.com.br</li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/10 pt-6 flex flex-wrap items-center justify-between gap-4 text-xs">
+      <div>© 2026 Innova · CNPJ 00.000.000/0001-00</div>
+      <div class="flex gap-5">
+        <a href="#" class="hover:text-white">Termos</a>
+        <a href="#" class="hover:text-white">Privacidade</a>
+        <a href="#" class="hover:text-white">LGPD</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const fNav = document.getElementById('floatingNav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) fNav.classList.add('scrolled');
+    else fNav.classList.remove('scrolled');
+  }, { passive: true });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Innova · Plataformas de gestão de pessoas</title>
+<meta name="description" content="Ecossistema Innova: NR1 (conformidade), Premiações (Art. 457 §2 CLT) e RH (clima organizacional). Plataformas SaaS para empresas brasileiras." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['"DM Serif Display"', 'serif'] },
+      colors: {
+        ink: { 900: '#0F0F19', 700: '#3F3F50', 500: '#71718A', 300: '#B0B0C0' },
+        accent: { 50: '#EFEFFE', 100: '#E0E0FD', 300: '#A5A4F8', 500: '#6364E0', 600: '#4F50C9', 700: '#3F40A8', 900: '#1F1F66' },
+        surface: { DEFAULT: '#F4F4F8', muted: '#FAFAFC' },
+        ok: '#10B981', warn: '#F59E0B', danger: '#EF4444',
+      },
+      borderRadius: { '4xl': '2rem', '5xl': '2.5rem' },
+      boxShadow: { soft: '0 1px 3px rgba(15,15,25,.04), 0 1px 2px rgba(15,15,25,.03)', card: '0 8px 30px rgba(99,100,224,.08)' }
+    }
+  }
+}
+</script>
+<style>
+  body { background: #FAFAFC; font-family: 'Inter', sans-serif; color: #0F0F19; -webkit-font-smoothing: antialiased; }
+  .gradient-text { background: linear-gradient(135deg, #6364E0 0%, #3F40A8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .ticker { display: flex; gap: 40px; animation: marquee 60s linear infinite; }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  #floatingNav { transition: top .3s cubic-bezier(.4,0,.2,1), padding .3s; }
+  #floatingNav.scrolled { top: 12px; }
+  #floatingNav.scrolled nav { padding-top: 6px; padding-bottom: 6px; }
+  details > summary::-webkit-details-marker { display: none; }
+  .grid-pattern {
+    background-image:
+      linear-gradient(rgba(99,100,224,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(99,100,224,0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .hero-deco {
+    position: absolute;
+    bottom: -100px; right: -10%;
+    font-family: 'DM Serif Display', serif;
+    font-size: 38rem;
+    line-height: 0.8;
+    color: rgba(255,255,255,.05);
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.05em;
+    z-index: 0;
+  }
+  @media (max-width: 1024px) { .hero-deco { font-size: 24rem; } }
+  .product-card { transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s; }
+  .product-card:hover { transform: translateY(-8px) rotate(-0.5deg); }
+  /* Innova logo bars animation */
+  @keyframes growBar { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+</style>
+</head>
+<body class="text-ink-900">
+
+<!-- ============ MARQUEE TICKER ============ -->
+<div class="bg-ink-900 text-white py-2.5 overflow-hidden border-b border-white/5 relative">
+  <div class="ticker">
+    <div class="flex items-center gap-10 whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60">
+      <span class="flex items-center gap-2 text-warn"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>Prevenção primeiro — não só o laudo</span>
+      <span class="text-white/20">●</span>
+      <span class="text-white">NR-1 punitiva em 16 dias</span>
+      <span class="text-white/20">●</span>
+      <span>Detectar antes do afastamento</span>
+      <span class="text-white/20">●</span>
+      <span>Reconhecer antes da demissão</span>
+      <span class="text-white/20">●</span>
+      <span class="flex items-center gap-2 text-warn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07"/></svg>0800 555 0000</span>
+      <span class="text-white/20">●</span>
+    </div>
+    <div class="flex items-center gap-10 whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60" aria-hidden="true">
+      <span class="flex items-center gap-2 text-warn"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span>Prevenção primeiro — não só o laudo</span>
+      <span class="text-white/20">●</span>
+      <span class="text-white">NR-1 punitiva em 16 dias</span>
+      <span class="text-white/20">●</span>
+      <span>Detectar antes do afastamento</span>
+      <span class="text-white/20">●</span>
+      <span>Reconhecer antes da demissão</span>
+      <span class="text-white/20">●</span>
+      <span class="flex items-center gap-2 text-warn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07"/></svg>0800 555 0000</span>
+      <span class="text-white/20">●</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FLOATING CAPSULE NAV ============ -->
+<header id="floatingNav" class="fixed top-9 left-1/2 -translate-x-1/2 z-50 px-4 max-w-full">
+  <nav class="flex items-center bg-white/75 backdrop-blur-xl border border-white/60 rounded-full shadow-2xl shadow-accent-900/20 pl-3 pr-2 py-2.5">
+    <a href="innova.html" class="flex items-center gap-2.5 pr-4 lg:border-r lg:border-ink-300/30">
+      <svg width="34" height="34" viewBox="0 0 44 44">
+        <defs><linearGradient id="ng" x1="0" y1="0" x2="44" y2="44"><stop offset="0" stop-color="#6364E0"/><stop offset="1" stop-color="#3F40A8"/></linearGradient></defs>
+        <path d="M22 2L40 12V32L22 42L4 32V12Z" fill="url(#ng)"/>
+        <rect x="13" y="22" width="3" height="9" rx="1" fill="white"/>
+        <rect x="20.5" y="18" width="3" height="13" rx="1" fill="white"/>
+        <rect x="28" y="14" width="3" height="17" rx="1" fill="white"/>
+        <circle cx="34" cy="13" r="2.5" fill="#FFC600"/>
+      </svg>
+      <span class="hidden sm:inline font-extrabold tracking-tight text-[15px] leading-none">INNOVA</span>
+    </a>
+    <ul class="hidden xl:flex items-center gap-0.5 px-4 text-[13px] font-semibold text-ink-700">
+      <li class="relative group">
+        <button class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition flex items-center gap-1.5">
+          Produtos
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="group-hover:rotate-180 transition"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="absolute top-full left-0 mt-3 w-80 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition">
+          <div class="bg-white rounded-3xl shadow-2xl shadow-accent-900/20 border border-ink-300/20 p-2">
+            <a href="innova-nr1.html" class="flex items-start gap-3 p-3 rounded-2xl hover:bg-accent-50 transition">
+              <div class="w-10 h-10 rounded-2xl bg-accent-500 grid place-items-center flex-shrink-0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div class="min-w-0">
+                <div class="font-extrabold text-[14px] text-ink-900">Innova /NR1</div>
+                <div class="text-[11px] text-ink-500 mt-0.5">Conformidade NR-1 · eSocial S-2240</div>
+              </div>
+            </a>
+            <a href="innova-premiacoes.html" class="flex items-start gap-3 p-3 rounded-2xl hover:bg-accent-50 transition">
+              <div class="w-10 h-10 rounded-2xl bg-accent-500 grid place-items-center flex-shrink-0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+              <div class="min-w-0">
+                <div class="font-extrabold text-[14px] text-ink-900">Innova /Premiações</div>
+                <div class="text-[11px] text-ink-500 mt-0.5">Art. 457 §2 CLT · economia tributária</div>
+              </div>
+            </a>
+            <a href="innova-rh.html" class="flex items-start gap-3 p-3 rounded-2xl hover:bg-accent-50 transition">
+              <div class="w-10 h-10 rounded-2xl bg-accent-500 grid place-items-center flex-shrink-0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+              <div class="min-w-0">
+                <div class="font-extrabold text-[14px] text-ink-900">Innova /RH</div>
+                <div class="text-[11px] text-ink-500 mt-0.5">Clima organizacional · pulse · ENPS</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </li>
+      <li><a href="#prevencao" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-warn"></span>Prevenção</a></li>
+      <li><a href="#manifesto" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition">Manifesto</a></li>
+      <li><a href="#numeros" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition">Números</a></li>
+      <li><a href="#time" class="px-3 py-2 rounded-full hover:bg-accent-50 hover:text-accent-700 transition">Time</a></li>
+    </ul>
+    <div class="flex items-center gap-1 lg:pl-4 lg:border-l lg:border-ink-300/30">
+      <a href="profissional.html" class="hidden sm:inline-flex items-center gap-1.5 text-[13px] font-bold text-ink-900 hover:text-accent-600 px-3 py-2 transition">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Entrar
+      </a>
+      <a href="#contato" class="bg-ink-900 text-white rounded-full pl-4 pr-1.5 py-1.5 text-[13px] font-extrabold inline-flex items-center gap-2 hover:bg-black transition group">
+        <span class="hidden sm:inline">Falar conosco</span>
+        <span class="sm:hidden">Contato</span>
+        <span class="w-7 h-7 rounded-full bg-accent-500 grid place-items-center group-hover:bg-warn group-hover:rotate-[-45deg] transition-all">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="relative overflow-hidden bg-gradient-to-br from-accent-500 via-accent-600 to-accent-900 text-white">
+  <div class="absolute inset-0 grid-pattern opacity-30"></div>
+  <div class="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-accent-300/30 blur-3xl"></div>
+  <div class="absolute bottom-0 left-1/4 w-[400px] h-[400px] rounded-full bg-warn/20 blur-3xl"></div>
+  <div class="hero-deco hidden md:block">innova</div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10 pt-32 pb-20 lg:pt-40 lg:pb-28">
+    <div class="max-w-5xl">
+      <div class="flex flex-wrap items-center gap-3 mb-8">
+        <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full pl-3 pr-4 py-1.5 text-[11px] font-extrabold tracking-[0.15em] uppercase">
+          <span class="w-2 h-2 rounded-full bg-warn animate-pulse"></span>
+          Ecossistema · 3 produtos
+        </span>
+        <span class="inline-flex items-center bg-warn/15 backdrop-blur-md border border-warn/30 text-warn rounded-full px-4 py-1.5 text-[11px] font-extrabold tracking-[0.15em] uppercase gap-2">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          1.823 colaboradores ativos
+        </span>
+      </div>
+      <h1 class="font-display text-5xl lg:text-8xl leading-[0.95] tracking-tight">Todos vendem o laudo.<br/><span class="italic relative inline-block">A gente vende prevenção.<svg viewBox="0 0 600 14" class="absolute left-0 -bottom-2 w-full h-3" preserveAspectRatio="none"><path d="M2 7 Q 100 2, 200 7 T 400 7 T 598 7" stroke="#FFC600" stroke-width="3" fill="none" stroke-linecap="round"/></svg></span></h1>
+      <p class="mt-8 text-lg lg:text-xl text-white/85 max-w-2xl">Ecossistema que detecta o risco antes que vire afastamento, autuação ou processo. Plataforma + Controle de Disciplina mensal — não é só o documento assinado, é o ciclo de prevenção rodando.</p>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a href="#produtos" class="bg-white text-accent-700 hover:bg-accent-50 rounded-full px-6 py-3.5 font-extrabold text-sm inline-flex items-center gap-2 shadow-lg shadow-black/10">
+          Conhecer os produtos
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="#contato" class="bg-white/10 hover:bg-white/15 border border-white/25 backdrop-blur-sm rounded-full px-6 py-3.5 font-bold text-sm inline-flex items-center gap-2">
+          Falar com time comercial
+        </a>
+      </div>
+    </div>
+
+    <!-- Floating product mini-cards -->
+    <div class="mt-16 lg:mt-20 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl">
+      <a href="innova-nr1.html" class="group bg-white/8 hover:bg-white/15 backdrop-blur-md border border-white/20 rounded-3xl p-5 transition">
+        <div class="flex items-center gap-2 mb-3"><span class="text-[10px] font-extrabold uppercase tracking-wider text-white/60">/NR1</span><span class="w-2 h-2 rounded-full bg-ok animate-pulse"></span><span class="text-[10px] font-bold uppercase tracking-wider text-ok">Live</span></div>
+        <div class="text-xl font-extrabold leading-tight">Detecta antes do afastamento.</div>
+        <div class="text-xs text-white/70 mt-1">NR-1 com Controle de Disciplina mensal</div>
+        <div class="flex items-center gap-1 text-warn mt-4 text-xs font-extrabold uppercase tracking-wider group-hover:gap-2 transition-all">Conhecer <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </a>
+      <a href="innova-premiacoes.html" class="group bg-white/8 hover:bg-white/15 backdrop-blur-md border border-white/20 rounded-3xl p-5 transition">
+        <div class="flex items-center gap-2 mb-3"><span class="text-[10px] font-extrabold uppercase tracking-wider text-white/60">/Premiações</span><span class="w-2 h-2 rounded-full bg-warn"></span><span class="text-[10px] font-bold uppercase tracking-wider text-warn">Beta</span></div>
+        <div class="text-xl font-extrabold leading-tight">Reconhece antes do pedido.</div>
+        <div class="text-xs text-white/70 mt-1">Prêmio que previne turnover · Art. 457</div>
+        <div class="flex items-center gap-1 text-warn mt-4 text-xs font-extrabold uppercase tracking-wider group-hover:gap-2 transition-all">Conhecer <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </a>
+      <a href="innova-rh.html" class="group bg-white/8 hover:bg-white/15 backdrop-blur-md border border-white/20 rounded-3xl p-5 transition">
+        <div class="flex items-center gap-2 mb-3"><span class="text-[10px] font-extrabold uppercase tracking-wider text-white/60">/RH</span><span class="w-2 h-2 rounded-full bg-warn"></span><span class="text-[10px] font-bold uppercase tracking-wider text-warn">Em breve</span></div>
+        <div class="text-xl font-extrabold leading-tight">Mede antes do problema.</div>
+        <div class="text-xs text-white/70 mt-1">Pulse · ENPS · feedback · plano de ação</div>
+        <div class="flex items-center gap-1 text-warn mt-4 text-xs font-extrabold uppercase tracking-wider group-hover:gap-2 transition-all">Conhecer <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ECOSSISTEMA · 3 produtos como cards grandes ============ -->
+<section id="produtos" class="py-24 lg:py-32 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="max-w-3xl mb-16">
+      <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent-600">Ecossistema Innova</span>
+      <h2 class="font-display text-5xl lg:text-7xl mt-3 leading-[1.0]">Três produtos.<br/>Uma <span class="italic">só plataforma.</span></h2>
+      <p class="mt-6 text-lg text-ink-700">Cada um resolve uma dor crítica da empresa brasileira, sozinho. Juntos, formam um sistema operacional de gestão de pessoas.</p>
+    </div>
+
+    <div class="space-y-5">
+
+      <!-- Produto 1: NR1 -->
+      <a href="innova-nr1.html" class="product-card block bg-gradient-to-br from-accent-500 to-accent-700 text-white rounded-5xl p-8 lg:p-12 shadow-card relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-72 h-72 rounded-full bg-warn/20 blur-3xl"></div>
+        <div class="absolute -bottom-10 left-1/4 w-48 h-48 rounded-full bg-white/10 blur-2xl"></div>
+        <div class="grid lg:grid-cols-12 gap-8 items-center relative">
+          <div class="lg:col-span-7">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="bg-white text-accent-700 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider">Innova /NR1</span>
+              <span class="bg-ok text-white rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>Live</span>
+              <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-white/60">12 clientes ativos</span>
+            </div>
+            <h3 class="font-display text-4xl lg:text-6xl leading-[1.0]">Conformidade NR-1<br/>sem virar especialista em SST.</h3>
+            <p class="mt-5 text-base lg:text-lg text-white/85 max-w-xl">Diagnóstico psicossocial COPSOQ II, PGR, plano de ação, laudo PDF assinado pelo RT e envio do S-2240 ao eSocial. Em 30 dias seu cliente está conforme.</p>
+            <div class="mt-7 flex flex-wrap gap-2 text-[11px] font-extrabold uppercase tracking-wider">
+              <span class="bg-white/10 border border-white/20 rounded-full px-3 py-1.5 backdrop-blur-sm">PGR · NR-1</span>
+              <span class="bg-white/10 border border-white/20 rounded-full px-3 py-1.5 backdrop-blur-sm">COPSOQ II</span>
+              <span class="bg-white/10 border border-white/20 rounded-full px-3 py-1.5 backdrop-blur-sm">eSocial S-2240</span>
+              <span class="bg-white/10 border border-white/20 rounded-full px-3 py-1.5 backdrop-blur-sm">Laudo assinado</span>
+            </div>
+            <div class="mt-8 inline-flex items-center gap-2 bg-warn text-ink-900 rounded-full pl-5 pr-2 py-2 font-extrabold text-sm">
+              Conhecer Innova /NR1
+              <span class="w-7 h-7 rounded-full bg-ink-900 grid place-items-center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </div>
+          </div>
+          <div class="lg:col-span-5 relative">
+            <div class="bg-white text-ink-900 rounded-3xl p-5 shadow-2xl">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2"><div class="w-8 h-8 rounded-xl bg-accent-100 text-accent-700 grid place-items-center font-extrabold text-xs">AC</div><div class="text-xs"><div class="font-bold">Acme · 142 colab.</div><div class="text-ink-500 text-[10px]">Ciclo 2026.Q2</div></div></div>
+                <span class="bg-ok/10 text-ok rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider">Em coleta</span>
+              </div>
+              <div class="grid grid-cols-3 gap-2 mb-3">
+                <div class="bg-surface rounded-xl p-2"><div class="text-[9px] text-ink-500 font-bold uppercase tracking-wider">Conv.</div><div class="text-base font-extrabold">142</div></div>
+                <div class="bg-accent-50 rounded-xl p-2"><div class="text-[9px] text-accent-700 font-bold uppercase tracking-wider">Resp.</div><div class="text-base font-extrabold text-accent-700">98</div></div>
+                <div class="bg-warn/10 rounded-xl p-2"><div class="text-[9px] text-warn font-bold uppercase tracking-wider">Dias</div><div class="text-base font-extrabold text-warn">5</div></div>
+              </div>
+              <div class="flex items-end gap-1 h-12">
+                <div class="flex-1 bg-danger/80 rounded-t-md" style="height:100%"></div>
+                <div class="flex-1 bg-warn rounded-t-md" style="height:60%"></div>
+                <div class="flex-1 bg-ok/80 rounded-t-md" style="height:40%"></div>
+                <div class="flex-1 bg-ok/80 rounded-t-md" style="height:32%"></div>
+                <div class="flex-1 bg-warn rounded-t-md" style="height:55%"></div>
+                <div class="flex-1 bg-danger/80 rounded-t-md" style="height:80%"></div>
+                <div class="flex-1 bg-ok/80 rounded-t-md" style="height:25%"></div>
+                <div class="flex-1 bg-warn rounded-t-md" style="height:45%"></div>
+              </div>
+              <div class="text-[9px] text-ink-500 font-bold uppercase tracking-wider mt-2">8 dimensões COPSOQ II · risco psicossocial</div>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Produto 2: Premiações -->
+      <a href="innova-premiacoes.html" class="product-card block bg-ink-900 text-white rounded-5xl p-8 lg:p-12 shadow-card relative overflow-hidden">
+        <div class="absolute inset-0 grid-pattern opacity-20"></div>
+        <div class="absolute -top-16 right-1/3 w-64 h-64 rounded-full bg-warn/30 blur-3xl"></div>
+        <div class="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-accent-500/30 blur-2xl"></div>
+        <div class="grid lg:grid-cols-12 gap-8 items-center relative">
+          <div class="lg:col-span-7">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="bg-warn text-ink-900 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider">Innova /Premiações</span>
+              <span class="bg-warn/20 text-warn rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-warn"></span>Beta</span>
+              <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-white/60">Art. 457 §2 CLT</span>
+            </div>
+            <h3 class="font-display text-4xl lg:text-6xl leading-[1.0]">Reconhecimento que <span class="italic gradient-text bg-gradient-to-r from-warn to-accent-300">não vira encargo.</span></h3>
+            <p class="mt-5 text-base lg:text-lg text-white/80 max-w-xl">Programa de premiação por desempenho enquadrado no Art. 457 §2 CLT. Regulamento, governança, atas mensais e dossiê de defesa jurídica — economia de até R$ 1.000 em encargos a cada R$ 1.000 pagos como prêmio.</p>
+            <div class="mt-7 flex flex-wrap gap-2 text-[11px] font-extrabold uppercase tracking-wider">
+              <span class="bg-white/10 border border-white/20 rounded-full px-3 py-1.5 backdrop-blur-sm">Lei 13.467/2017</span>
+              <span class="bg-white/10 border border-white/20 rounded-full px-3 py-1.5 backdrop-blur-sm">KPIs objetivos</span>
+              <span class="bg-white/10 border border-white/20 rounded-full px-3 py-1.5 backdrop-blur-sm">Atas mensais</span>
+              <span class="bg-white/10 border border-white/20 rounded-full px-3 py-1.5 backdrop-blur-sm">Defesa jurídica</span>
+            </div>
+            <div class="mt-8 inline-flex items-center gap-2 bg-warn text-ink-900 rounded-full pl-5 pr-2 py-2 font-extrabold text-sm">
+              Conhecer Innova /Premiações
+              <span class="w-7 h-7 rounded-full bg-ink-900 grid place-items-center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </div>
+          </div>
+          <div class="lg:col-span-5">
+            <div class="bg-white text-ink-900 rounded-3xl p-5 shadow-2xl">
+              <div class="text-[10px] uppercase tracking-wider font-extrabold text-ink-500 mb-3">Calculadora de economia</div>
+              <div class="flex items-end gap-3 mb-4">
+                <div>
+                  <div class="text-[9px] text-ink-500 font-bold">PRÊMIO PAGO</div>
+                  <div class="text-xl font-extrabold">R$ 10.000</div>
+                </div>
+                <div class="flex-1 h-1 bg-surface rounded-full mb-2">
+                  <div class="h-full bg-gradient-to-r from-warn to-ok rounded-full" style="width: 100%"></div>
+                </div>
+              </div>
+              <div class="bg-ok/10 rounded-2xl p-4 border border-ok/20">
+                <div class="text-[9px] text-ok font-extrabold uppercase tracking-wider">ECONOMIA EM ENCARGOS</div>
+                <div class="text-3xl font-extrabold text-ok mt-1">R$ 7.200</div>
+                <div class="text-[10px] text-ink-500 mt-1">INSS patronal + FGTS + 13º + férias</div>
+              </div>
+              <div class="grid grid-cols-3 gap-1.5 mt-3 text-center">
+                <div class="bg-surface rounded-lg p-1.5"><div class="text-[9px] text-ink-500">INSS</div><div class="text-xs font-bold">R$ 2.000</div></div>
+                <div class="bg-surface rounded-lg p-1.5"><div class="text-[9px] text-ink-500">FGTS</div><div class="text-xs font-bold">R$ 800</div></div>
+                <div class="bg-surface rounded-lg p-1.5"><div class="text-[9px] text-ink-500">13º+férias</div><div class="text-xs font-bold">R$ 4.400</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Produto 3: RH -->
+      <a href="innova-rh.html" class="product-card block bg-white border-2 border-accent-500 text-ink-900 rounded-5xl p-8 lg:p-12 shadow-card relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-72 h-72 rounded-full bg-accent-100 blur-3xl"></div>
+        <div class="grid lg:grid-cols-12 gap-8 items-center relative">
+          <div class="lg:col-span-7">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="bg-accent-500 text-white rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider">Innova /RH</span>
+              <span class="bg-warn/20 text-warn rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-warn"></span>Em breve · Maio</span>
+              <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-ink-500">Lista de espera aberta</span>
+            </div>
+            <h3 class="font-display text-4xl lg:text-6xl leading-[1.0]">O <span class="italic text-accent-600">pulse</span> que vira plano de ação.</h3>
+            <p class="mt-5 text-base lg:text-lg text-ink-700 max-w-xl">Pesquisa de clima contínua, ENPS, feedback 360 e enquetes-relâmpago. Os dados alimentam direto o IPAR psicossocial do Innova /NR1 — fechando o ciclo de gestão de pessoas.</p>
+            <div class="mt-7 flex flex-wrap gap-2 text-[11px] font-extrabold uppercase tracking-wider">
+              <span class="bg-accent-50 border border-accent-100 rounded-full px-3 py-1.5 text-accent-700">ENPS mensal</span>
+              <span class="bg-accent-50 border border-accent-100 rounded-full px-3 py-1.5 text-accent-700">Pulse semanal</span>
+              <span class="bg-accent-50 border border-accent-100 rounded-full px-3 py-1.5 text-accent-700">Clima anual</span>
+              <span class="bg-accent-50 border border-accent-100 rounded-full px-3 py-1.5 text-accent-700">Feedback 360</span>
+            </div>
+            <div class="mt-8 inline-flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-white rounded-full pl-5 pr-2 py-2 font-extrabold text-sm transition">
+              Entrar na lista de espera
+              <span class="w-7 h-7 rounded-full bg-ink-900 grid place-items-center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </div>
+          </div>
+          <div class="lg:col-span-5">
+            <div class="bg-surface rounded-3xl p-5 border border-ink-300/30">
+              <div class="flex items-center justify-between mb-4">
+                <div class="text-[10px] uppercase tracking-wider font-extrabold text-ink-500">ENPS · abril/2026</div>
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-ok">↑ +12 pts</span>
+              </div>
+              <div class="flex items-end gap-3">
+                <div class="text-5xl font-extrabold text-accent-600">+47</div>
+                <div class="text-xs text-ink-500 mb-2">de -100 a +100<br/>excelente</div>
+              </div>
+              <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+                <div class="bg-ok/10 rounded-xl p-2"><div class="text-[9px] text-ok font-bold uppercase tracking-wider">Promotores</div><div class="text-lg font-extrabold text-ok">62%</div></div>
+                <div class="bg-warn/10 rounded-xl p-2"><div class="text-[9px] text-warn font-bold uppercase tracking-wider">Neutros</div><div class="text-lg font-extrabold text-warn">23%</div></div>
+                <div class="bg-danger/10 rounded-xl p-2"><div class="text-[9px] text-danger font-bold uppercase tracking-wider">Detratores</div><div class="text-lg font-extrabold text-danger">15%</div></div>
+              </div>
+              <div class="mt-3 pt-3 border-t border-black/5 flex items-center justify-between text-[10px] text-ink-500">
+                <span>1.823 respondentes · 12 empresas</span>
+                <span class="font-bold text-accent-600">Ver detalhes →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ PREVENÇÃO vs LAUDO ============ -->
+<section id="prevencao" class="py-24 lg:py-32 bg-ink-900 text-white relative overflow-hidden">
+  <div class="absolute inset-0 grid-pattern opacity-15"></div>
+  <div class="absolute top-1/2 -translate-y-1/2 -left-40 w-[500px] h-[500px] rounded-full bg-accent-500/20 blur-3xl"></div>
+  <div class="absolute top-1/3 -right-40 w-[400px] h-[400px] rounded-full bg-warn/15 blur-3xl"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="max-w-3xl mb-16">
+      <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-warn">Tese da Innova</span>
+      <h2 class="font-display text-5xl lg:text-7xl mt-3 leading-[1.0]">Laudo é consequência.<br/><span class="italic gradient-text bg-gradient-to-r from-warn to-accent-300">Prevenção é o produto.</span></h2>
+      <p class="mt-6 text-lg text-white/80 max-w-2xl">O mercado de SST tradicional vende um documento. Empresa paga, recebe PDF, arquiva. Quando vem o afastamento, a CAT, o processo trabalhista — o laudo não impediu nada. A Innova vende o ciclo que evita isso.</p>
+    </div>
+
+    <!-- Comparison -->
+    <div class="grid lg:grid-cols-2 gap-5 mb-20">
+      <!-- O mercado -->
+      <div class="bg-white/5 border border-white/10 rounded-4xl p-8 backdrop-blur-sm">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="bg-white/10 text-white/60 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider">O mercado vende</span>
+        </div>
+        <h3 class="font-display text-3xl text-white/60">"Toma o laudo,<br/>tá pago."</h3>
+        <ul class="mt-6 space-y-3 text-sm text-white/60">
+          <li class="flex gap-3"><span class="w-5 h-5 rounded-full border border-white/30 grid place-items-center text-[10px] flex-shrink-0 mt-0.5">×</span>PGR pronto entregue uma vez por ano</li>
+          <li class="flex gap-3"><span class="w-5 h-5 rounded-full border border-white/30 grid place-items-center text-[10px] flex-shrink-0 mt-0.5">×</span>Nenhum acompanhamento entre ciclos</li>
+          <li class="flex gap-3"><span class="w-5 h-5 rounded-full border border-white/30 grid place-items-center text-[10px] flex-shrink-0 mt-0.5">×</span>Documento que sobrevive auditoria mas não a fiscalização</li>
+          <li class="flex gap-3"><span class="w-5 h-5 rounded-full border border-white/30 grid place-items-center text-[10px] flex-shrink-0 mt-0.5">×</span>Cliente continua com afastamento, CAT e ação trabalhista</li>
+          <li class="flex gap-3"><span class="w-5 h-5 rounded-full border border-white/30 grid place-items-center text-[10px] flex-shrink-0 mt-0.5">×</span>Quando o auditor chega, falta evidência operacional</li>
+        </ul>
+      </div>
+      <!-- Innova -->
+      <div class="bg-gradient-to-br from-accent-500 to-accent-700 rounded-4xl p-8 relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-white/10"></div>
+        <div class="relative">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="bg-warn text-ink-900 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider">A Innova vende</span>
+            <span class="bg-white/15 text-white rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider">Controle de Disciplina mensal</span>
+          </div>
+          <h3 class="font-display text-3xl text-white">"Toma o ciclo de<br/>prevenção rodando."</h3>
+          <ul class="mt-6 space-y-3 text-sm text-white">
+            <li class="flex gap-3"><span class="w-5 h-5 rounded-full bg-warn text-ink-900 grid place-items-center text-[11px] font-extrabold flex-shrink-0 mt-0.5">✓</span><strong>Plataforma + Controle de Disciplina mensal</strong> rodando o ano todo</li>
+            <li class="flex gap-3"><span class="w-5 h-5 rounded-full bg-warn text-ink-900 grid place-items-center text-[11px] font-extrabold flex-shrink-0 mt-0.5">✓</span>Pulse contínuo detecta risco antes do afastamento</li>
+            <li class="flex gap-3"><span class="w-5 h-5 rounded-full bg-warn text-ink-900 grid place-items-center text-[11px] font-extrabold flex-shrink-0 mt-0.5">✓</span>Plano de ação executável, não burocrático</li>
+            <li class="flex gap-3"><span class="w-5 h-5 rounded-full bg-warn text-ink-900 grid place-items-center text-[11px] font-extrabold flex-shrink-0 mt-0.5">✓</span>Indicadores reais: TF, TG, B91/B92 evitados</li>
+            <li class="flex gap-3"><span class="w-5 h-5 rounded-full bg-warn text-ink-900 grid place-items-center text-[11px] font-extrabold flex-shrink-0 mt-0.5">✓</span>Trilha de auditoria 20 anos pronta para fiscalização</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modalidades de pricing -->
+    <div class="text-center mb-12">
+      <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-warn">Modalidades de atendimento</span>
+      <h3 class="font-display text-4xl lg:text-5xl mt-3 leading-[1.0]">Escolha o nível de prevenção.</h3>
+      <p class="mt-4 text-white/70 max-w-2xl mx-auto">Dois planos — em ambos você fica conforme. A diferença está no quanto a gente <em>previne</em> proativamente, não só reage à fiscalização.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-5">
+      <!-- Gestão Básica -->
+      <div class="bg-white/5 border border-white/10 rounded-4xl p-8 backdrop-blur-sm">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-white/60">Plano</span>
+          <span class="bg-white/10 text-white/80 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider">Básica</span>
+        </div>
+        <h4 class="font-display text-3xl mt-3">Gestão Básica</h4>
+        <p class="text-sm text-white/70 mt-2">Acesso à plataforma + suporte e orientação mensal. Você fica em conformidade — nós damos o suporte.</p>
+
+        <div class="mt-7 space-y-3 pb-6 border-b border-white/10">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-white/70">Até 10 colaboradores</span>
+            <span class="text-2xl font-extrabold">R$ 360<span class="text-sm text-white/50">/mês</span></span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-white/70">Até 20 colaboradores</span>
+            <span class="text-2xl font-extrabold">R$ 410<span class="text-sm text-white/50">/mês</span></span>
+          </div>
+          <div class="flex items-center justify-between text-xs text-white/60">
+            <span>Implantação + treinamento</span>
+            <span class="font-extrabold text-white/80">R$ 1.000 único</span>
+          </div>
+        </div>
+
+        <ul class="mt-6 space-y-2.5 text-sm text-white/85">
+          <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A5A4F8" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Acesso completo à plataforma</li>
+          <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A5A4F8" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>PGR + IPAR + plano de ação gerados</li>
+          <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A5A4F8" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Envio do S-2240 ao eSocial</li>
+          <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A5A4F8" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Suporte mensal por e-mail e chat</li>
+          <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A5A4F8" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Orientação técnica em horário comercial</li>
+        </ul>
+      </div>
+
+      <!-- Gestão Completa (Recomendado) -->
+      <div class="bg-gradient-to-br from-accent-500 to-accent-700 rounded-4xl p-8 relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-warn/30 blur-2xl"></div>
+        <div class="absolute -bottom-12 -left-12 w-36 h-36 rounded-full bg-white/10"></div>
+        <div class="relative">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-white/80">Plano</span>
+            <span class="bg-warn text-ink-900 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider">Recomendado</span>
+          </div>
+          <h4 class="font-display text-3xl mt-3 text-white">Gestão Completa</h4>
+          <p class="text-sm text-white/85 mt-2"><strong>Plataforma + Controle de Disciplina mensal.</strong> A gente entra todo mês no chão da empresa pra prevenir o que ainda não virou problema.</p>
+
+          <div class="mt-7 space-y-3 pb-6 border-b border-white/15">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-white/85">Até 10 colaboradores</span>
+              <span class="text-2xl font-extrabold text-white">R$ 450<span class="text-sm text-white/60">/mês</span></span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-white/85">Até 20 colaboradores</span>
+              <span class="text-2xl font-extrabold text-white">R$ 550<span class="text-sm text-white/60">/mês</span></span>
+            </div>
+            <div class="flex items-center justify-between text-xs text-white/70">
+              <span>Implantação + treinamento</span>
+              <span class="font-extrabold text-white/90">R$ 1.000 único</span>
+            </div>
+          </div>
+
+          <ul class="mt-6 space-y-2.5 text-sm text-white">
+            <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Tudo do plano básico, mais:</li>
+            <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg><strong>Controle de Disciplina mensal</strong> (visita / reunião / análise)</li>
+            <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Plano de ação executado em conjunto, não só sugerido</li>
+            <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Indicadores de prevenção acompanhados (TF, TG, B91/B92)</li>
+            <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Reunião executiva trimestral com a liderança</li>
+            <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="3" class="flex-shrink-0 mt-1"><polyline points="20 6 9 17 4 12"/></svg>Atendimento prioritário em caso de fiscalização</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nicho Farmácias -->
+    <div class="mt-12 bg-warn/10 border border-warn/20 rounded-4xl p-8 backdrop-blur-sm">
+      <div class="grid md:grid-cols-2 gap-6 items-center">
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <span class="bg-warn text-ink-900 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider">Nicho · Farmácias</span>
+            <span class="text-[11px] font-extrabold uppercase tracking-wider text-warn">~1.000 farmácias atendidas</span>
+          </div>
+          <h4 class="font-display text-3xl text-white leading-tight">Pricing especial<br/>para farmácia pequena.</h4>
+          <p class="text-sm text-white/80 mt-3">Conhecemos a realidade do varejo farmacêutico. Cobrança por CNPJ (respeitando grupo econômico), implantação reduzida e mensalidade adaptada para a operação enxuta da farmácia de até 10 funcionários.</p>
+        </div>
+        <div class="bg-white/10 rounded-3xl p-6 border border-white/10 backdrop-blur-sm">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <div class="text-[10px] uppercase tracking-wider font-extrabold text-warn mb-1">Mensalidade</div>
+              <div class="text-2xl font-extrabold text-white">R$ 120 <span class="text-base text-white/60">a</span> R$ 300</div>
+              <div class="text-[11px] text-white/60 mt-1">por CNPJ · até 10 funcionários</div>
+            </div>
+            <div>
+              <div class="text-[10px] uppercase tracking-wider font-extrabold text-warn mb-1">Implantação</div>
+              <div class="text-2xl font-extrabold text-white">R$ 500</div>
+              <div class="text-[11px] text-white/60 mt-1">único · 50% off do padrão</div>
+            </div>
+          </div>
+          <div class="mt-4 pt-4 border-t border-white/10 text-[11px] text-white/70 flex items-center gap-2">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFC600" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Grupo econômico cobrado por CNPJ — sem inflar
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MANIFESTO ============ -->
+<section id="manifesto" class="py-24 lg:py-32 bg-surface relative overflow-hidden">
+  <div class="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-accent-100/40 blur-3xl"></div>
+  <div class="relative max-w-5xl mx-auto px-6 lg:px-10 text-center">
+    <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent-600">Por que Innova</span>
+    <h2 class="font-display text-5xl lg:text-7xl mt-3 leading-[1.0]">Software brasileiro,<br/>feito para a <span class="italic gradient-text">complexidade brasileira.</span></h2>
+    <p class="mt-8 text-lg text-ink-700 max-w-3xl mx-auto">A regulação aqui muda. O eSocial tem 47 leiautes diferentes. A NR-1 ganhou novo escopo em 2024. O Art. 457 da CLT tem casuística rica de jurisprudência. Empresa brasileira não pode rodar com software pensado lá fora — precisa de plataforma que entende a CLT como ela é. <strong class="text-ink-900">E que vai além do laudo: previne.</strong></p>
+
+    <div class="grid md:grid-cols-3 gap-5 mt-16 text-left">
+      <div class="bg-white rounded-3xl p-7">
+        <div class="w-12 h-12 rounded-2xl bg-accent-50 grid place-items-center mb-5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6364E0" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <h3 class="font-extrabold text-lg">Especialistas, não generalistas</h3>
+        <p class="text-sm text-ink-700 mt-2">Cada produto Innova é construído com responsável técnico real (RT SST, advogado trabalhista, psicólogo organizacional) — não é "uma plataforma que faz tudo um pouco".</p>
+      </div>
+      <div class="bg-white rounded-3xl p-7">
+        <div class="w-12 h-12 rounded-2xl bg-warn/10 grid place-items-center mb-5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3 class="font-extrabold text-lg">Defensável por design</h3>
+        <p class="text-sm text-ink-700 mt-2">Trilha de auditoria 20 anos, hash SHA-256, WORM, ICP-Brasil. Toda evidência é gerada para sobreviver à fiscalização e à ação trabalhista — não para enfeitar relatório.</p>
+      </div>
+      <div class="bg-white rounded-3xl p-7">
+        <div class="w-12 h-12 rounded-2xl bg-ok/10 grid place-items-center mb-5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <h3 class="font-extrabold text-lg">Produtos que se conversam</h3>
+        <p class="text-sm text-ink-700 mt-2">O ENPS do /RH alimenta o IPAR psicossocial do /NR1. As atas do /Premiações puxam do /RH. O ecossistema só faz sentido inteiro — mas você pode começar por um.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NÚMEROS ============ -->
+<section id="numeros" class="py-24 lg:py-28 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="text-center mb-16">
+      <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent-600">Em números</span>
+      <h2 class="font-display text-5xl lg:text-6xl mt-3 leading-[1.0]">A Innova hoje.</h2>
+    </div>
+    <div class="grid md:grid-cols-4 gap-5">
+      <div class="bg-surface rounded-4xl p-7 text-center">
+        <div class="font-display text-6xl text-accent-600">12</div>
+        <div class="text-xs text-ink-500 font-extrabold uppercase tracking-[0.15em] mt-2">Empresas ativas</div>
+      </div>
+      <div class="bg-surface rounded-4xl p-7 text-center">
+        <div class="font-display text-6xl text-accent-600">1.823</div>
+        <div class="text-xs text-ink-500 font-extrabold uppercase tracking-[0.15em] mt-2">Colaboradores na base</div>
+      </div>
+      <div class="bg-surface rounded-4xl p-7 text-center">
+        <div class="font-display text-6xl text-accent-600">98%</div>
+        <div class="text-xs text-ink-500 font-extrabold uppercase tracking-[0.15em] mt-2">SLA do S-2240</div>
+      </div>
+      <div class="bg-surface rounded-4xl p-7 text-center">
+        <div class="font-display text-6xl text-accent-600">0</div>
+        <div class="text-xs text-ink-500 font-extrabold uppercase tracking-[0.15em] mt-2">Vazamentos LGPD</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIME ============ -->
+<section id="time" class="py-24 lg:py-32 bg-surface">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid lg:grid-cols-12 gap-10">
+      <div class="lg:col-span-5">
+        <span class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent-600">Quem está por trás</span>
+        <h2 class="font-display text-5xl lg:text-6xl mt-3 leading-[1.0]">Time pequeno.<br/><span class="italic">Convicção grande.</span></h2>
+        <p class="mt-6 text-ink-700">A Innova é um time de 5 pessoas que vive próximo dos clientes — sem camadas comerciais, sem call center, sem vendedor. Quem te atende é quem constrói o produto.</p>
+        <a href="#contato" class="mt-6 inline-flex items-center gap-2 text-sm font-extrabold text-accent-600 hover:text-accent-700">Conhecer o manifesto completo →</a>
+      </div>
+      <div class="lg:col-span-7">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <div class="bg-white rounded-3xl p-5 text-center">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent-300 to-accent-600 grid place-items-center text-white font-extrabold mx-auto mb-3">GC</div>
+            <div class="font-extrabold text-sm">Gabriel Couto</div>
+            <div class="text-[11px] text-ink-500 mt-0.5">Sócio · Resp. SST</div>
+          </div>
+          <div class="bg-white rounded-3xl p-5 text-center">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-warn to-danger grid place-items-center text-white font-extrabold mx-auto mb-3">RP</div>
+            <div class="font-extrabold text-sm">Ricardo Pereira</div>
+            <div class="text-[11px] text-ink-500 mt-0.5">Eng. Segurança · CREA</div>
+          </div>
+          <div class="bg-white rounded-3xl p-5 text-center">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-ok to-emerald-700 grid place-items-center text-white font-extrabold mx-auto mb-3">LM</div>
+            <div class="font-extrabold text-sm">Leonardo Meneses</div>
+            <div class="text-[11px] text-ink-500 mt-0.5">Méd. Trabalho · CRM</div>
+          </div>
+          <div class="bg-white rounded-3xl p-5 text-center">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent-300 to-accent-500 grid place-items-center text-white font-extrabold mx-auto mb-3">JS</div>
+            <div class="font-extrabold text-sm">Juliana Souza</div>
+            <div class="text-[11px] text-ink-500 mt-0.5">Customer Success</div>
+          </div>
+          <div class="bg-white rounded-3xl p-5 text-center">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-ok to-accent-500 grid place-items-center text-white font-extrabold mx-auto mb-3">PF</div>
+            <div class="font-extrabold text-sm">Pedro Ferreira</div>
+            <div class="text-[11px] text-ink-500 mt-0.5">Customer Success</div>
+          </div>
+          <div class="bg-accent-500 text-white rounded-3xl p-5 text-center">
+            <div class="w-16 h-16 rounded-full bg-white/20 grid place-items-center mx-auto mb-3"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+            <div class="font-extrabold text-sm">Vagas abertas</div>
+            <div class="text-[11px] text-white/80 mt-0.5">Conheça nossa cultura</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA FINAL ============ -->
+<section id="contato" class="py-24 lg:py-28">
+  <div class="max-w-5xl mx-auto px-6 lg:px-10">
+    <div class="bg-ink-900 text-white rounded-5xl p-10 lg:p-16 text-center relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-accent-500/40 blur-3xl"></div>
+      <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-warn/20 blur-3xl"></div>
+      <div class="relative">
+        <h2 class="font-display text-4xl lg:text-6xl leading-[1.05]">Vamos conversar.</h2>
+        <p class="mt-6 text-white/70 max-w-xl mx-auto">Diga em qual dor estamos olhando juntos. NR-1, premiação, clima — ou os três. Time comercial atende em até 1 dia útil.</p>
+        <div class="mt-10 flex flex-wrap gap-3 justify-center">
+          <a href="innova-nr1.html" class="bg-warn hover:bg-warn/90 text-ink-900 rounded-full px-6 py-3.5 font-extrabold text-sm">Conhecer Innova /NR1 →</a>
+          <a href="innova-premiacoes.html" class="bg-white/10 hover:bg-white/15 border border-white/20 backdrop-blur-sm rounded-full px-6 py-3.5 font-bold text-sm">Innova /Premiações</a>
+          <a href="innova-rh.html" class="bg-white/10 hover:bg-white/15 border border-white/20 backdrop-blur-sm rounded-full px-6 py-3.5 font-bold text-sm">Innova /RH</a>
+        </div>
+        <div class="mt-10 pt-10 border-t border-white/10 flex flex-wrap items-center justify-center gap-6 text-sm text-white/70">
+          <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 0800 555 0000</span>
+          <span class="text-white/30">|</span>
+          <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> contato@innova.com.br</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER GLOBAL ============ -->
+<footer class="bg-ink-900 text-white/70 pt-16 pb-8">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
+      <div class="lg:col-span-2">
+        <a href="innova.html" class="flex items-center gap-3 mb-5">
+          <svg width="40" height="40" viewBox="0 0 44 44">
+            <defs><linearGradient id="lg-foot" x1="0" y1="0" x2="44" y2="44"><stop offset="0" stop-color="#A5A4F8"/><stop offset="1" stop-color="#6364E0"/></linearGradient></defs>
+            <path d="M22 2L40 12V32L22 42L4 32V12Z" fill="url(#lg-foot)"/>
+            <rect x="13" y="22" width="3" height="9" rx="1" fill="white"/>
+            <rect x="20.5" y="18" width="3" height="13" rx="1" fill="white"/>
+            <rect x="28" y="14" width="3" height="17" rx="1" fill="white"/>
+            <circle cx="34" cy="13" r="2.5" fill="#FFC600"/>
+          </svg>
+          <span class="font-extrabold text-white text-xl tracking-tight">INNOVA</span>
+        </a>
+        <p class="text-sm leading-relaxed max-w-md">Ecossistema de plataformas para gestão de pessoas no Brasil. Conformidade SST, remuneração estratégica e clima organizacional.</p>
+        <div class="flex gap-3 mt-6">
+          <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-accent-500 grid place-items-center transition"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.04c-5.5 0-10 4.49-10 10.02 0 5 3.66 9.15 8.44 9.9v-7H7.9v-2.9h2.54V9.85c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.45 2.9h-2.33v7a10 10 0 0 0 8.44-9.9c0-5.53-4.5-10.02-10-10.02"/></svg></a>
+          <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-accent-500 grid place-items-center transition"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93zM6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37z"/></svg></a>
+          <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-accent-500 grid place-items-center transition"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4zm9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg></a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-white font-extrabold text-xs uppercase tracking-wider mb-4">Produtos</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="innova-nr1.html" class="hover:text-white">Innova /NR1</a></li>
+          <li><a href="innova-premiacoes.html" class="hover:text-white">Innova /Premiações</a></li>
+          <li><a href="innova-rh.html" class="hover:text-white">Innova /RH</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-white font-extrabold text-xs uppercase tracking-wider mb-4">Empresa</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#manifesto" class="hover:text-white">Manifesto</a></li>
+          <li><a href="#time" class="hover:text-white">Time</a></li>
+          <li><a href="#" class="hover:text-white">Carreiras</a></li>
+          <li><a href="#" class="hover:text-white">Blog</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-white font-extrabold text-xs uppercase tracking-wider mb-4">Contato</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0 mt-0.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 0800 555 0000</li>
+          <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0 mt-0.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> contato@innova.com.br</li>
+          <li class="flex gap-2.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0 mt-0.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Av. Paulista, 1000 · São Paulo/SP</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 pt-6 flex flex-wrap items-center justify-between gap-4 text-xs">
+      <div>© 2026 Innova · CNPJ 00.000.000/0001-00 · Todos os direitos reservados.</div>
+      <div class="flex gap-5">
+        <a href="#" class="hover:text-white">Termos</a>
+        <a href="#" class="hover:text-white">Privacidade</a>
+        <a href="#" class="hover:text-white">LGPD</a>
+        <a href="#" class="hover:text-white">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const fNav = document.getElementById('floatingNav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) fNav.classList.add('scrolled');
+    else fNav.classList.remove('scrolled');
+  }, { passive: true });
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+
+</body>
+</html>
