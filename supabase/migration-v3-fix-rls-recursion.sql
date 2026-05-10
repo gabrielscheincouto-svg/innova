@@ -22,8 +22,34 @@ drop policy if exists "profiles_update_own" on public.profiles;
 drop policy if exists "profiles_update_gestor" on public.profiles;
 drop policy if exists "profiles_insert_gestor" on public.profiles;
 drop policy if exists "profiles_delete_gestor" on public.profiles;
+drop policy if exists "profiles_read_self" on public.profiles;
+drop policy if exists "profiles_read_gestor" on public.profiles;
+drop policy if exists "profiles_update_self" on public.profiles;
 
--- 2. Re-cria as helper functions com bypass real de RLS
+-- Drop policies de outras tabelas que dependem das funções (precisamos recriar tudo)
+drop policy if exists "user_companies_select_own" on public.user_companies;
+drop policy if exists "user_companies_select_gestor" on public.user_companies;
+drop policy if exists "user_companies_select_self" on public.user_companies;
+drop policy if exists "user_companies_insert_gestor" on public.user_companies;
+drop policy if exists "user_companies_update_gestor" on public.user_companies;
+drop policy if exists "user_companies_delete_gestor" on public.user_companies;
+drop policy if exists "user_companies_write_gestor" on public.user_companies;
+
+drop policy if exists "companies_select_gestor" on public.companies;
+drop policy if exists "companies_select_user" on public.companies;
+drop policy if exists "companies_insert_gestor" on public.companies;
+drop policy if exists "companies_update_gestor" on public.companies;
+drop policy if exists "companies_delete_gestor" on public.companies;
+drop policy if exists "companies_read_all_authenticated" on public.companies;
+drop policy if exists "companies_write_gestor" on public.companies;
+
+-- 2. Drop as functions antigas (return type pode ter mudado)
+-- CASCADE pra remover dependências em outras policies tipo premios_*
+drop function if exists public.is_gestor() cascade;
+drop function if exists public.current_user_role() cascade;
+drop function if exists public.has_company_access(uuid) cascade;
+
+-- 3. Re-cria as helper functions com bypass real de RLS
 -- security definer + owner postgres = bypassa RLS quando lê profiles internamente
 
 create or replace function public.is_gestor()
@@ -164,6 +190,108 @@ create policy "companies_write_gestor" on public.companies
   for all to authenticated
   using (public.is_gestor())
   with check (public.is_gestor());
+
+-- ============================================================
+-- 6. Re-cria policies dos premios_* (foram dropadas pelo CASCADE)
+-- ============================================================
+-- elas usavam has_company_access(company_id) que foi dropada
+
+create policy "premios_colab_read" on public.premios_colaboradores
+  for select to authenticated using (public.has_company_access(company_id));
+create policy "premios_colab_write" on public.premios_colaboradores
+  for all to authenticated
+  using (public.has_company_access(company_id))
+  with check (public.has_company_access(company_id));
+
+create policy "premios_crit_read" on public.premios_criterios
+  for select to authenticated using (public.has_company_access(company_id));
+create policy "premios_crit_write" on public.premios_criterios
+  for all to authenticated
+  using (public.has_company_access(company_id))
+  with check (public.has_company_access(company_id));
+
+create policy "premios_aval_read" on public.premios_avaliacoes
+  for select to authenticated using (public.has_company_access(company_id));
+create policy "premios_aval_write" on public.premios_avaliacoes
+  for all to authenticated
+  using (public.has_company_access(company_id))
+  with check (public.has_company_access(company_id));
+
+create policy "premios_folha_read" on public.premios_folha
+  for select to authenticated using (public.has_company_access(company_id));
+create policy "premios_folha_write" on public.premios_folha
+  for all to authenticated
+  using (public.has_company_access(company_id))
+  with check (public.has_company_access(company_id));
+
+create policy "premios_contratos_read" on public.premios_contratos
+  for select to authenticated using (public.has_company_access(company_id));
+create policy "premios_contratos_write" on public.premios_contratos
+  for all to authenticated
+  using (public.has_company_access(company_id))
+  with check (public.has_company_access(company_id));
+
+-- ============================================================
+-- 7. Re-cria policies que tambem usavam has_company_access (NR1, etc)
+-- ============================================================
+drop policy if exists "assessments_select" on public.assessments;
+drop policy if exists "assessments_write" on public.assessments;
+create policy "assessments_select" on public.assessments
+  for select to authenticated using (public.has_company_access(company_id));
+create policy "assessments_write" on public.assessments
+  for all to authenticated
+  using (public.has_company_access(company_id))
+  with check (public.has_company_access(company_id));
+
+drop policy if exists "ipar_select" on public.ipar_items;
+drop policy if exists "ipar_write" on public.ipar_items;
+create policy "ipar_select" on public.ipar_items
+  for select to authenticated using (public.has_company_access(company_id));
+create policy "ipar_write" on public.ipar_items
+  for all to authenticated
+  using (public.has_company_access(company_id))
+  with check (public.has_company_access(company_id));
+
+drop policy if exists "action_plan_select" on public.action_plan;
+drop policy if exists "action_plan_write" on public.action_plan;
+create policy "action_plan_select" on public.action_plan
+  for select to authenticated using (public.has_company_access(company_id));
+create policy "action_plan_write" on public.action_plan
+  for all to authenticated
+  using (public.has_company_access(company_id))
+  with check (public.has_company_access(company_id));
+
+drop policy if exists "hazcom_select" on public.hazard_communications;
+drop policy if exists "hazcom_write" on public.hazard_communications;
+create policy "hazcom_select" on public.hazard_communications
+  for select to authenticated using (public.has_company_access(company_id));
+create policy "hazcom_write" on public.hazard_communications
+  for all to authenticated
+  using (public.has_company_access(company_id))
+  with check (public.has_company_access(company_id));
+
+drop policy if exists "premiacao_programs_select" on public.premiacao_programs;
+drop policy if exists "premiacao_programs_write" on public.premiacao_programs;
+create policy "premiacao_programs_select" on public.premiacao_programs
+  for select to authenticated using (public.has_company_access(company_id));
+create policy "premiacao_programs_write" on public.premiacao_programs
+  for all to authenticated
+  using (public.has_company_access(company_id))
+  with check (public.has_company_access(company_id));
+
+drop policy if exists "premiacao_atas_select" on public.premiacao_atas;
+drop policy if exists "premiacao_atas_write" on public.premiacao_atas;
+create policy "premiacao_atas_select" on public.premiacao_atas
+  for select to authenticated using (public.has_company_access(company_id));
+create policy "premiacao_atas_write" on public.premiacao_atas
+  for all to authenticated
+  using (public.has_company_access(company_id))
+  with check (public.has_company_access(company_id));
+
+-- audit_logs: só leitura via gestor, escrita via service role (bypass RLS)
+drop policy if exists "audit_logs_select_gestor" on public.audit_logs;
+create policy "audit_logs_select_gestor" on public.audit_logs
+  for select to authenticated using (public.is_gestor());
 
 -- ============================================================
 -- DONE
