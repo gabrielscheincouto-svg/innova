@@ -7,12 +7,14 @@ import { usePremios } from '../lib/store';
 
 interface ParsedRow {
   full_name: string;
-  cpf: string;
+  cpf: string | null;
   matricula: string | null;
   cargo: string | null;
   setor: string | null;
   data_admissao: string | null;
   salario_base: number | null;
+  data_nascimento?: string | null;
+  _source?: string;
   _error?: string;
 }
 
@@ -168,7 +170,11 @@ export function Colaboradores() {
 }
 
 // ============================================================
-// Modal · importar planilha (Domínio · XLSX · CSV)
+// Modal · importar planilha(s) · multi-formato
+// Formatos suportados:
+//   · Domínio flat (header + linhas)
+//   · Relatório de Empregados (cargo agrupado · Código/Nome)
+//   · XLSX, XLS, CSV
 // ============================================================
 function ImportModal({
   companyId, onClose, onImported,
@@ -176,18 +182,17 @@ function ImportModal({
   const [rows, setRows] = useState<ParsedRow[]>([]);
   const [parsing, setParsing] = useState(false);
   const [importing, setImporting] = useState(false);
-  const [fileName, setFileName] = useState<string>('');
+  const [fileNames, setFileNames] = useState<string[]>([]);
   const toast = useToast();
 
-  // Mapeamento flexível de nomes de coluna (case-insensitive)
-  // Aceita os nomes típicos do Domínio + variações comuns
   const FIELD_MAP: Record<string, string[]> = {
-    full_name: ['nome', 'nome completo', 'colaborador', 'funcionario', 'funcionário'],
+    full_name: ['nome', 'nome completo', 'colaborador', 'funcionario', 'funcionário', 'empregado'],
     cpf: ['cpf', 'documento'],
     matricula: ['matricula', 'matrícula', 'registro', 'codigo', 'código'],
     cargo: ['cargo', 'funcao', 'função', 'ocupacao', 'ocupação', 'cbo'],
     setor: ['setor', 'departamento', 'centro de custo', 'cc', 'depto'],
-    data_admissao: ['admissao', 'admissão', 'data admissao', 'data de admissao', 'data de admissão', 'dt admissao', 'admissao em'],
+    data_admissao: ['admissao', 'admissão', 'data admissao', 'data de admissao', 'data de admissão', 'dt admissao'],
+    data_nascimento: ['data nasc', 'data nascimento', 'nascimento', 'dt nasc'],
     salario_base: ['salario', 'salário', 'salario base', 'salário base', 'sal base', 'vencimento'],
   };
 
@@ -198,7 +203,7 @@ function ImportModal({
   function findColumn(headers: string[], aliases: string[]): number {
     const normalized = headers.map(normalizeHeader);
     for (const a of aliases) {
-      const idx = normalized.indexOf(a);
+      const idx = normalized.findIndex((h) => h === a || h.startsWith(a));
       if (idx >= 0) return idx;
     }
     return -1;
@@ -209,16 +214,13 @@ function ImportModal({
     if (v instanceof Date) return v.toISOString().slice(0, 10);
     const s = String(v).trim();
     if (!s) return null;
-    // dd/mm/yyyy
     const m1 = s.match(/^(\d{1,2})[/\-.](\d{1,2})[/\-.](\d{2,4})$/);
     if (m1) {
       let [, d, m, y] = m1;
       if (y.length === 2) y = (Number(y) > 50 ? '19' : '20') + y;
       return `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
     }
-    // yyyy-mm-dd
-    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
-    // Excel serial date
+    if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
     const num = Number(s);
     if (!isNaN(num) && num > 25569 && num < 80000) {
       const d = new Date((num - 25569) * 86400 * 1000);
@@ -235,61 +237,125 @@ function ImportModal({
     return isNaN(n) ? null : n;
   }
 
-  async function handleFile(e: ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setFileName(file.name);
-    setParsing(true);
-    try {
-      const buf = await file.arrayBuffer();
-      const wb = XLSX.read(buf, { type: 'array', cellDates: true });
-      const ws = wb.Sheets[wb.SheetNames[0]];
-      const data: unknown[][] = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
-      if (data.length < 2) {
-        toast('Planilha vazia ou sem cabeçalho', 'warn');
-        setParsing(false);
-        return;
-      }
-      const headers = (data[0] as unknown[]).map((h) => String(h));
-      const colIdx = {
-        full_name: findColumn(headers, FIELD_MAP.full_name),
-        cpf: findColumn(headers, FIELD_MAP.cpf),
-        matricula: findColumn(headers, FIELD_MAP.matricula),
-        cargo: findColumn(headers, FIELD_MAP.cargo),
-        setor: findColumn(headers, FIELD_MAP.setor),
-        data_admissao: findColumn(headers, FIELD_MAP.data_admissao),
-        salario_base: findColumn(headers, FIELD_MAP.salario_base),
+  // Tenta encontrar a linha do cabeçalho ("Código" + "Nome" em qualquer linha das primeiras 10)
+  function findHeaderRow(data: unknown[][]): { headerIdx: number; cols: Record<string, number> } | null {
+    for (let i = 0; i < Math.min(data.length, 15); i++) {
+      const row = (data[i] as unknown[]).map((c) => String(c || ''));
+      const cols = {
+        full_name: findColumn(row, FIELD_MAP.full_name),
+        cpf: findColumn(row, FIELD_MAP.cpf),
+        matricula: findColumn(row, FIELD_MAP.matricula),
+        cargo: findColumn(row, FIELD_MAP.cargo),
+        setor: findColumn(row, FIELD_MAP.setor),
+        data_admissao: findColumn(row, FIELD_MAP.data_admissao),
+        data_nascimento: findColumn(row, FIELD_MAP.data_nascimento),
+        salario_base: findColumn(row, FIELD_MAP.salario_base),
       };
+      // Cabeçalho válido: tem pelo menos Nome + (Matrícula OU CPF)
+      if (cols.full_name >= 0 && (cols.matricula >= 0 || cols.cpf >= 0)) {
+        return { headerIdx: i, cols };
+      }
+    }
+    return null;
+  }
 
-      if (colIdx.full_name < 0 || colIdx.cpf < 0) {
-        toast('Não encontrei as colunas obrigatórias: Nome e CPF', 'danger');
-        setParsing(false);
-        return;
+  function parseFile(fileName: string, data: unknown[][]): ParsedRow[] {
+    const header = findHeaderRow(data);
+    if (!header) {
+      return [{
+        full_name: '',
+        cpf: null,
+        matricula: null, cargo: null, setor: null,
+        data_admissao: null, salario_base: null,
+        _source: fileName,
+        _error: 'Cabeçalho não encontrado (precisa de Nome + Matrícula/Código ou CPF)',
+      }];
+    }
+    const { headerIdx, cols } = header;
+    const result: ParsedRow[] = [];
+    // Cargo intercalado · formato "Relatório de Empregados"
+    let currentCargo: string | null = null;
+    // Setor às vezes vem como "X - DESCRICAO" — extraímos só o nome
+    const cleanLabel = (s: string) => s.replace(/^\d+\s*[-–]\s*/, '').trim();
+
+    for (let i = headerIdx + 1; i < data.length; i++) {
+      const row = data[i] as unknown[];
+      if (!row || !row.some((c) => c != null && c !== '')) continue;
+
+      // Linha com "Cargo:" — atualiza o cargo atual
+      const cargoLabelIdx = row.findIndex((c) => /cargo\s*:/i.test(String(c || '')));
+      if (cargoLabelIdx >= 0) {
+        // O valor do cargo geralmente vem em outra célula da mesma linha, no formato "1 - BALCONISTA"
+        const cargoValue = row.find((c) => /^\s*\d+\s*[-–]\s*\w/.test(String(c || '')));
+        if (cargoValue) currentCargo = cleanLabel(String(cargoValue));
+        continue;
       }
 
-      const parsed: ParsedRow[] = data.slice(1)
-        .filter((r) => (r as unknown[]).some((c) => c != null && c !== ''))
-        .map((r) => {
-          const row = r as unknown[];
-          const cpf = String(row[colIdx.cpf] || '').replace(/\D/g, '');
-          const full_name = String(row[colIdx.full_name] || '').trim();
-          let _error: string | undefined;
-          if (!full_name) _error = 'Nome vazio';
-          else if (cpf.length !== 11) _error = 'CPF inválido (precisa 11 dígitos)';
-          return {
-            full_name,
-            cpf,
-            matricula: colIdx.matricula >= 0 ? (String(row[colIdx.matricula] || '').trim() || null) : null,
-            cargo: colIdx.cargo >= 0 ? (String(row[colIdx.cargo] || '').trim() || null) : null,
-            setor: colIdx.setor >= 0 ? (String(row[colIdx.setor] || '').trim() || null) : null,
-            data_admissao: colIdx.data_admissao >= 0 ? parseDate(row[colIdx.data_admissao]) : null,
-            salario_base: colIdx.salario_base >= 0 ? parseSalario(row[colIdx.salario_base]) : null,
-            _error,
-          };
+      // Skip linhas de totalização
+      if (row.some((c) => /total de empregad|total geral|subtotal/i.test(String(c || '')))) continue;
+
+      // Tenta ler como linha de dados
+      const nome = String(row[cols.full_name] || '').trim();
+      if (!nome || nome.toLowerCase() === 'nome') continue;
+
+      const cpfRaw = cols.cpf >= 0 ? String(row[cols.cpf] || '').replace(/\D/g, '') : '';
+      const cpf = cpfRaw.length === 11 ? cpfRaw : null;
+      const matriculaRaw = cols.matricula >= 0 ? String(row[cols.matricula] || '').trim() : '';
+      const matricula = matriculaRaw && matriculaRaw !== 'nan' ? matriculaRaw : null;
+
+      // Valida: precisa de pelo menos matrícula OU cpf
+      let _error: string | undefined;
+      if (!matricula && !cpf) {
+        // Se nem matrícula nem CPF, pode ser linha de cabeçalho residual
+        if (!/[a-záéíóúâêôãõç]/i.test(nome)) continue;
+        _error = 'Sem matrícula nem CPF';
+      }
+
+      const cargoFromRow = cols.cargo >= 0 ? String(row[cols.cargo] || '').trim() : '';
+
+      result.push({
+        full_name: nome,
+        cpf,
+        matricula,
+        cargo: cargoFromRow || currentCargo,
+        setor: cols.setor >= 0 ? (String(row[cols.setor] || '').trim() || null) : null,
+        data_admissao: cols.data_admissao >= 0 ? parseDate(row[cols.data_admissao]) : null,
+        data_nascimento: cols.data_nascimento >= 0 ? parseDate(row[cols.data_nascimento]) : null,
+        salario_base: cols.salario_base >= 0 ? parseSalario(row[cols.salario_base]) : null,
+        _source: fileName,
+        _error,
+      });
+    }
+    return result;
+  }
+
+  async function handleFiles(e: ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    setParsing(true);
+    setFileNames(files.map((f) => f.name));
+
+    const allRows: ParsedRow[] = [];
+    for (const file of files) {
+      try {
+        const buf = await file.arrayBuffer();
+        const wb = XLSX.read(buf, { type: 'array', cellDates: true, cellNF: false, raw: false });
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const data: unknown[][] = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '', blankrows: false });
+        const parsed = parseFile(file.name, data);
+        allRows.push(...parsed);
+      } catch (err) {
+        allRows.push({
+          full_name: '', cpf: null, matricula: null, cargo: null, setor: null,
+          data_admissao: null, salario_base: null,
+          _source: file.name,
+          _error: 'Erro lendo arquivo: ' + (err instanceof Error ? err.message : 'desconhecido'),
         });
-      setRows(parsed);
-    } catch (err) {
-      toast('Erro ao ler planilha: ' + (err instanceof Error ? err.message : 'desconhecido'), 'danger');
+      }
+    }
+    setRows(allRows);
+    if (allRows.filter((r) => !r._error).length === 0) {
+      toast('Não consegui ler nenhuma linha válida das planilhas', 'warn');
     }
     setParsing(false);
   }
@@ -302,25 +368,53 @@ function ImportModal({
     }
     setImporting(true);
     const sb = getSupabase();
-    const payload = validRows.map((r) => ({
-      company_id: companyId,
-      full_name: r.full_name,
-      cpf: r.cpf,
-      matricula: r.matricula,
-      cargo: r.cargo,
-      setor: r.setor,
-      data_admissao: r.data_admissao,
-      salario_base: r.salario_base,
-      is_active: true,
-    }));
-    const { error } = await sb.from('premios_colaboradores').upsert(payload as never, { onConflict: 'company_id,cpf' });
-    if (error) {
-      toast(error.message, 'danger');
+    // Determina onConflict apropriado: se tem matrícula usa, senão usa CPF
+    const withMatricula = validRows.filter((r) => r.matricula);
+    const withoutMatricula = validRows.filter((r) => !r.matricula);
+    const errors: string[] = [];
+
+    if (withMatricula.length > 0) {
+      const payload = withMatricula.map((r) => ({
+        company_id: companyId,
+        full_name: r.full_name,
+        cpf: r.cpf,
+        matricula: r.matricula,
+        cargo: r.cargo,
+        setor: r.setor,
+        data_admissao: r.data_admissao,
+        salario_base: r.salario_base,
+        is_active: true,
+      }));
+      const { error } = await sb.from('premios_colaboradores').upsert(payload as never, { onConflict: 'company_id,matricula' });
+      if (error) errors.push(error.message);
+    }
+    if (withoutMatricula.length > 0) {
+      const payload = withoutMatricula.map((r) => ({
+        company_id: companyId,
+        full_name: r.full_name,
+        cpf: r.cpf,
+        matricula: r.matricula,
+        cargo: r.cargo,
+        setor: r.setor,
+        data_admissao: r.data_admissao,
+        salario_base: r.salario_base,
+        is_active: true,
+      }));
+      const { error } = await sb.from('premios_colaboradores').insert(payload as never);
+      if (error) errors.push(error.message);
+    }
+
+    if (errors.length) {
+      toast(errors.join(' · '), 'danger');
       setImporting(false);
       return;
     }
-    await logAudit({ action: 'premios_colaboradores_import', resource_type: 'premios_colaboradores', meta: { count: validRows.length, file: fileName } });
-    toast(`${validRows.length} colaboradores importados`, 'ok');
+    await logAudit({
+      action: 'premios_colaboradores_import',
+      resource_type: 'premios_colaboradores',
+      meta: { count: validRows.length, files: fileNames },
+    });
+    toast(`${validRows.length} colaboradores importados de ${fileNames.length} planilha(s)`, 'ok');
     onImported();
   }
 
@@ -334,7 +428,7 @@ function ImportModal({
           <div className="flex items-center justify-between mb-5">
             <div>
               <h3 className="font-display text-2xl">Importar colaboradores</h3>
-              <p className="text-xs text-ink-500 mt-1">Aceita planilhas do Domínio · .xlsx · .xls · .csv</p>
+              <p className="text-xs text-ink-500 mt-1">Aceita várias planilhas de uma vez · .xlsx · .xls · .csv</p>
             </div>
             <button onClick={onClose} className="text-ink-500 hover:text-ink-900">✕</button>
           </div>
@@ -342,27 +436,25 @@ function ImportModal({
           {rows.length === 0 ? (
             <div className="space-y-4">
               <div className="bg-surface-muted rounded-2xl p-5 text-sm">
-                <div className="text-[10px] uppercase tracking-wider font-bold text-ink-500 mb-2">Colunas reconhecidas (case-insensitive)</div>
-                <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-ink-700">
-                  <div><strong>Nome</strong> · obrigatório</div>
-                  <div><strong>CPF</strong> · obrigatório · 11 dígitos</div>
-                  <div>Matrícula · opcional</div>
-                  <div>Cargo · opcional</div>
-                  <div>Setor / Centro de Custo · opcional</div>
-                  <div>Admissão (dd/mm/aaaa) · opcional</div>
-                  <div>Salário base · opcional</div>
+                <div className="text-[10px] uppercase tracking-wider font-bold text-ink-500 mb-2">Formatos reconhecidos automaticamente</div>
+                <div className="space-y-2 text-ink-700">
+                  <div><strong>Domínio · tabela plana</strong> com cabeçalho na primeira linha (Nome, CPF, Cargo, Setor…)</div>
+                  <div><strong>Relatório de Empregados</strong> com Cargo intercalado e colunas Código + Nome (sem CPF — fica pra preencher depois)</div>
+                </div>
+                <div className="text-[11px] text-ink-500 mt-3 pt-3 border-t border-black/5">
+                  Pelo menos <strong>Matrícula/Código</strong> ou <strong>CPF</strong> é necessário pra identificar cada colaborador.
                 </div>
               </div>
 
               <label className="block border-2 border-dashed border-accent-300 rounded-3xl p-10 text-center cursor-pointer hover:bg-accent-50 transition">
-                <input type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={handleFile} />
+                <input type="file" accept=".xlsx,.xls,.csv" multiple className="hidden" onChange={handleFiles} />
                 {parsing ? (
-                  <div className="flex items-center justify-center gap-3"><Spinner size={20} className="text-accent-500" /> Lendo planilha…</div>
+                  <div className="flex items-center justify-center gap-3"><Spinner size={20} className="text-accent-500" /> Lendo planilha(s)…</div>
                 ) : (
                   <>
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6364E0" strokeWidth="1.5" className="mx-auto mb-3"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    <div className="font-bold text-ink-900">Clique pra selecionar a planilha</div>
-                    <div className="text-xs text-ink-500 mt-1">.xlsx · .xls · .csv até 5MB</div>
+                    <div className="font-bold text-ink-900">Selecionar planilha(s)</div>
+                    <div className="text-xs text-ink-500 mt-1">Segure ⌘/Ctrl pra escolher várias · .xlsx · .xls · .csv</div>
                   </>
                 )}
               </label>
@@ -371,37 +463,39 @@ function ImportModal({
             <div className="space-y-4">
               <div className="flex items-center justify-between flex-wrap gap-3">
                 <div>
-                  <div className="font-bold">{fileName}</div>
-                  <div className="text-xs text-ink-500 mt-0.5">
-                    {rows.length} linha(s) lidas · {validCount} válida(s) · {errorCount > 0 && <span className="text-danger font-semibold">{errorCount} com erro</span>}
+                  <div className="font-bold flex items-center gap-2 flex-wrap">
+                    {fileNames.map((n) => <span key={n} className="pill pill-gray text-[10px]">{n}</span>)}
+                  </div>
+                  <div className="text-xs text-ink-500 mt-1.5">
+                    {rows.length} linha(s) lidas · {validCount} válida(s){errorCount > 0 && <span className="text-danger font-semibold"> · {errorCount} com erro</span>}
                   </div>
                 </div>
-                <button onClick={() => { setRows([]); setFileName(''); }} className="text-xs font-bold text-accent-600 hover:text-accent-700">Trocar arquivo</button>
+                <button onClick={() => { setRows([]); setFileNames([]); }} className="text-xs font-bold text-accent-600 hover:text-accent-700">Trocar arquivos</button>
               </div>
 
-              <div className="border border-black/10 rounded-2xl overflow-x-auto max-h-[50vh]">
+              <div className="border border-black/10 rounded-2xl overflow-x-auto max-h-[55vh]">
                 <table className="data-table">
                   <thead className="sticky top-0 bg-white">
                     <tr>
-                      <th>Status</th><th>Nome</th><th>CPF</th><th>Matr.</th><th>Cargo</th><th>Setor</th><th>Admissão</th><th>Salário</th>
+                      <th>Status</th><th>Origem</th><th>Nome</th><th>Matr.</th><th>CPF</th><th>Cargo</th><th>Admissão</th><th>Salário</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {rows.slice(0, 50).map((r, i) => (
+                    {rows.slice(0, 100).map((r, i) => (
                       <tr key={i} className={r._error ? 'bg-danger/5' : ''}>
                         <td>{r._error ? <span className="text-danger text-[10px] font-bold">⚠ {r._error}</span> : <span className="text-ok text-[10px] font-bold">✓ ok</span>}</td>
+                        <td className="text-[10px] text-ink-500">{r._source || '—'}</td>
                         <td className="text-xs font-semibold">{r.full_name || '—'}</td>
-                        <td className="text-xs">{r.cpf || '—'}</td>
                         <td className="text-xs">{r.matricula || '—'}</td>
+                        <td className="text-xs">{r.cpf || <span className="text-ink-300">—</span>}</td>
                         <td className="text-xs">{r.cargo || '—'}</td>
-                        <td className="text-xs">{r.setor || '—'}</td>
                         <td className="text-xs">{r.data_admissao || '—'}</td>
                         <td className="text-xs">{r.salario_base ? `R$ ${r.salario_base.toLocaleString('pt-BR')}` : '—'}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
-                {rows.length > 50 && <div className="text-center text-xs text-ink-500 py-3 border-t">+{rows.length - 50} linha(s) não mostradas no preview · serão importadas</div>}
+                {rows.length > 100 && <div className="text-center text-xs text-ink-500 py-3 border-t">+{rows.length - 100} linha(s) não mostradas · serão importadas</div>}
               </div>
 
               <div className="flex gap-3 justify-end pt-2">
