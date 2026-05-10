@@ -136,28 +136,49 @@ tailwind.config = {
 
   <div class="relative max-w-7xl mx-auto px-6 lg:px-10 pt-32 pb-20 lg:pt-40 lg:pb-28">
 
-    <!-- Linha de status discreta no topo · sem firula -->
+    <!-- Linha de status discreta no topo -->
     <div class="flex items-center gap-3 mb-12 text-[11px] uppercase tracking-[0.22em] font-extrabold">
       <span class="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full pl-3 pr-4 py-1.5"><span class="w-1.5 h-1.5 rounded-full bg-warn animate-pulse"></span><span class="text-white">NR-1 punitiva · em vigor</span></span>
       <span class="text-white/40 hidden md:inline">·</span>
       <span class="text-white/60 hidden md:inline">3 produtos · 12 empresas atendidas</span>
     </div>
 
-    <h1 class="font-display text-5xl lg:text-[104px] leading-[0.96] tracking-tight max-w-5xl">
-      Todos vendem o laudo.<br />
-      <span class="italic text-white/85">A gente vende <span class="text-white">prevenção</span>.</span>
-    </h1>
-    <p class="mt-10 text-lg lg:text-xl text-white/85 max-w-2xl leading-relaxed">
-      Ecossistema que detecta o risco antes que vire afastamento, autuação ou processo. Plataforma + Controle de Disciplina mensal — não é só o documento assinado, é o ciclo de prevenção rodando.
-    </p>
-    <div class="mt-10 flex flex-wrap gap-3 items-center">
-      <a href="#produtos" class="bg-white text-accent-700 hover:bg-accent-50 rounded-full px-6 py-3.5 font-extrabold text-sm inline-flex items-center gap-2 shadow-lg shadow-black/10">
-        Conhecer os produtos
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
-      <a href="#contato" class="bg-white/10 hover:bg-white/15 border border-white/25 backdrop-blur-sm rounded-full px-6 py-3.5 font-bold text-sm inline-flex items-center gap-2">
-        Falar com time comercial
-      </a>
+    <!-- Split: texto à esquerda, foto à direita -->
+    <div class="grid lg:grid-cols-12 gap-x-10 gap-y-12 items-center">
+      <div class="lg:col-span-7">
+        <h1 class="font-display text-5xl lg:text-[84px] leading-[0.96] tracking-tight">
+          Todos vendem o laudo.<br />
+          <span class="italic text-white/85">A gente vende <span class="text-white">prevenção</span>.</span>
+        </h1>
+        <p class="mt-8 lg:mt-10 text-lg text-white/85 max-w-xl leading-relaxed">
+          Ecossistema que detecta o risco antes que vire afastamento, autuação ou processo. Plataforma + Controle de Disciplina mensal — não é só o documento assinado, é o ciclo de prevenção rodando.
+        </p>
+        <div class="mt-10 flex flex-wrap gap-3 items-center">
+          <a href="#produtos" class="bg-white text-accent-700 hover:bg-accent-50 rounded-full px-6 py-3.5 font-extrabold text-sm inline-flex items-center gap-2 shadow-lg shadow-black/10">
+            Conhecer os produtos
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#contato" class="bg-white/10 hover:bg-white/15 border border-white/25 backdrop-blur-sm rounded-full px-6 py-3.5 font-bold text-sm inline-flex items-center gap-2">
+            Falar com time comercial
+          </a>
+        </div>
+      </div>
+
+      <!-- Imagem do metalurgista · no hero -->
+      <div class="lg:col-span-5">
+        <figure class="relative aspect-[3/4] lg:aspect-[4/5] rounded-3xl overflow-hidden bg-ink-900/40 ring-1 ring-white/15 shadow-2xl shadow-ink-900/40">
+          <img
+            src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1200&q=85&auto=format&fit=crop&crop=entropy"
+            alt="Operário em ambiente industrial · metalurgia"
+            class="absolute inset-0 w-full h-full object-cover"
+            loading="eager"
+          />
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink-900/85 to-transparent p-5 pt-12">
+            <div class="text-[10px] uppercase tracking-[0.25em] font-extrabold text-warn mb-1.5">Operação real</div>
+            <div class="font-display text-lg lg:text-xl text-white leading-tight">12 empresas brasileiras · da agricultura à metalurgia</div>
+          </div>
+        </figure>
+      </div>
     </div>
 
     <!-- Floating product mini-cards -->
@@ -184,42 +205,20 @@ tailwind.config = {
   </div>
 </section>
 
-<!-- ============ REALIDADE · fotografia · contexto humano ============ -->
-<section class="relative">
-
-  <!-- Imagem 1 · full-bleed · operação real -->
-  <div class="relative h-[60vh] lg:h-[78vh] overflow-hidden bg-ink-900">
-    <img
-      src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=2000&q=80&auto=format&fit=crop&crop=entropy"
-      alt="Equipe de trabalho em reunião de operações"
-      class="absolute inset-0 w-full h-full object-cover"
-      loading="lazy"
-    />
-    <div class="absolute inset-0 bg-gradient-to-t from-ink-900/85 via-ink-900/30 to-transparent"></div>
-    <div class="absolute inset-0 bg-gradient-to-r from-ink-900/60 to-transparent"></div>
-
-    <!-- legenda editorial sobreposta -->
-    <div class="absolute bottom-0 left-0 right-0">
-      <div class="max-w-7xl mx-auto px-6 lg:px-12 pb-12 lg:pb-16">
-        <div class="grid lg:grid-cols-12 gap-x-12 gap-y-6 items-end">
-          <div class="lg:col-span-7 text-white">
-            <div class="text-[11px] uppercase tracking-[0.25em] font-extrabold text-warn mb-4">Quem usa Innova</div>
-            <h2 class="font-display text-4xl lg:text-6xl leading-[1.0] tracking-tight">
-              12 empresas brasileiras.<br />Da agricultura à metalurgia.
-            </h2>
-          </div>
-          <div class="lg:col-span-5 text-white/80 text-[15px] leading-relaxed">
-            Operário, gestor SST, RH e diretoria — cada um com a sua janela do mesmo sistema. Visita mensal de campo, ata documentada, plano de ação rodando. Não é só software.
-          </div>
-        </div>
+<!-- ============ REALIDADE · 3 fotos contextuais ============ -->
+<section class="relative bg-white py-16 lg:py-24">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="grid lg:grid-cols-12 gap-x-12 gap-y-8 items-end mb-10 lg:mb-14">
+      <div class="lg:col-span-2 hidden lg:block">
+        <div class="text-[10px] uppercase tracking-[0.3em] font-extrabold text-ink-500">Quem usa</div>
+      </div>
+      <div class="lg:col-span-10">
+        <h2 class="font-display text-[36px] lg:text-5xl leading-[1.0] tracking-tight text-ink-900">
+          Operário, gestor SST, RH e diretoria — <span class="italic text-accent-600">cada um com a sua janela do mesmo sistema.</span>
+        </h2>
       </div>
     </div>
-  </div>
-
-  <!-- 3 fotos em grid · setores diferentes -->
-  <div class="bg-white py-16 lg:py-20">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12">
-      <div class="grid lg:grid-cols-3 gap-5">
+    <div class="grid lg:grid-cols-3 gap-5">
 
         <figure class="relative aspect-[4/5] rounded-3xl overflow-hidden bg-ink-900 group">
           <img
@@ -263,7 +262,6 @@ tailwind.config = {
           </figcaption>
         </figure>
 
-      </div>
     </div>
   </div>
 </section>

@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState, type FormEvent, type ChangeEvent } from 'react';
-import * as XLSX from 'xlsx';
 import { getSupabase, logAudit, type PremiosColaborador } from '@innova/supabase';
 import { Spinner, useToast, useConfirm } from '@innova/ui';
 import { usePremios } from '../lib/store';
@@ -354,6 +353,9 @@ function ImportModal({
     if (!files.length) return;
     setParsing(true);
     setFileNames(files.map((f) => f.name));
+
+    // Dynamic import · só carrega XLSX (450KB) quando o usuário importa
+    const XLSX = await import('xlsx');
 
     const allRows: ParsedRow[] = [];
     for (const file of files) {
