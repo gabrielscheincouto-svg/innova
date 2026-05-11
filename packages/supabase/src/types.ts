@@ -174,6 +174,7 @@ export interface PremiosColaborador {
   matricula: string | null;
   cargo: string | null;
   setor: string | null;
+  filial: string | null;
   data_admissao: string | null;
   data_nascimento: string | null;
   salario_base: number | null;

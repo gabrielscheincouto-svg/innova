@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState, type FormEvent, type ChangeEvent } from 'react';
+import { useEffect, useMemo, useState, type FormEvent, type ChangeEvent } from 'react';
 import { getSupabase, logAudit, type PremiosColaborador } from '@innova/supabase';
 import { Spinner, useToast, useConfirm } from '@innova/ui';
 import { usePremios } from '../lib/store';
@@ -10,6 +10,7 @@ interface ParsedRow {
   matricula: string | null;
   cargo: string | null;
   setor: string | null;
+  filial: string | null;
   data_admissao: string | null;
   salario_base: number | null;
   data_nascimento?: string | null;
@@ -22,6 +23,8 @@ export function Colaboradores() {
   const [list, setList] = useState<PremiosColaborador[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [sortKey, setSortKey] = useState<string>('full_name');
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   const [editing, setEditing] = useState<PremiosColaborador | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showImport, setShowImport] = useState(false);
@@ -47,6 +50,32 @@ export function Colaboradores() {
   const filtered = list.filter((c) =>
     !search || c.full_name.toLowerCase().includes(search.toLowerCase()) || (c.cpf || '').includes(search.replace(/\D/g, ''))
   );
+
+  const sorted = useMemo(() => {
+    const arr = [...filtered];
+    const dir = sortDir === 'asc' ? 1 : -1;
+    arr.sort((a, b) => {
+      const va = (((a as any)[sortKey] ?? '') as string | number).toString().toLowerCase();
+      const vb = (((b as any)[sortKey] ?? '') as string | number).toString().toLowerCase();
+      // tenta como número primeiro
+      const na = Number((a as any)[sortKey]);
+      const nb = Number((b as any)[sortKey]);
+      if (!isNaN(na) && !isNaN(nb) && va !== '' && vb !== '') return (na - nb) * dir;
+      if (va === '' && vb !== '') return 1;
+      if (vb === '' && va !== '') return -1;
+      return va.localeCompare(vb, 'pt-BR') * dir;
+    });
+    return arr;
+  }, [filtered, sortKey, sortDir]);
+
+  function toggleSort(key: string) {
+    if (sortKey === key) setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
+    else { setSortKey(key); setSortDir('asc'); }
+  }
+  function sortIcon(key: string) {
+    if (sortKey !== key) return <span className="text-ink-300 ml-1">⇅</span>;
+    return <span className="text-accent-600 ml-1">{sortDir === 'asc' ? '▲' : '▼'}</span>;
+  }
 
   async function handleToggleActive(c: PremiosColaborador) {
     const sb = getSupabase();
@@ -120,12 +149,21 @@ export function Colaboradores() {
           <table className="data-table">
             <thead>
               <tr>
-                <th>Nome</th><th>CPF</th><th>Matrícula</th><th>Cargo</th><th>Setor</th><th className="text-center">Prêmio</th><th>Status</th><th></th>
+                <th><button onClick={() => toggleSort('full_name')} className="font-bold hover:text-accent-700">Nome{sortIcon('full_name')}</button></th>
+                <th>CPF</th>
+                <th><button onClick={() => toggleSort('matricula')} className="font-bold hover:text-accent-700">Matrícula{sortIcon('matricula')}</button></th>
+                <th><button onClick={() => toggleSort('cargo')} className="font-bold hover:text-accent-700">Cargo{sortIcon('cargo')}</button></th>
+                <th><button onClick={() => toggleSort('filial')} className="font-bold hover:text-accent-700">Filial{sortIcon('filial')}</button></th>
+                <th><button onClick={() => toggleSort('data_admissao')} className="font-bold hover:text-accent-700">Admissão · tempo de casa{sortIcon('data_admissao')}</button></th>
+                <th className="text-right"><button onClick={() => toggleSort('salario_base')} className="font-bold hover:text-accent-700">Salário{sortIcon('salario_base')}</button></th>
+                <th className="text-center">Prêmio</th>
+                <th>Status</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              {filtered.map((c) => {
-                const elegivel = (c as any).elegivel_premio !== false; // default true se null/undefined
+              {sorted.map((c) => {
+                const elegivel = (c as any).elegivel_premio !== false;
                 return (
                 <tr key={c.id}>
                   <td>
@@ -139,7 +177,20 @@ export function Colaboradores() {
                   <td className="text-xs">{formatCPF(c.cpf)}</td>
                   <td className="text-xs">{c.matricula || '—'}</td>
                   <td className="text-xs">{c.cargo || '—'}</td>
-                  <td className="text-xs">{c.setor || '—'}</td>
+                  <td className="text-xs">{(c as any).filial || c.setor || <span className="text-ink-300">—</span>}</td>
+                  <td className="text-xs">
+                    {c.data_admissao ? (
+                      <div className="leading-tight">
+                        <div className="font-semibold">{formatDateBR(c.data_admissao)}</div>
+                        <div className="text-[10px] text-ink-500">{formatTempoCasa(c.data_admissao)}</div>
+                      </div>
+                    ) : <span className="text-ink-300">—</span>}
+                  </td>
+                  <td className="text-xs text-right whitespace-nowrap">
+                    {c.salario_base != null ? (
+                      <span className="font-semibold">{Number(c.salario_base).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                    ) : <span className="text-ink-300">—</span>}
+                  </td>
                   <td className="text-center">
                     <button
                       onClick={() => handleToggleElegivel(c)}
@@ -209,6 +260,7 @@ function ImportModal({
     matricula: ['matricula', 'matrícula', 'registro', 'codigo', 'código'],
     cargo: ['cargo', 'funcao', 'função', 'ocupacao', 'ocupação', 'cbo'],
     setor: ['setor', 'departamento', 'centro de custo', 'cc', 'depto'],
+    filial: ['filial', 'unidade', 'loja', 'estabelecimento', 'sucursal'],
     data_admissao: ['admissao', 'admissão', 'data admissao', 'data de admissao', 'data de admissão', 'dt admissao'],
     data_nascimento: ['data nasc', 'data nascimento', 'nascimento', 'dt nasc'],
     salario_base: ['salario', 'salário', 'salario base', 'salário base', 'sal base', 'vencimento'],
@@ -265,6 +317,7 @@ function ImportModal({
         matricula: findColumn(row, FIELD_MAP.matricula),
         cargo: findColumn(row, FIELD_MAP.cargo),
         setor: findColumn(row, FIELD_MAP.setor),
+        filial: findColumn(row, FIELD_MAP.filial),
         data_admissao: findColumn(row, FIELD_MAP.data_admissao),
         data_nascimento: findColumn(row, FIELD_MAP.data_nascimento),
         salario_base: findColumn(row, FIELD_MAP.salario_base),
@@ -283,7 +336,7 @@ function ImportModal({
       return [{
         full_name: '',
         cpf: null,
-        matricula: null, cargo: null, setor: null,
+        matricula: null, cargo: null, setor: null, filial: null,
         data_admissao: null, salario_base: null,
         _source: fileName,
         _error: 'Cabeçalho não encontrado (precisa de Nome + Matrícula/Código ou CPF)',
@@ -337,6 +390,7 @@ function ImportModal({
         matricula,
         cargo: cargoFromRow || currentCargo,
         setor: cols.setor >= 0 ? (String(row[cols.setor] || '').trim() || null) : null,
+        filial: cols.filial >= 0 ? (String(row[cols.filial] || '').trim() || null) : null,
         data_admissao: cols.data_admissao >= 0 ? parseDate(row[cols.data_admissao]) : null,
         data_nascimento: cols.data_nascimento >= 0 ? parseDate(row[cols.data_nascimento]) : null,
         salario_base: cols.salario_base >= 0 ? parseSalario(row[cols.salario_base]) : null,
@@ -400,7 +454,7 @@ function ImportModal({
         // Não conseguiu ler de nenhuma forma
         if (data.length === 0) {
           allRows.push({
-            full_name: '', cpf: null, matricula: null, cargo: null, setor: null,
+            full_name: '', cpf: null, matricula: null, cargo: null, setor: null, filial: null,
             data_admissao: null, salario_base: null,
             _source: file.name,
             _error: 'Formato XLS muito antigo. Abra no Excel/Numbers, escolha Salvar Como → .xlsx, e tente de novo.',
@@ -412,7 +466,7 @@ function ImportModal({
         allRows.push(...parsed);
       } catch (err) {
         allRows.push({
-          full_name: '', cpf: null, matricula: null, cargo: null, setor: null,
+          full_name: '', cpf: null, matricula: null, cargo: null, setor: null, filial: null,
           data_admissao: null, salario_base: null,
           _source: file.name,
           _error: 'Erro lendo arquivo: ' + (err instanceof Error ? err.message : 'desconhecido'),
@@ -447,6 +501,7 @@ function ImportModal({
         matricula: r.matricula,
         cargo: r.cargo,
         setor: r.setor,
+        filial: r.filial,
         data_admissao: r.data_admissao,
         data_nascimento: r.data_nascimento ?? null,
         salario_base: r.salario_base,
@@ -463,6 +518,7 @@ function ImportModal({
         matricula: r.matricula,
         cargo: r.cargo,
         setor: r.setor,
+        filial: r.filial,
         data_admissao: r.data_admissao,
         data_nascimento: r.data_nascimento ?? null,
         salario_base: r.salario_base,
@@ -590,6 +646,7 @@ function ColaboradorForm({
     matricula: initial?.matricula || '',
     cargo: initial?.cargo || '',
     setor: initial?.setor || '',
+    filial: (initial as any)?.filial || '',
     data_admissao: initial?.data_admissao || '',
     data_nascimento: (initial as any)?.data_nascimento || '',
     salario_base: initial?.salario_base?.toString() || '',
@@ -629,6 +686,7 @@ function ColaboradorForm({
       matricula: form.matricula || null,
       cargo: form.cargo || null,
       setor: form.setor || null,
+      filial: form.filial || null,
       notes: form.notes || null,
       company_id: companyId,
     };
@@ -683,7 +741,7 @@ function ColaboradorForm({
                 <input className="input" value={form.matricula} onChange={(e) => setForm({ ...form, matricula: e.target.value })} />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div>
                 <label className="label">Cargo</label>
                 <input className="input" value={form.cargo} onChange={(e) => setForm({ ...form, cargo: e.target.value })} placeholder="Operador" />
@@ -691,6 +749,10 @@ function ColaboradorForm({
               <div>
                 <label className="label">Setor</label>
                 <input className="input" value={form.setor} onChange={(e) => setForm({ ...form, setor: e.target.value })} placeholder="Logística" />
+              </div>
+              <div>
+                <label className="label">Filial</label>
+                <input className="input" value={form.filial} onChange={(e) => setForm({ ...form, filial: e.target.value })} placeholder="Matriz / Filial 1" />
               </div>
             </div>
             <div className="grid grid-cols-3 gap-4">
@@ -772,4 +834,31 @@ function formatCPF(c: string | null | undefined) {
   if (!c) return '—';
   const v = c.replace(/\D/g, '').padStart(11, '0');
   return `${v.slice(0,3)}.${v.slice(3,6)}.${v.slice(6,9)}-${v.slice(9,11)}`;
+}
+
+function formatDateBR(d: string | null | undefined): string {
+  if (!d) return '—';
+  try { return new Date(d + 'T12:00:00').toLocaleDateString('pt-BR'); }
+  catch { return d; }
+}
+
+// "3 anos e 4 meses" / "11 meses" / "1 ano"
+function formatTempoCasa(dataAdmissao: string | null | undefined): string {
+  if (!dataAdmissao) return '—';
+  const adm = new Date(dataAdmissao + 'T12:00:00');
+  if (isNaN(adm.getTime())) return '—';
+  const hoje = new Date();
+  if (adm > hoje) return 'admissão futura';
+  let anos = hoje.getFullYear() - adm.getFullYear();
+  let meses = hoje.getMonth() - adm.getMonth();
+  if (hoje.getDate() < adm.getDate()) meses -= 1;
+  if (meses < 0) { anos -= 1; meses += 12; }
+  if (anos === 0 && meses === 0) {
+    const dias = Math.floor((hoje.getTime() - adm.getTime()) / (1000 * 60 * 60 * 24));
+    return `${dias} dia${dias === 1 ? '' : 's'}`;
+  }
+  const partes: string[] = [];
+  if (anos > 0) partes.push(`${anos} ano${anos === 1 ? '' : 's'}`);
+  if (meses > 0) partes.push(`${meses} ${meses === 1 ? 'mês' : 'meses'}`);
+  return partes.join(' e ');
 }
