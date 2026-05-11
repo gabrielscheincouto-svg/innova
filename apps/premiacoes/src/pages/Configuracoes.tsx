@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth, updatePassword } from '@innova/auth';
 import { Spinner, useToast } from '@innova/ui';
-import { getSupabase, type Company } from '@innova/supabase';
+import { getSupabase, METODOLOGIA_PADRAO, type Company, type MetodologiaPremio } from '@innova/supabase';
 import { usePremios } from '../lib/store';
 
 export function Configuracoes() {
@@ -67,6 +67,8 @@ export function Configuracoes() {
         )}
       </div>
 
+      <MetodologiaSection currentCompanyId={currentCompanyId} />
+
       <div className="card">
         <h3 className="font-extrabold text-base mb-4">Sua conta</h3>
         <div className="grid grid-cols-2 gap-4 text-sm">
@@ -101,6 +103,110 @@ function Field({ label, value }: { label: string; value?: string | null }) {
     <div>
       <div className="text-[10px] uppercase tracking-wider text-ink-500 font-bold">{label}</div>
       <div className="font-bold mt-1">{value || '—'}</div>
+    </div>
+  );
+}
+
+function MetodologiaSection({ currentCompanyId }: { currentCompanyId: string | null }) {
+  const [met, setMet] = useState<MetodologiaPremio>(METODOLOGIA_PADRAO);
+  const [isCustom, setIsCustom] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const toast = useToast();
+
+  useEffect(() => {
+    if (!currentCompanyId) return;
+    (async () => {
+      setLoading(true);
+      const sb = getSupabase();
+      const { data } = await sb.from('companies').select('metodologia_premio').eq('id', currentCompanyId).maybeSingle();
+      const m = (data as any)?.metodologia_premio as MetodologiaPremio | null;
+      if (m && m.scale) {
+        setMet(m);
+        setIsCustom(true);
+      } else {
+        setMet(METODOLOGIA_PADRAO);
+        setIsCustom(false);
+      }
+      setLoading(false);
+    })();
+  }, [currentCompanyId]);
+
+  function setPercent(min_media: number, percent: number) {
+    setMet((prev) => ({
+      ...prev,
+      scale: prev.scale.map((s) => (s.min_media === min_media ? { ...s, percent } : s)),
+    }));
+  }
+
+  async function salvar() {
+    if (!currentCompanyId) return;
+    setSaving(true);
+    const sb = getSupabase();
+    const payload = isCustom ? met : null;
+    const { error } = await sb.from('companies').update({ metodologia_premio: payload } as never).eq('id', currentCompanyId);
+    setSaving(false);
+    if (error) toast(error.message, 'danger');
+    else toast(isCustom ? 'Metodologia salva' : 'Voltou para o padrão', 'ok');
+  }
+
+  function resetParaPadrao() {
+    setMet(METODOLOGIA_PADRAO);
+  }
+
+  if (!currentCompanyId) {
+    return (
+      <div className="card">
+        <h3 className="font-extrabold text-base mb-1">Metodologia padrão da empresa</h3>
+        <p className="text-xs text-ink-500">Selecione uma empresa acima primeiro.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="card">
+      <div className="flex items-start justify-between gap-4 mb-2">
+        <div>
+          <h3 className="font-extrabold text-base">Metodologia padrão da empresa</h3>
+          <p className="text-xs text-ink-500 mt-1 max-w-2xl">
+            Define como a média do colaborador vira % do teto. Vale pra todos os colaboradores que <strong>não têm metodologia personalizada</strong> no cadastro. Padrão Innova: 3 → 60% · 4 → 80% · 5 → 100% · &lt;3 → 0.
+          </p>
+        </div>
+        <label className="flex items-center gap-2 cursor-pointer text-xs font-bold whitespace-nowrap">
+          <input type="checkbox" checked={isCustom} onChange={(e) => setIsCustom(e.target.checked)} className="w-4 h-4" />
+          Personalizar
+        </label>
+      </div>
+
+      {loading ? (
+        <Spinner size={20} className="text-accent-500" />
+      ) : (
+        <>
+          <div className={`grid grid-cols-2 lg:grid-cols-4 gap-3 mt-3 ${!isCustom ? 'opacity-50 pointer-events-none' : ''}`}>
+            <div>
+              <label className="label">Média 5 → % do teto</label>
+              <input className="input" type="number" min="0" max="200" value={met.scale.find((s) => s.min_media === 5)?.percent ?? 100} onChange={(e) => setPercent(5, Number(e.target.value))} />
+            </div>
+            <div>
+              <label className="label">Média 4 → %</label>
+              <input className="input" type="number" min="0" max="200" value={met.scale.find((s) => s.min_media === 4)?.percent ?? 80} onChange={(e) => setPercent(4, Number(e.target.value))} />
+            </div>
+            <div>
+              <label className="label">Média 3 → %</label>
+              <input className="input" type="number" min="0" max="200" value={met.scale.find((s) => s.min_media === 3)?.percent ?? 60} onChange={(e) => setPercent(3, Number(e.target.value))} />
+            </div>
+            <div>
+              <label className="label">Mínimo p/ ganhar prêmio</label>
+              <input className="input" type="number" step="0.1" min="0" max="5" value={met.min_score} onChange={(e) => setMet({ ...met, min_score: Number(e.target.value) })} />
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 mt-4">
+            <button onClick={salvar} disabled={saving} className="btn btn-primary disabled:opacity-50">{saving ? <Spinner size={14} /> : 'Salvar metodologia'}</button>
+            {isCustom && <button onClick={resetParaPadrao} className="btn btn-ghost text-xs">Restaurar padrão Innova</button>}
+          </div>
+        </>
+      )}
     </div>
   );
 }

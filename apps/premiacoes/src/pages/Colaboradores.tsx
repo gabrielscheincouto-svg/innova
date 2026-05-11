@@ -429,6 +429,7 @@ function ImportModal({
         cargo: r.cargo,
         setor: r.setor,
         data_admissao: r.data_admissao,
+        data_nascimento: r.data_nascimento ?? null,
         salario_base: r.salario_base,
         is_active: true,
       }));
@@ -444,6 +445,7 @@ function ImportModal({
         cargo: r.cargo,
         setor: r.setor,
         data_admissao: r.data_admissao,
+        data_nascimento: r.data_nascimento ?? null,
         salario_base: r.salario_base,
         is_active: true,
       }));
@@ -570,6 +572,7 @@ function ColaboradorForm({
     cargo: initial?.cargo || '',
     setor: initial?.setor || '',
     data_admissao: initial?.data_admissao || '',
+    data_nascimento: (initial as any)?.data_nascimento || '',
     salario_base: initial?.salario_base?.toString() || '',
     premio_max_percent: ((initial as any)?.premio_max_percent ?? 100).toString(),
     met_custom: !!(initial as any)?.metodologia_premio,
@@ -591,6 +594,7 @@ function ColaboradorForm({
       ...form,
       cpf,
       data_admissao: form.data_admissao || null,
+      data_nascimento: form.data_nascimento || null,
       salario_base: form.salario_base ? Number(form.salario_base) : null,
       premio_max_percent: form.premio_max_percent ? Number(form.premio_max_percent) : 100,
       metodologia_premio: form.met_custom ? {
@@ -649,10 +653,14 @@ function ColaboradorForm({
                 <input className="input" value={form.setor} onChange={(e) => setForm({ ...form, setor: e.target.value })} placeholder="Logística" />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div>
                 <label className="label">Data admissão</label>
                 <input className="input" type="date" value={form.data_admissao} onChange={(e) => setForm({ ...form, data_admissao: e.target.value })} />
+              </div>
+              <div>
+                <label className="label">Data nascimento</label>
+                <input className="input" type="date" value={form.data_nascimento} onChange={(e) => setForm({ ...form, data_nascimento: e.target.value })} />
               </div>
               <div>
                 <label className="label">Salário base (R$)</label>

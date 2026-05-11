@@ -132,38 +132,6 @@ export function Folha() {
     load();
   }
 
-  async function aprovarTudo() {
-    const ok = await confirm({
-      title: 'Aprovar a folha inteira?',
-      description: `${rows.length} colaboradores ficarão como aprovados nessa competência.`,
-      confirmLabel: 'Sim, aprovar',
-    });
-    if (!ok || !currentCompanyId) return;
-    const sb = getSupabase();
-    const { error } = await sb.from('premios_folha').update({
-      status: 'aprovada',
-      approved_at: new Date().toISOString(),
-    } as never).eq('company_id', currentCompanyId).eq('competencia', currentCompetencia);
-    if (error) toast(error.message, 'danger');
-    else { toast('Folha aprovada', 'ok'); load(); }
-  }
-
-  async function marcarPaga() {
-    const ok = await confirm({
-      title: 'Marcar tudo como pago?',
-      description: 'Confirma o pagamento dos prêmios dessa competência. Só registra a data — não envia dinheiro.',
-      confirmLabel: 'Sim, marcar como pago',
-    });
-    if (!ok || !currentCompanyId) return;
-    const sb = getSupabase();
-    const { error } = await sb.from('premios_folha').update({
-      status: 'paga',
-      paid_at: new Date().toISOString(),
-    } as never).eq('company_id', currentCompanyId).eq('competencia', currentCompetencia).eq('status', 'aprovada');
-    if (error) toast(error.message, 'danger');
-    else { toast('Folha paga', 'ok'); load(); }
-  }
-
   // FECHAR / REABRIR MÊS · is_locked = true bloqueia edição
   async function fecharMes() {
     if (!currentCompanyId) return;
@@ -207,6 +175,8 @@ export function Folha() {
         matricula: r.colaborador.matricula,
         cargo: r.colaborador.cargo,
         setor: r.colaborador.setor,
+        data_admissao: r.colaborador.data_admissao,
+        data_nascimento: (r.colaborador as any).data_nascimento || null,
         salario_base: Number(r.colaborador.salario_base) || 0,
         premio_max_percent: Number((r.colaborador as any).premio_max_percent ?? 100),
         media: r.media,
@@ -217,7 +187,6 @@ export function Folha() {
   }
 
   const total = rows.reduce((acc, r) => acc + r.premio, 0);
-  const totalAprovadas = rows.filter((r) => r.status === 'aprovada' || r.status === 'paga').length;
   const folhaFechada = rows.length > 0 && rows.every((r) => r.locked);
 
   if (!currentCompanyId) {
@@ -256,8 +225,6 @@ export function Folha() {
           <div className="flex-1" />
           <button onClick={gerarPDF} className="btn btn-ghost" title="Gerar PDF da folha pra enviar à contabilidade">📄 Relatório PDF</button>
           <button onClick={salvarFolha} disabled={saving || folhaFechada} className="btn btn-ghost disabled:opacity-40">{saving ? <Spinner size={16}/> : '💾 Salvar'}</button>
-          <button onClick={aprovarTudo} disabled={folhaFechada} className="btn btn-ghost disabled:opacity-40">✓ Aprovar tudo</button>
-          <button onClick={marcarPaga} disabled={folhaFechada} className="btn btn-ghost disabled:opacity-40">💰 Marcar pago</button>
           {folhaFechada ? (
             <button onClick={reabrirMes} className="btn btn-ghost text-warn">🔓 Reabrir mês</button>
           ) : (
@@ -331,7 +298,7 @@ export function Folha() {
                 </tr>
               );})}
               <tr className="bg-surface-muted font-bold">
-                <td colSpan={4} className="text-right">Total · {totalAprovadas} aprovadas</td>
+                <td colSpan={4} className="text-right">Total da folha</td>
                 <td className="font-extrabold">{total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                 <td></td>
               </tr>

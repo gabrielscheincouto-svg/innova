@@ -9,6 +9,8 @@ export interface PrintFolhaInput {
     matricula: string | null;
     cargo: string | null;
     setor: string | null;
+    data_admissao: string | null;
+    data_nascimento: string | null;
     salario_base: number;
     premio_max_percent: number;
     media: number;
@@ -33,6 +35,33 @@ export function printFolhaRelatorio(input: PrintFolhaInput) {
   const totalSalarios = rows.reduce((acc, r) => acc + r.salario_base, 0);
 
   const fmt = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  // === Aniversariantes do mês da competência ===
+  const mesCompetencia = Number(competencia.slice(5, 7));
+  const aniversariantes = rows
+    .filter((r) => r.data_nascimento && Number(r.data_nascimento.slice(5, 7)) === mesCompetencia)
+    .map((r) => ({
+      nome: r.nome,
+      dia: Number(r.data_nascimento!.slice(8, 10)),
+      cargo: r.cargo,
+    }))
+    .sort((a, b) => a.dia - b.dia);
+
+  // === Aniversário de empresa (tempo de casa) ===
+  const aniversarianteEmpresa = rows
+    .filter((r) => r.data_admissao && Number(r.data_admissao.slice(5, 7)) === mesCompetencia)
+    .map((r) => {
+      const ano = Number(r.data_admissao!.slice(0, 4));
+      const compAno = Number(competencia.slice(0, 4));
+      return {
+        nome: r.nome,
+        dia: Number(r.data_admissao!.slice(8, 10)),
+        anos: compAno - ano,
+        cargo: r.cargo,
+      };
+    })
+    .filter((x) => x.anos > 0)
+    .sort((a, b) => a.dia - b.dia);
 
   const html = `<!doctype html>
 <html lang="pt-BR">
@@ -125,6 +154,24 @@ export function printFolhaRelatorio(input: PrintFolhaInput) {
       <div class="value">${totalSalarios > 0 ? ((total / totalSalarios) * 100).toFixed(1) + '%' : '—'}</div>
     </div>
   </div>
+
+  ${aniversariantes.length > 0 || aniversarianteEmpresa.length > 0 ? `
+  <div style="display:grid; grid-template-columns: ${aniversariantes.length > 0 && aniversarianteEmpresa.length > 0 ? '1fr 1fr' : '1fr'}; gap: 14px; margin: 14px 0 18px;">
+    ${aniversariantes.length > 0 ? `
+      <div style="background: linear-gradient(135deg,#FFF7E6 0%,#FFFAEC 100%); border: 1px solid #FFC600; border-radius: 10px; padding: 14px 18px;">
+        <div style="font-size:8.5pt; text-transform:uppercase; letter-spacing:0.12em; color:#A86F00; font-weight:800;">🎂 Aniversariantes do mês</div>
+        <div style="margin-top:8px; font-size:10pt; line-height:1.6;">
+          ${aniversariantes.map((a) => `<div><strong style="display:inline-block; width:22px;">${String(a.dia).padStart(2, '0')}</strong> ${esc(a.nome)}${a.cargo ? ` <span style="color:#71718A; font-size:9pt;">· ${esc(a.cargo)}</span>` : ''}</div>`).join('')}
+        </div>
+      </div>` : ''}
+    ${aniversarianteEmpresa.length > 0 ? `
+      <div style="background: linear-gradient(135deg,#EEF2FF 0%,#F5F3FF 100%); border: 1px solid #6364E0; border-radius: 10px; padding: 14px 18px;">
+        <div style="font-size:8.5pt; text-transform:uppercase; letter-spacing:0.12em; color:#3F40A8; font-weight:800;">🏢 Aniversário de empresa (tempo de casa)</div>
+        <div style="margin-top:8px; font-size:10pt; line-height:1.6;">
+          ${aniversarianteEmpresa.map((a) => `<div><strong style="display:inline-block; width:22px;">${String(a.dia).padStart(2, '0')}</strong> ${esc(a.nome)} <span style="color:#3F40A8; font-weight:700;">· ${a.anos} ano${a.anos > 1 ? 's' : ''}</span>${a.cargo ? ` <span style="color:#71718A; font-size:9pt;">· ${esc(a.cargo)}</span>` : ''}</div>`).join('')}
+        </div>
+      </div>` : ''}
+  </div>` : ''}
 
   <table>
     <thead>
