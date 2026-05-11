@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { getSupabase, type PremiosColaborador, type PremiosContrato } from '@innova/supabase';
-import { Spinner, useToast } from '@innova/ui';
+import { getSupabase, type PremiosColaborador, type PremiosContrato, type Company } from '@innova/supabase';
+import { Spinner, useToast, useConfirm } from '@innova/ui';
 import { usePremios } from '../lib/store';
+import { printContratoAdesao } from '../lib/printContrato';
 
 interface Row {
   colaborador: PremiosColaborador;
@@ -12,9 +13,11 @@ interface Row {
 export function Contratos() {
   const { currentCompanyId } = usePremios();
   const [rows, setRows] = useState<Row[]>([]);
+  const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
   const [bulking, setBulking] = useState(false);
   const toast = useToast();
+  const confirm = useConfirm();
 
   useEffect(() => { if (currentCompanyId) load(); else setLoading(false); }, [currentCompanyId]);
 
@@ -22,12 +25,14 @@ export function Contratos() {
     if (!currentCompanyId) return;
     setLoading(true);
     const sb = getSupabase();
-    const [{ data: cs, error: csErr }, { data: ct, error: ctErr }] = await Promise.all([
+    const [{ data: cs, error: csErr }, { data: ct, error: ctErr }, { data: cp }] = await Promise.all([
       sb.from('premios_colaboradores').select('*').eq('company_id', currentCompanyId).eq('is_active', true).order('full_name'),
       sb.from('premios_contratos').select('*').eq('company_id', currentCompanyId),
+      sb.from('companies').select('*').eq('id', currentCompanyId).maybeSingle(),
     ]);
     if (csErr) toast(`Erro colaboradores: ${csErr.message}`, 'danger');
     if (ctErr) toast(`Erro contratos: ${ctErr.message}`, 'danger');
+    setCompany((cp || null) as Company | null);
     const colabs = (cs || []) as PremiosColaborador[];
     const contratos = (ct || []) as PremiosContrato[];
     setRows(colabs.map((c) => ({
@@ -71,9 +76,44 @@ export function Contratos() {
     const { error } = await sb.from('premios_contratos').update({
       signed: true,
       signed_at: new Date().toISOString(),
-    }).eq('id', contratoId);
+    } as never).eq('id', contratoId);
     if (error) toast(error.message, 'danger');
     else { toast('Contrato marcado como assinado', 'ok'); load(); }
+  }
+
+  async function desmarcarAssinado(contratoId: string) {
+    const ok = await confirm({
+      title: 'Desmarcar assinatura?',
+      description: 'O contrato voltará para o status "Pendente". A data de assinatura será apagada.',
+      confirmLabel: 'Sim, desmarcar',
+      variant: 'danger',
+    });
+    if (!ok) return;
+    const sb = getSupabase();
+    const { error } = await sb.from('premios_contratos').update({
+      signed: false,
+      signed_at: null,
+    } as never).eq('id', contratoId);
+    if (error) toast(error.message, 'danger');
+    else { toast('Voltou para pendente', 'ok'); load(); }
+  }
+
+  async function excluirContrato(contratoId: string) {
+    const ok = await confirm({
+      title: 'Excluir contrato?',
+      description: 'O contrato será removido. O colaborador volta para o estado "Sem contrato". Não pode ser desfeito.',
+      confirmLabel: 'Sim, excluir',
+      variant: 'danger',
+    });
+    if (!ok) return;
+    const sb = getSupabase();
+    const { error } = await sb.from('premios_contratos').delete().eq('id', contratoId);
+    if (error) toast(error.message, 'danger');
+    else { toast('Contrato excluído', 'ok'); load(); }
+  }
+
+  function imprimir(r: Row) {
+    printContratoAdesao(r.colaborador, r.contrato, company);
   }
 
   if (!currentCompanyId) return (
@@ -122,17 +162,20 @@ export function Contratos() {
         <div className="card">
           <table className="data-table">
             <thead>
-              <tr><th>Colaborador</th><th>CPF</th><th>Contrato</th><th>Assinado em</th><th></th></tr>
+              <tr><th>Colaborador</th><th>CPF</th><th>Situação</th><th>Assinado em</th><th className="text-right">Ações</th></tr>
             </thead>
             <tbody>
               {rows.map((r) => (
                 <tr key={r.colaborador.id}>
-                  <td className="font-bold">{r.colaborador.full_name}</td>
+                  <td className="font-bold">
+                    {r.colaborador.full_name}
+                    <div className="text-[10px] text-ink-500 font-normal">{r.colaborador.cargo || '—'}</div>
+                  </td>
                   <td className="text-xs">{formatCPF(r.colaborador.cpf)}</td>
                   <td>
                     {r.contrato ? (
                       <span className={`pill ${r.contrato.signed ? 'pill-ok' : 'pill-warn'}`}>
-                        {r.contrato.signed ? 'Assinado' : 'Pendente'}
+                        {r.contrato.signed ? '✓ Assinado' : '⏳ Pendente'}
                       </span>
                     ) : (
                       <span className="pill pill-gray">Sem contrato</span>
@@ -142,13 +185,28 @@ export function Contratos() {
                     {r.contrato?.signed_at ? new Date(r.contrato.signed_at).toLocaleDateString('pt-BR') : '—'}
                   </td>
                   <td>
-                    {!r.contrato ? (
-                      <button onClick={() => criarContrato(r.colaborador.id)} className="text-xs font-bold text-accent-600 hover:text-accent-700">+ Criar</button>
-                    ) : !r.contrato.signed ? (
-                      <button onClick={() => marcarAssinado(r.contrato!.id)} className="text-xs font-bold text-ok hover:text-ok/80">✓ Marcar assinado</button>
-                    ) : (
-                      <span className="text-xs text-ink-500">—</span>
-                    )}
+                    <div className="flex items-center gap-3 justify-end whitespace-nowrap">
+                      {!r.contrato ? (
+                        <button onClick={() => criarContrato(r.colaborador.id)} className="text-xs font-bold text-accent-600 hover:text-accent-700">+ Criar</button>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => imprimir(r)}
+                            className="text-xs font-bold text-ink-900 hover:text-accent-700 inline-flex items-center gap-1"
+                            title="Abrir contrato em nova aba para imprimir ou salvar PDF"
+                          >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                            Imprimir
+                          </button>
+                          {!r.contrato.signed ? (
+                            <button onClick={() => marcarAssinado(r.contrato!.id)} className="text-xs font-bold text-ok hover:text-ok/80">✓ Marcar assinado</button>
+                          ) : (
+                            <button onClick={() => desmarcarAssinado(r.contrato!.id)} className="text-xs font-bold text-warn hover:text-warn/80">↺ Desmarcar</button>
+                          )}
+                          <button onClick={() => excluirContrato(r.contrato!.id)} className="text-xs font-bold text-danger/80 hover:text-danger" title="Excluir contrato">✕</button>
+                        </>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
