@@ -53,6 +53,8 @@ tailwind.config = {
     z-index: 0;
   }
   @media (max-width: 1024px) { .hero-deco { font-size: 24rem; } }
+  /* legibilidade · sombra sutil só no h1 e parágrafo do hero pra destacar da foto sem ofuscar */
+  .hero-text-shadow { text-shadow: 0 2px 24px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.35); }
   .product-card { transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s; }
   .product-card:hover { transform: translateY(-8px) rotate(-0.5deg); }
   /* Innova logo bars animation */
@@ -135,9 +137,11 @@ tailwind.config = {
     alt="Metalúrgico esmerilhando peça em chão de fábrica"
     class="absolute inset-0 w-full h-full object-cover"
   />
-  <!-- overlays escuros pra legibilidade do texto -->
-  <div class="absolute inset-0 bg-gradient-to-r from-ink-900/85 via-ink-900/55 to-ink-900/30"></div>
-  <div class="absolute inset-0 bg-gradient-to-t from-ink-900/75 via-transparent to-ink-900/40"></div>
+  <!-- overlays escuros pra legibilidade do texto (mais densos do lado do texto, mantém imagem visível à direita) -->
+  <div class="absolute inset-0 bg-gradient-to-r from-ink-900/95 via-ink-900/75 to-ink-900/20"></div>
+  <div class="absolute inset-0 bg-gradient-to-t from-ink-900/80 via-ink-900/15 to-ink-900/60"></div>
+  <!-- tom roxo de identidade Innova preservado -->
+  <div class="absolute inset-0 bg-gradient-to-br from-accent-900/40 via-transparent to-accent-700/20 mix-blend-multiply"></div>
   <div class="hero-deco hidden md:block">innova</div>
 
   <div class="relative max-w-7xl mx-auto px-6 lg:px-10 pt-32 pb-20 lg:pt-40 lg:pb-28">
@@ -149,11 +153,11 @@ tailwind.config = {
       <span class="text-white/60 hidden md:inline">3 produtos · 12 empresas atendidas</span>
     </div>
 
-    <h1 class="font-display text-5xl lg:text-[104px] leading-[0.96] tracking-tight max-w-5xl">
+    <h1 class="hero-text-shadow font-display text-5xl lg:text-[104px] leading-[0.96] tracking-tight max-w-5xl">
       Todos vendem o laudo.<br />
-      <span class="italic text-white/85">A gente vende <span class="text-white">prevenção</span>.</span>
+      <span class="italic text-white/90">A gente vende <span class="text-white">prevenção</span>.</span>
     </h1>
-    <p class="mt-10 text-lg lg:text-xl text-white/85 max-w-2xl leading-relaxed">
+    <p class="hero-text-shadow mt-10 text-lg lg:text-xl text-white/95 max-w-2xl leading-relaxed">
       Ecossistema que detecta o risco antes que vire afastamento, autuação ou processo. Plataforma + Controle de Disciplina mensal — não é só o documento assinado, é o ciclo de prevenção rodando.
     </p>
     <div class="mt-10 flex flex-wrap gap-3 items-center">
