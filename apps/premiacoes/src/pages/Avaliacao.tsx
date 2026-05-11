@@ -11,6 +11,7 @@ export function Avaliacao() {
   const [avaliacoes, setAvaliacoes] = useState<Map<string, number>>(new Map());
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);
+  const [mesFechado, setMesFechado] = useState(false);
   const toast = useToast();
 
   useEffect(() => { if (currentCompanyId) load(); else setLoading(false); }, [currentCompanyId, currentCompetencia]);
@@ -19,20 +20,28 @@ export function Avaliacao() {
     if (!currentCompanyId) return;
     setLoading(true);
     const sb = getSupabase();
-    const [{ data: cs }, { data: cr }, { data: av }] = await Promise.all([
+    const [{ data: cs }, { data: cr }, { data: av }, { data: fl }] = await Promise.all([
       sb.from('premios_colaboradores').select('*').eq('company_id', currentCompanyId).eq('is_active', true).order('full_name'),
       sb.from('premios_criterios').select('*').eq('company_id', currentCompanyId).eq('is_active', true).order('display_order'),
       sb.from('premios_avaliacoes').select('*').eq('company_id', currentCompanyId).eq('competencia', currentCompetencia),
+      sb.from('premios_folha').select('is_locked').eq('company_id', currentCompanyId).eq('competencia', currentCompetencia),
     ]);
     setColaboradores((cs || []) as PremiosColaborador[]);
     setCriterios((cr || []) as PremiosCriterio[]);
     const map = new Map<string, number>();
     ((av || []) as PremiosAvaliacao[]).forEach((a) => map.set(`${a.colaborador_id}_${a.criterio_id}`, a.score));
     setAvaliacoes(map);
+    // Mês fechado se existir folha gerada E todas as linhas estiverem locked
+    const folhaRows = (fl || []) as Array<{ is_locked: boolean }>;
+    setMesFechado(folhaRows.length > 0 && folhaRows.every((r) => r.is_locked));
     setLoading(false);
   }
 
   async function setScore(colabId: string, critId: string, score: number) {
+    if (mesFechado) {
+      toast('Mês fechado. Reabra na Folha pra editar avaliações.', 'warn');
+      return;
+    }
     const key = `${colabId}_${critId}`;
     setSaving(key);
     const sb = getSupabase();
@@ -86,7 +95,10 @@ export function Avaliacao() {
       <div className="flex items-end justify-between flex-wrap gap-3">
         <div>
           <h1 className="font-display text-4xl">Avaliação mensal</h1>
-          <p className="text-sm text-ink-700 mt-1 capitalize">Competência: <strong>{formatCompetencia(currentCompetencia)}</strong></p>
+          <p className="text-sm text-ink-700 mt-1 capitalize">
+            Competência: <strong>{formatCompetencia(currentCompetencia)}</strong>
+            {mesFechado && <span className="ml-2 pill pill-ok">🔒 Mês fechado</span>}
+          </p>
         </div>
         <div className="flex items-center gap-2 bg-white rounded-2xl border border-black/5 p-1">
           <button onClick={() => setCompetencia(shiftCompetencia(currentCompetencia, -1))} className="w-8 h-8 grid place-items-center rounded-xl hover:bg-surface-muted">‹</button>
@@ -94,6 +106,16 @@ export function Avaliacao() {
           <button onClick={() => setCompetencia(shiftCompetencia(currentCompetencia, 1))} className="w-8 h-8 grid place-items-center rounded-xl hover:bg-surface-muted">›</button>
         </div>
       </div>
+
+      {mesFechado && (
+        <div className="card bg-ok/5 border border-ok/30 flex items-start gap-3 py-4">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2" className="flex-shrink-0 mt-0.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <div className="text-sm">
+            <strong className="text-ok">Mês fechado.</strong> As notas dessa competência estão bloqueadas — espelhando o lock da folha de prêmios.
+            Pra editar de novo, vá em <Link to="/folha" className="text-accent-600 font-bold underline">Folha de prêmios</Link> e clique em <strong>Reabrir mês</strong>.
+          </div>
+        </div>
+      )}
 
       {loading ? (
         <div className="card py-20 grid place-items-center"><Spinner size={28} className="text-accent-500" /></div>
@@ -147,11 +169,11 @@ export function Avaliacao() {
                                 <button
                                   key={n}
                                   onClick={() => setScore(co.id, cr.id, n)}
-                                  disabled={isSaving}
+                                  disabled={isSaving || mesFechado}
                                   className={`w-7 h-7 rounded-md font-extrabold text-[11px] transition ${
                                     selected ? `${cls.sel} scale-110` : cls.idle
-                                  }`}
-                                  title={cr.scale_labels?.[String(n)] || `Nota ${n}`}
+                                  } ${mesFechado && !selected ? 'opacity-30 cursor-not-allowed' : ''} ${mesFechado && selected ? 'opacity-80' : ''}`}
+                                  title={mesFechado ? 'Mês fechado — reabra na Folha pra editar' : (cr.scale_labels?.[String(n)] || `Nota ${n}`)}
                                 >
                                   {n}
                                 </button>
