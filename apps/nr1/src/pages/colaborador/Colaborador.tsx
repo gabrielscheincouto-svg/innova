@@ -95,7 +95,30 @@ export function Colaborador() {
       </header>
 
       <main className="max-w-2xl mx-auto px-5 pt-6 pb-24 animate-fade-in">
-        {stage === 'entrada' && <EntradaStage validation={validation} setValidation={setValidation} onNext={() => setStage('tcle')} />}
+        {stage === 'entrada' && assessment && (
+          <EntradaStage
+            validation={validation}
+            setValidation={setValidation}
+            onNext={async () => {
+              const sb = getSupabase();
+              const cpf = validation.cpf.replace(/\D/g, '');
+              const { data, error } = await sb.rpc('validate_colaborador_public', {
+                p_company_id: assessment.company_id,
+                p_cpf: cpf,
+                p_dob: validation.dob,
+              });
+              if (error) {
+                setValidation({ ...validation, error: 'Erro ao validar. Tente novamente.' });
+                return;
+              }
+              if (!data) {
+                setValidation({ ...validation, error: 'CPF + data de nascimento não conferem. Confirme com o RH.' });
+                return;
+              }
+              setStage('tcle');
+            }}
+          />
+        )}
         {stage === 'tcle' && <TCLEStage agreed={agreed} setAgreed={setAgreed} onBack={() => setStage('entrada')} onNext={() => setStage('choice')} />}
         {stage === 'choice' && <ChoiceStage onCopsoq={() => setStage('copsoq')} onPerigo={() => setStage('perigo')} />}
         {stage === 'copsoq' && assessment && (
@@ -117,7 +140,8 @@ export function Colaborador() {
 
 // ====== Stage components ======
 
-function EntradaStage({ validation, setValidation, onNext }: { validation: { cpf: string; dob: string; error: string }; setValidation: (v: { cpf: string; dob: string; error: string }) => void; onNext: () => void }) {
+function EntradaStage({ validation, setValidation, onNext }: { validation: { cpf: string; dob: string; error: string }; setValidation: (v: { cpf: string; dob: string; error: string }) => void; onNext: () => void | Promise<void> }) {
+  const [submitting, setSubmitting] = useState(false);
   function maskCPF(v: string) {
     const d = v.replace(/\D/g, '').slice(0, 11);
     if (d.length > 9) return `${d.slice(0,3)}.${d.slice(3,6)}.${d.slice(6,9)}-${d.slice(9)}`;
@@ -125,12 +149,13 @@ function EntradaStage({ validation, setValidation, onNext }: { validation: { cpf
     if (d.length > 3) return `${d.slice(0,3)}.${d.slice(3)}`;
     return d;
   }
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const cpf = validation.cpf.replace(/\D/g, '');
     if (cpf.length !== 11) { setValidation({ ...validation, error: 'CPF deve ter 11 dígitos' }); return; }
     if (!validation.dob) { setValidation({ ...validation, error: 'Informe a data de nascimento' }); return; }
-    onNext();
+    setSubmitting(true);
+    try { await onNext(); } finally { setSubmitting(false); }
   }
 
   return (
@@ -178,7 +203,9 @@ function EntradaStage({ validation, setValidation, onNext }: { validation: { cpf
             </div>
           </div>
 
-          <button type="submit" className="w-full btn btn-primary justify-center text-base">Continuar →</button>
+          <button type="submit" disabled={submitting} className="w-full btn btn-primary justify-center text-base disabled:opacity-60">
+            {submitting ? 'Validando…' : 'Continuar →'}
+          </button>
         </form>
       </div>
     </>

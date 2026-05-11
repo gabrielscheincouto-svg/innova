@@ -13,6 +13,7 @@ import { Folha } from './pages/Folha';
 import { Contratos } from './pages/Contratos';
 import { Calculadora } from './pages/Calculadora';
 import { Configuracoes } from './pages/Configuracoes';
+import { Manual } from './pages/Manual';
 
 export default function App() {
   useAuthInit();
@@ -36,6 +37,7 @@ export default function App() {
             <Route path="/contratos" element={<ErrorBoundary><Contratos /></ErrorBoundary>} />
             <Route path="/calculadora" element={<ErrorBoundary><Calculadora /></ErrorBoundary>} />
             <Route path="/configuracoes" element={<ErrorBoundary><Configuracoes /></ErrorBoundary>} />
+            <Route path="/manual" element={<ErrorBoundary><Manual /></ErrorBoundary>} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />

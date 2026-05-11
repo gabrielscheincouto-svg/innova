@@ -7,6 +7,8 @@ import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
 import { Clientes } from './pages/Clientes';
 import { ClienteDetail } from './pages/ClienteDetail';
+import { Colaboradores } from './pages/Colaboradores';
+import { Manual } from './pages/Manual';
 import { Avaliacoes } from './pages/Avaliacoes';
 import { NovaAvaliacao } from './pages/NovaAvaliacao';
 import { IPAR } from './pages/IPAR';
@@ -45,6 +47,7 @@ export default function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/comunicacoes" element={<Comunicacoes />} />
             <Route path="/configuracoes" element={<Configuracoes />} />
+            <Route path="/manual" element={<Manual />} />
 
             {/* Rotas exclusivas do PROPRIETÁRIO (read-only) */}
             <Route element={<ProprietarioOnlyRoute />}>
@@ -57,6 +60,7 @@ export default function App() {
             <Route element={<ProfissionalOnlyRoute />}>
               <Route path="/clientes" element={<Clientes />} />
               <Route path="/clientes/:id" element={<ClienteDetail />} />
+              <Route path="/colaboradores" element={<Colaboradores />} />
               <Route path="/avaliacoes" element={<Avaliacoes />} />
               <Route path="/avaliacoes/nova" element={<NovaAvaliacao />} />
               <Route path="/ipar" element={<IPAR />} />

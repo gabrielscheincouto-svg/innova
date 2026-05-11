@@ -9,6 +9,7 @@ import { Empresas } from './pages/Empresas';
 import { Usuarios } from './pages/Usuarios';
 import { AuditLog } from './pages/AuditLog';
 import { Configuracoes } from './pages/Configuracoes';
+import { Manual } from './pages/Manual';
 
 export default function App() {
   useAuthInit();
@@ -33,6 +34,7 @@ export default function App() {
             <Route path="/usuarios" element={<Usuarios />} />
             <Route path="/auditoria" element={<AuditLog />} />
             <Route path="/configuracoes" element={<Configuracoes />} />
+            <Route path="/manual" element={<Manual />} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
