@@ -13,19 +13,28 @@ interface FolhaRow {
   status: PremiosFolhaStatus;
 }
 
-// teto do prêmio (natureza indenizatória) = salário_base * (1 + adicional/100)
+// teto do prêmio = salário × (premio_max_percent / 100)
+// default premio_max_percent = 100 (até 1× salário)
 function calcPremioMax(c: PremiosColaborador): number {
   const sal = Number(c.salario_base) || 0;
-  const adic = Number((c as any).adicional_percent) || 0;
+  const pct = Number((c as any).premio_max_percent ?? 100);
   if (sal <= 0) return 0;
-  return Number((sal * (1 + adic / 100)).toFixed(2));
+  return Number((sal * (pct / 100)).toFixed(2));
+}
+
+// Prêmio sugerido com base na média ponderada:
+//   nota >= 5    → 100% do teto
+//   nota >= 3    → (nota/5) do teto
+//   nota < 3     → 0
+function calcPremioSugerido(media: number, premioMax: number): number {
+  if (media < 3 || premioMax <= 0) return 0;
+  return Number((premioMax * (media / 5)).toFixed(2));
 }
 
 export function Folha() {
   const { currentCompanyId, currentCompetencia, setCompetencia } = usePremios();
   const [rows, setRows] = useState<FolhaRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [premioBase, setPremioBase] = useState('500');
   const [saving, setSaving] = useState(false);
   const toast = useToast();
   const confirm = useConfirm();
@@ -67,16 +76,13 @@ export function Folha() {
     setLoading(false);
   }
 
-  // calcula prêmio sugerido (linear sobre o premioBase), depois aplica cap
-  // do teto = salario_base × (1 + adicional/100). Sem teto cadastrado, mantém valor sugerido.
+  // Prêmio sugerido por colaborador: teto × (media/5) se media ≥ 3, senão 0.
+  // Teto é o salário × premio_max_percent/100 (cadastro do colaborador).
   function gerarFolha() {
-    const base = Number(premioBase) || 0;
-    setRows((prev) => prev.map((r) => {
-      let sugerido = r.media >= 3 ? Number((base * (r.media / 5)).toFixed(2)) : 0;
-      // se tem teto (salário base cadastrado), respeita
-      if (r.premioMax > 0 && sugerido > r.premioMax) sugerido = r.premioMax;
-      return { ...r, premio: sugerido };
-    }));
+    setRows((prev) => prev.map((r) => ({
+      ...r,
+      premio: calcPremioSugerido(r.media, r.premioMax),
+    })));
   }
 
   async function salvarFolha() {
@@ -86,7 +92,7 @@ export function Folha() {
     if (acimaTeto.length > 0) {
       const ok = await confirm({
         title: `${acimaTeto.length} colaborador(es) acima do teto`,
-        description: `${acimaTeto.slice(0, 3).map((r) => r.colaborador.full_name).join(', ')}${acimaTeto.length > 3 ? '…' : ''}. Valor acima do salário+adicional pode descaracterizar a natureza indenizatória do prêmio em fiscalização. Salvar mesmo assim?`,
+        description: `${acimaTeto.slice(0, 3).map((r) => r.colaborador.full_name).join(', ')}${acimaTeto.length > 3 ? '…' : ''}. Valor acima de salário × %prêmio_máximo cadastrado. Pode descaracterizar a natureza indenizatória do prêmio em fiscalização. Salvar mesmo assim?`,
         confirmLabel: 'Sim, salvar acima do teto',
         variant: 'danger',
       });
@@ -173,20 +179,17 @@ export function Folha() {
       </div>
 
       <div className="card">
-        <div className="flex flex-wrap items-end gap-4">
-          <div>
-            <label className="label">Prêmio base (nota máxima)</label>
-            <input className="input w-40" type="number" step="50" value={premioBase} onChange={(e) => setPremioBase(e.target.value)} />
-          </div>
-          <button onClick={gerarFolha} className="btn btn-ghost">↻ Calcular sugestões</button>
+        <div className="flex flex-wrap items-center gap-3">
+          <button onClick={gerarFolha} className="btn btn-primary">↻ Calcular prêmios automaticamente</button>
           <div className="flex-1" />
-          <button onClick={salvarFolha} disabled={saving} className="btn btn-primary">{saving ? <Spinner size={16}/> : 'Salvar folha'}</button>
+          <button onClick={salvarFolha} disabled={saving} className="btn btn-ghost">{saving ? <Spinner size={16}/> : '💾 Salvar folha'}</button>
           <button onClick={aprovarTudo} className="btn btn-ghost">✓ Aprovar tudo</button>
           <button onClick={marcarPaga} className="btn btn-ghost">💰 Marcar pago</button>
         </div>
-        <p className="text-xs text-ink-500 mt-3">
-          Sugestão = prêmio base × (média / 5). Quem ficou abaixo de 3 zera.
-          O <strong>teto</strong> de cada colaborador é <em>salário × (1 + adicional)</em> — prêmio acima disso pode ser descaracterizado como remuneração.
+        <p className="text-xs text-ink-500 mt-3 leading-relaxed">
+          Cada colaborador tem seu <strong>teto</strong> = salário × <em>% prêmio máximo</em> (configurado em Colaboradores, padrão 100%).
+          A sugestão usa a escala: <strong>nota 5 → 100%</strong> do teto, <strong>4 → 80%</strong>, <strong>3 → 60%</strong>, <strong>abaixo de 3 → 0</strong>.
+          Você pode editar cada valor manualmente, mas se ultrapassar o teto o prêmio perde a natureza indenizatória (Art. 457 §2).
         </p>
       </div>
 
@@ -199,7 +202,7 @@ export function Folha() {
           <table className="data-table">
             <thead>
               <tr>
-                <th>Colaborador</th><th>Setor</th><th>Score</th><th>Teto (sal+adic)</th><th>Prêmio</th><th>Status</th>
+                <th>Colaborador</th><th>Setor</th><th>Score</th><th>Teto (sal × %max)</th><th>Prêmio</th><th>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -209,9 +212,11 @@ export function Folha() {
                 <tr key={r.colaborador.id}>
                   <td className="font-bold">
                     {r.colaborador.full_name}
-                    {Number((r.colaborador as any).adicional_percent) > 0 && (
-                      <span className="ml-2 pill pill-accent text-[10px]">+{Number((r.colaborador as any).adicional_percent)}%</span>
-                    )}
+                    {(() => {
+                      const pct = Number((r.colaborador as any).premio_max_percent ?? 100);
+                      if (pct === 100) return null; // padrão · não polui visual
+                      return <span className={`ml-2 pill text-[10px] ${pct < 100 ? 'pill-gray' : 'pill-accent'}`}>até {pct}%</span>;
+                    })()}
                   </td>
                   <td className="text-xs">{r.colaborador.setor || '—'}</td>
                   <td>
@@ -226,7 +231,7 @@ export function Folha() {
                   </td>
                   <td className="text-xs">
                     {r.premioMax > 0 ? (
-                      <span title={`Salário ${Number(r.colaborador.salario_base).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})} + ${Number((r.colaborador as any).adicional_percent)||0}%`}>
+                      <span title={`Salário ${Number(r.colaborador.salario_base).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})} × ${Number((r.colaborador as any).premio_max_percent ?? 100)}% = teto`}>
                         {r.premioMax.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                       </span>
                     ) : <span className="text-warn font-bold" title="Sem salário cadastrado — sem teto definido">sem teto</span>}

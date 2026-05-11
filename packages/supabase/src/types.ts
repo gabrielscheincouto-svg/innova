@@ -153,7 +153,7 @@ export interface PremiosColaborador {
   data_admissao: string | null;
   data_nascimento: string | null;
   salario_base: number | null;
-  adicional_percent: number; // adicional sobre salário base (%), tipicamente cargo de confiança
+  premio_max_percent: number; // % do salário que o colaborador pode receber como prêmio máximo (nota 5). Default 100.
   is_active: boolean;
   notes: string | null;
   created_at: string;

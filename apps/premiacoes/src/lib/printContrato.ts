@@ -18,6 +18,12 @@ export function printContratoAdesao(
     ? new Date(contrato.contract_date + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
     : new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
 
+  // ----- prêmio máximo individual desse colaborador -----
+  const salarioBase = Number(colab.salario_base) || 0;
+  const premioMaxPct = Number((colab as any).premio_max_percent ?? 100);
+  const premioMaxValor = salarioBase * (premioMaxPct / 100);
+  const fmtBRL = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
   const html = `<!doctype html>
 <html lang="pt-BR">
 <head>
@@ -116,9 +122,45 @@ export function printContratoAdesao(
   <ol class="clauses">
     <li>A EMPRESA avalia mensalmente o desempenho do COLABORADOR conforme <strong>critérios objetivos publicados no regulamento interno do Programa</strong> e disponíveis no sistema <em>Innova Premiações</em>, com pesos definidos para cada critério.</li>
     <li>Cada critério é pontuado em escala de <strong>1 (insuficiente) a 5 (excelente)</strong>, calculando-se média ponderada pelo peso de cada critério.</li>
-    <li>O direito ao prêmio na competência depende da média ponderada mínima fixada no regulamento, sendo o valor proporcional ao desempenho aferido.</li>
+    <li>O direito ao prêmio na competência depende da média ponderada mínima de <strong>3,0 (três)</strong>; abaixo desse patamar não há pagamento de prêmio na competência.</li>
     <li>A avaliação é registrada pelo gestor imediato e arquivada eletronicamente, com trilha de auditoria de no mínimo 5 (cinco) anos, para fins de defesa em eventual fiscalização.</li>
   </ol>
+
+  <h3>Cláusula 3.1 — Prêmio máximo individual</h3>
+  <p>Fica acordado que o <strong>prêmio máximo</strong> que o COLABORADOR poderá receber em uma competência corresponde a <strong>${premioMaxPct.toFixed(0)}%</strong> (${pctExtenso(premioMaxPct)}) do seu salário base${salarioBase > 0 ? ', equivalente nesta data a <strong>' + fmtBRL(premioMaxValor) + '</strong>' : ''}. Esse percentual constitui o <em>teto individual</em> do Programa para esse COLABORADOR.</p>
+  <p>O valor efetivo do prêmio na competência é calculado de forma proporcional à média ponderada obtida, conforme a seguinte escala:</p>
+  <table style="width:100%; border-collapse:collapse; margin: 6px 0 10px; font-size: 10pt;">
+    <thead>
+      <tr style="background:#F4F4F8;">
+        <th style="padding:6px 10px; text-align:left; border:1px solid #D4D4DC;">Média ponderada</th>
+        <th style="padding:6px 10px; text-align:left; border:1px solid #D4D4DC;">% do teto</th>
+        ${salarioBase > 0 ? '<th style="padding:6px 10px; text-align:right; border:1px solid #D4D4DC;">Valor estimado</th>' : ''}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:6px 10px; border:1px solid #D4D4DC;">5,0 (excelente)</td>
+        <td style="padding:6px 10px; border:1px solid #D4D4DC;">100%</td>
+        ${salarioBase > 0 ? `<td style="padding:6px 10px; border:1px solid #D4D4DC; text-align:right;">${fmtBRL(premioMaxValor)}</td>` : ''}
+      </tr>
+      <tr>
+        <td style="padding:6px 10px; border:1px solid #D4D4DC;">4,0</td>
+        <td style="padding:6px 10px; border:1px solid #D4D4DC;">80%</td>
+        ${salarioBase > 0 ? `<td style="padding:6px 10px; border:1px solid #D4D4DC; text-align:right;">${fmtBRL(premioMaxValor * 0.8)}</td>` : ''}
+      </tr>
+      <tr>
+        <td style="padding:6px 10px; border:1px solid #D4D4DC;">3,0 (mínimo)</td>
+        <td style="padding:6px 10px; border:1px solid #D4D4DC;">60%</td>
+        ${salarioBase > 0 ? `<td style="padding:6px 10px; border:1px solid #D4D4DC; text-align:right;">${fmtBRL(premioMaxValor * 0.6)}</td>` : ''}
+      </tr>
+      <tr>
+        <td style="padding:6px 10px; border:1px solid #D4D4DC;">&lt; 3,0</td>
+        <td style="padding:6px 10px; border:1px solid #D4D4DC;">0%</td>
+        ${salarioBase > 0 ? `<td style="padding:6px 10px; border:1px solid #D4D4DC; text-align:right;">—</td>` : ''}
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:9pt; color:#3F3F50;">Cálculo: <em>prêmio = teto individual × (média ponderada ÷ 5)</em>, zerado quando a média for inferior a 3,0. O salário base, o percentual de teto individual e a escala podem ser revistos por aditivo a este contrato, mediante comunicação ao COLABORADOR.</p>
 
   <h3>Cláusula 4 — Pagamento</h3>
   <ol class="clauses">
@@ -207,4 +249,16 @@ function formatCNPJ(c: string): string {
 function formatDate(d: string): string {
   try { return new Date(d + 'T12:00:00').toLocaleDateString('pt-BR'); }
   catch { return d; }
+}
+
+// Por extenso simples — pra valores comuns no contrato (10, 25, 30, 40, 50, 60, 70, 75, 80, 90, 100)
+function pctExtenso(pct: number): string {
+  const tab: Record<number, string> = {
+    10: 'dez por cento', 15: 'quinze por cento', 20: 'vinte por cento', 25: 'vinte e cinco por cento',
+    30: 'trinta por cento', 40: 'quarenta por cento', 50: 'cinquenta por cento', 60: 'sessenta por cento',
+    70: 'setenta por cento', 75: 'setenta e cinco por cento', 80: 'oitenta por cento',
+    90: 'noventa por cento', 100: 'cem por cento',
+  };
+  const r = Math.round(pct);
+  return tab[r] || `${r}% (${r} por cento)`;
 }

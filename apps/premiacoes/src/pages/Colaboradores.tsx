@@ -571,7 +571,7 @@ function ColaboradorForm({
     setor: initial?.setor || '',
     data_admissao: initial?.data_admissao || '',
     salario_base: initial?.salario_base?.toString() || '',
-    adicional_percent: ((initial as any)?.adicional_percent ?? 0).toString(),
+    premio_max_percent: ((initial as any)?.premio_max_percent ?? 100).toString(),
     notes: initial?.notes || '',
   });
   const [saving, setSaving] = useState(false);
@@ -587,7 +587,7 @@ function ColaboradorForm({
       cpf,
       data_admissao: form.data_admissao || null,
       salario_base: form.salario_base ? Number(form.salario_base) : null,
-      adicional_percent: form.adicional_percent ? Number(form.adicional_percent) : 0,
+      premio_max_percent: form.premio_max_percent ? Number(form.premio_max_percent) : 100,
       matricula: form.matricula || null,
       cargo: form.cargo || null,
       setor: form.setor || null,
@@ -647,11 +647,11 @@ function ColaboradorForm({
               </div>
             </div>
             <div>
-              <label className="label">Adicional sobre o salário (%)</label>
-              <input className="input" type="number" step="0.01" min="0" max="200" value={form.adicional_percent} onChange={(e) => setForm({ ...form, adicional_percent: e.target.value })} placeholder="0" />
+              <label className="label">Prêmio máximo (% do salário)</label>
+              <input className="input" type="number" step="1" min="0" max="200" value={form.premio_max_percent} onChange={(e) => setForm({ ...form, premio_max_percent: e.target.value })} placeholder="100" />
               <p className="text-[11px] text-ink-500 mt-1">
-                Ex: 40 para cargo de confiança 40%. Define o teto do prêmio:&nbsp;
-                <strong>R$ {(((Number(form.salario_base) || 0) * (1 + (Number(form.adicional_percent) || 0) / 100))).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</strong>
+                Quanto esse colaborador pode receber de prêmio no melhor cenário (nota 5). Padrão <strong>100%</strong> (= até 1× salário). Teto:&nbsp;
+                <strong>R$ {(((Number(form.salario_base) || 0) * ((Number(form.premio_max_percent) || 0) / 100))).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</strong>
               </p>
             </div>
             <div>
