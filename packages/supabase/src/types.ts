@@ -24,10 +24,34 @@ export interface Profile {
   last_login_at: string | null;
 }
 
+export interface MetodologiaPremio {
+  min_score: number; // abaixo disso, prêmio = 0
+  scale: Array<{ min_media: number; percent: number }>; // ordenado decrescente; primeiro match ganha
+}
+
+export const METODOLOGIA_PADRAO: MetodologiaPremio = {
+  min_score: 3,
+  scale: [
+    { min_media: 5, percent: 100 },
+    { min_media: 4, percent: 80 },
+    { min_media: 3, percent: 60 },
+  ],
+};
+
+export function calcPercentPremio(media: number, m: MetodologiaPremio | null | undefined): number {
+  const cfg = m || METODOLOGIA_PADRAO;
+  if (media < cfg.min_score) return 0;
+  // ordena decrescente por min_media e pega o primeiro que bate
+  const sorted = [...cfg.scale].sort((a, b) => b.min_media - a.min_media);
+  for (const r of sorted) if (media >= r.min_media) return r.percent;
+  return 0;
+}
+
 export interface Company {
   id: string;
   cnpj: string;
   legal_name: string;
+  metodologia_premio?: MetodologiaPremio | null; // metodologia padrão da empresa
   trade_name: string | null;
   cnae: string | null;
   sector: string | null;
@@ -154,6 +178,7 @@ export interface PremiosColaborador {
   data_nascimento: string | null;
   salario_base: number | null;
   premio_max_percent: number; // % do salário que o colaborador pode receber como prêmio máximo (nota 5). Default 100.
+  metodologia_premio: MetodologiaPremio | null; // override individual; null = herda da empresa
   is_active: boolean;
   notes: string | null;
   created_at: string;

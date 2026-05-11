@@ -20,8 +20,12 @@ export type {
   PremiosFolha,
   PremiosFolhaStatus,
   PremiosContrato,
+  MetodologiaPremio,
   Database,
 } from './types';
+
+// Helpers de metodologia (cálculo do prêmio por nota)
+export { METODOLOGIA_PADRAO, calcPercentPremio } from './types';
 
 // Cliente Supabase sem generic — mais leve e flexível em monorepo TS
 let client: SupabaseClient | null = null;

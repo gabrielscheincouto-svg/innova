@@ -572,6 +572,11 @@ function ColaboradorForm({
     data_admissao: initial?.data_admissao || '',
     salario_base: initial?.salario_base?.toString() || '',
     premio_max_percent: ((initial as any)?.premio_max_percent ?? 100).toString(),
+    met_custom: !!(initial as any)?.metodologia_premio,
+    met_pct5: (initial as any)?.metodologia_premio?.scale?.find((s: any) => s.min_media === 5)?.percent ?? 100,
+    met_pct4: (initial as any)?.metodologia_premio?.scale?.find((s: any) => s.min_media === 4)?.percent ?? 80,
+    met_pct3: (initial as any)?.metodologia_premio?.scale?.find((s: any) => s.min_media === 3)?.percent ?? 60,
+    met_min: (initial as any)?.metodologia_premio?.min_score ?? 3,
     notes: initial?.notes || '',
   });
   const [saving, setSaving] = useState(false);
@@ -588,6 +593,14 @@ function ColaboradorForm({
       data_admissao: form.data_admissao || null,
       salario_base: form.salario_base ? Number(form.salario_base) : null,
       premio_max_percent: form.premio_max_percent ? Number(form.premio_max_percent) : 100,
+      metodologia_premio: form.met_custom ? {
+        min_score: Number(form.met_min),
+        scale: [
+          { min_media: 5, percent: Number(form.met_pct5) },
+          { min_media: 4, percent: Number(form.met_pct4) },
+          { min_media: 3, percent: Number(form.met_pct3) },
+        ],
+      } : null,
       matricula: form.matricula || null,
       cargo: form.cargo || null,
       setor: form.setor || null,
@@ -654,6 +667,42 @@ function ColaboradorForm({
                 <strong>R$ {(((Number(form.salario_base) || 0) * ((Number(form.premio_max_percent) || 0) / 100))).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</strong>
               </p>
             </div>
+            <details className="rounded-2xl border border-ink-300/30 p-3 bg-surface-muted">
+              <summary className="cursor-pointer text-sm font-bold flex items-center justify-between">
+                <span>⚙ Metodologia personalizada (override)</span>
+                <input
+                  type="checkbox"
+                  checked={form.met_custom}
+                  onChange={(e) => setForm({ ...form, met_custom: e.target.checked })}
+                  className="w-4 h-4"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </summary>
+              <p className="text-[11px] text-ink-500 mt-2 mb-3">
+                Deixe desmarcado pra herdar a metodologia padrão da empresa. Marque pra usar uma escala personalizada só para esse colaborador.
+              </p>
+              {form.met_custom && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="label">Média 5 → % do teto</label>
+                    <input className="input" type="number" min="0" max="200" value={form.met_pct5} onChange={(e) => setForm({ ...form, met_pct5: e.target.value as any })} />
+                  </div>
+                  <div>
+                    <label className="label">Média 4 → %</label>
+                    <input className="input" type="number" min="0" max="200" value={form.met_pct4} onChange={(e) => setForm({ ...form, met_pct4: e.target.value as any })} />
+                  </div>
+                  <div>
+                    <label className="label">Média 3 → %</label>
+                    <input className="input" type="number" min="0" max="200" value={form.met_pct3} onChange={(e) => setForm({ ...form, met_pct3: e.target.value as any })} />
+                  </div>
+                  <div>
+                    <label className="label">Mínimo p/ ganhar prêmio</label>
+                    <input className="input" type="number" step="0.1" min="0" max="5" value={form.met_min} onChange={(e) => setForm({ ...form, met_min: e.target.value as any })} />
+                  </div>
+                </div>
+              )}
+            </details>
+
             <div>
               <label className="label">Notas</label>
               <textarea className="input" rows={2} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
