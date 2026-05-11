@@ -8,8 +8,17 @@ interface FolhaRow {
   colaborador: PremiosColaborador;
   media: number;
   premio: number;
+  premioMax: number;
   folhaId: string | null;
   status: PremiosFolhaStatus;
+}
+
+// teto do prêmio (natureza indenizatória) = salário_base * (1 + adicional/100)
+function calcPremioMax(c: PremiosColaborador): number {
+  const sal = Number(c.salario_base) || 0;
+  const adic = Number((c as any).adicional_percent) || 0;
+  if (sal <= 0) return 0;
+  return Number((sal * (1 + adic / 100)).toFixed(2));
 }
 
 export function Folha() {
@@ -49,6 +58,7 @@ export function Folha() {
         colaborador: c,
         media,
         premio: existing ? Number(existing.premio_value) : 0,
+        premioMax: calcPremioMax(c),
         folhaId: existing?.id || null,
         status: existing?.status || 'pendente',
       };
@@ -57,17 +67,31 @@ export function Folha() {
     setLoading(false);
   }
 
-  // calcula prêmio sugerido baseado em score (multiplicador linear sobre o premioBase)
+  // calcula prêmio sugerido (linear sobre o premioBase), depois aplica cap
+  // do teto = salario_base × (1 + adicional/100). Sem teto cadastrado, mantém valor sugerido.
   function gerarFolha() {
     const base = Number(premioBase) || 0;
-    setRows((prev) => prev.map((r) => ({
-      ...r,
-      premio: r.media >= 3 ? Number((base * (r.media / 5)).toFixed(2)) : 0,
-    })));
+    setRows((prev) => prev.map((r) => {
+      let sugerido = r.media >= 3 ? Number((base * (r.media / 5)).toFixed(2)) : 0;
+      // se tem teto (salário base cadastrado), respeita
+      if (r.premioMax > 0 && sugerido > r.premioMax) sugerido = r.premioMax;
+      return { ...r, premio: sugerido };
+    }));
   }
 
   async function salvarFolha() {
     if (!currentCompanyId) return;
+    // valida tetos antes de salvar
+    const acimaTeto = rows.filter((r) => r.premioMax > 0 && r.premio > r.premioMax);
+    if (acimaTeto.length > 0) {
+      const ok = await confirm({
+        title: `${acimaTeto.length} colaborador(es) acima do teto`,
+        description: `${acimaTeto.slice(0, 3).map((r) => r.colaborador.full_name).join(', ')}${acimaTeto.length > 3 ? '…' : ''}. Valor acima do salário+adicional pode descaracterizar a natureza indenizatória do prêmio em fiscalização. Salvar mesmo assim?`,
+        confirmLabel: 'Sim, salvar acima do teto',
+        variant: 'danger',
+      });
+      if (!ok) return;
+    }
     setSaving(true);
     const sb = getSupabase();
     const payload = rows.map((r) => ({
@@ -160,7 +184,10 @@ export function Folha() {
           <button onClick={aprovarTudo} className="btn btn-ghost">✓ Aprovar tudo</button>
           <button onClick={marcarPaga} className="btn btn-ghost">💰 Marcar pago</button>
         </div>
-        <p className="text-xs text-ink-500 mt-3">Sugestão = prêmio base × (média / 5). Quem ficou abaixo de 3 zera. Edite os valores como precisar.</p>
+        <p className="text-xs text-ink-500 mt-3">
+          Sugestão = prêmio base × (média / 5). Quem ficou abaixo de 3 zera.
+          O <strong>teto</strong> de cada colaborador é <em>salário × (1 + adicional)</em> — prêmio acima disso pode ser descaracterizado como remuneração.
+        </p>
       </div>
 
       {loading ? (
@@ -172,13 +199,20 @@ export function Folha() {
           <table className="data-table">
             <thead>
               <tr>
-                <th>Colaborador</th><th>Setor</th><th>Score</th><th>Prêmio</th><th>Status</th>
+                <th>Colaborador</th><th>Setor</th><th>Score</th><th>Teto (sal+adic)</th><th>Prêmio</th><th>Status</th>
               </tr>
             </thead>
             <tbody>
-              {rows.map((r) => (
+              {rows.map((r) => {
+                const excede = r.premioMax > 0 && r.premio > r.premioMax;
+                return (
                 <tr key={r.colaborador.id}>
-                  <td className="font-bold">{r.colaborador.full_name}</td>
+                  <td className="font-bold">
+                    {r.colaborador.full_name}
+                    {Number((r.colaborador as any).adicional_percent) > 0 && (
+                      <span className="ml-2 pill pill-accent text-[10px]">+{Number((r.colaborador as any).adicional_percent)}%</span>
+                    )}
+                  </td>
                   <td className="text-xs">{r.colaborador.setor || '—'}</td>
                   <td>
                     {r.media > 0 ? (
@@ -190,19 +224,29 @@ export function Folha() {
                       }`}>{r.media.toFixed(2)}</span>
                     ) : <span className="text-ink-300 text-xs">sem avaliação</span>}
                   </td>
+                  <td className="text-xs">
+                    {r.premioMax > 0 ? (
+                      <span title={`Salário ${Number(r.colaborador.salario_base).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})} + ${Number((r.colaborador as any).adicional_percent)||0}%`}>
+                        {r.premioMax.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                      </span>
+                    ) : <span className="text-warn font-bold" title="Sem salário cadastrado — sem teto definido">sem teto</span>}
+                  </td>
                   <td>
-                    <input
-                      className="input w-32 text-right font-bold"
-                      type="number" step="0.01"
-                      value={r.premio}
-                      onChange={(e) => setRows((prev) => prev.map((x) => x.colaborador.id === r.colaborador.id ? { ...x, premio: Number(e.target.value) } : x))}
-                    />
+                    <div className="flex flex-col">
+                      <input
+                        className={`input w-32 text-right font-bold ${excede ? 'border-danger text-danger' : ''}`}
+                        type="number" step="0.01" min="0" max={r.premioMax > 0 ? r.premioMax : undefined}
+                        value={r.premio}
+                        onChange={(e) => setRows((prev) => prev.map((x) => x.colaborador.id === r.colaborador.id ? { ...x, premio: Number(e.target.value) } : x))}
+                      />
+                      {excede && <span className="text-[10px] text-danger font-bold mt-0.5">Acima do teto!</span>}
+                    </div>
                   </td>
                   <td><StatusBadge status={r.status} /></td>
                 </tr>
-              ))}
+              );})}
               <tr className="bg-surface-muted font-bold">
-                <td colSpan={3} className="text-right">Total · {totalAprovadas} aprovadas</td>
+                <td colSpan={4} className="text-right">Total · {totalAprovadas} aprovadas</td>
                 <td className="font-extrabold">{total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                 <td></td>
               </tr>

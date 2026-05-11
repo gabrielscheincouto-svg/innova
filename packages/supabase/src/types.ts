@@ -151,7 +151,9 @@ export interface PremiosColaborador {
   cargo: string | null;
   setor: string | null;
   data_admissao: string | null;
+  data_nascimento: string | null;
   salario_base: number | null;
+  adicional_percent: number; // adicional sobre salário base (%), tipicamente cargo de confiança
   is_active: boolean;
   notes: string | null;
   created_at: string;

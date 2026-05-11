@@ -571,6 +571,7 @@ function ColaboradorForm({
     setor: initial?.setor || '',
     data_admissao: initial?.data_admissao || '',
     salario_base: initial?.salario_base?.toString() || '',
+    adicional_percent: ((initial as any)?.adicional_percent ?? 0).toString(),
     notes: initial?.notes || '',
   });
   const [saving, setSaving] = useState(false);
@@ -581,11 +582,12 @@ function ColaboradorForm({
     setSaving(true);
     const cpf = form.cpf.replace(/\D/g, '');
     if (cpf.length !== 11) { toast('CPF deve ter 11 dígitos', 'warn'); setSaving(false); return; }
-    const payload = {
+    const payload: any = {
       ...form,
       cpf,
       data_admissao: form.data_admissao || null,
       salario_base: form.salario_base ? Number(form.salario_base) : null,
+      adicional_percent: form.adicional_percent ? Number(form.adicional_percent) : 0,
       matricula: form.matricula || null,
       cargo: form.cargo || null,
       setor: form.setor || null,
@@ -643,6 +645,14 @@ function ColaboradorForm({
                 <label className="label">Salário base (R$)</label>
                 <input className="input" type="number" step="0.01" value={form.salario_base} onChange={(e) => setForm({ ...form, salario_base: e.target.value })} placeholder="2500.00" />
               </div>
+            </div>
+            <div>
+              <label className="label">Adicional sobre o salário (%)</label>
+              <input className="input" type="number" step="0.01" min="0" max="200" value={form.adicional_percent} onChange={(e) => setForm({ ...form, adicional_percent: e.target.value })} placeholder="0" />
+              <p className="text-[11px] text-ink-500 mt-1">
+                Ex: 40 para cargo de confiança 40%. Define o teto do prêmio:&nbsp;
+                <strong>R$ {(((Number(form.salario_base) || 0) * (1 + (Number(form.adicional_percent) || 0) / 100))).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</strong>
+              </p>
             </div>
             <div>
               <label className="label">Notas</label>
