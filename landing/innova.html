@@ -55,6 +55,39 @@ tailwind.config = {
   @media (max-width: 1024px) { .hero-deco { font-size: 24rem; } }
   /* legibilidade · sombra sutil só no h1 e parágrafo do hero pra destacar da foto sem ofuscar */
   .hero-text-shadow { text-shadow: 0 2px 24px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.35); }
+  /* Ken Burns · zoom lento + pan suave pra dar vida pro hero */
+  @keyframes kenburns {
+    0%   { transform: scale(1.06) translate(0, 0);     }
+    50%  { transform: scale(1.14) translate(-1.2%, -0.8%); }
+    100% { transform: scale(1.06) translate(0, 0);     }
+  }
+  .hero-img {
+    animation: kenburns 28s ease-in-out infinite;
+    transform-origin: center 40%;
+    filter: saturate(1.08) contrast(1.05);
+    will-change: transform;
+  }
+  /* faíscas animadas · pontos amarelos que sobem lentamente cobrindo a foto */
+  @keyframes spark-rise {
+    0%   { transform: translateY(0)     translateX(0);     opacity: 0;   }
+    10%  { opacity: .85; }
+    50%  { transform: translateY(-50vh) translateX(8px);   opacity: .7;  }
+    100% { transform: translateY(-100vh) translateX(-6px); opacity: 0;   }
+  }
+  .sparks { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+  .sparks span {
+    position: absolute;
+    bottom: -10px;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #FFC600 0%, rgba(255,198,0,.3) 60%, transparent 80%);
+    box-shadow: 0 0 6px 1px rgba(255,198,0,.55);
+    animation: spark-rise linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-img { animation: none; }
+    .sparks { display: none; }
+  }
   .product-card { transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s; }
   .product-card:hover { transform: translateY(-8px) rotate(-0.5deg); }
   /* Innova logo bars animation */
@@ -131,17 +164,30 @@ tailwind.config = {
 
 <!-- ============ HERO ============ -->
 <section class="relative overflow-hidden bg-ink-900 text-white">
-  <!-- imagem full-bleed metalúrgico (background) -->
+  <!-- imagem full-bleed metalúrgico (background) com Ken Burns -->
   <img
     src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=2400&q=85&auto=format&fit=crop&crop=entropy"
     alt="Metalúrgico esmerilhando peça em chão de fábrica"
-    class="absolute inset-0 w-full h-full object-cover"
+    class="hero-img absolute inset-0 w-full h-full object-cover"
   />
   <!-- overlays escuros pra legibilidade do texto (mais densos do lado do texto, mantém imagem visível à direita) -->
   <div class="absolute inset-0 bg-gradient-to-r from-ink-900/95 via-ink-900/75 to-ink-900/20"></div>
   <div class="absolute inset-0 bg-gradient-to-t from-ink-900/80 via-ink-900/15 to-ink-900/60"></div>
   <!-- tom roxo de identidade Innova preservado -->
   <div class="absolute inset-0 bg-gradient-to-br from-accent-900/40 via-transparent to-accent-700/20 mix-blend-multiply"></div>
+  <!-- faíscas animadas (decorativas) -->
+  <div class="sparks" aria-hidden="true">
+    <span style="left: 18%; animation-duration: 9s;  animation-delay: 0s;"></span>
+    <span style="left: 32%; animation-duration: 11s; animation-delay: 1.5s; width:2px; height:2px;"></span>
+    <span style="left: 47%; animation-duration: 8s;  animation-delay: 3s;"></span>
+    <span style="left: 58%; animation-duration: 12s; animation-delay: 0.8s; width:4px; height:4px;"></span>
+    <span style="left: 66%; animation-duration: 10s; animation-delay: 2.4s;"></span>
+    <span style="left: 74%; animation-duration: 7s;  animation-delay: 4.2s; width:2px; height:2px;"></span>
+    <span style="left: 82%; animation-duration: 13s; animation-delay: 0s;"></span>
+    <span style="left: 89%; animation-duration: 9.5s; animation-delay: 5s;"></span>
+    <span style="left: 25%; animation-duration: 14s; animation-delay: 6s; width:2px; height:2px;"></span>
+    <span style="left: 53%; animation-duration: 11s; animation-delay: 7.2s;"></span>
+  </div>
   <div class="hero-deco hidden md:block">innova</div>
 
   <div class="relative max-w-7xl mx-auto px-6 lg:px-10 pt-32 pb-20 lg:pt-40 lg:pb-28">
