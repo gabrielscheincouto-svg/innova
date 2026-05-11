@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState, useMemo } from 'react';
-import { getSupabase, type PremiosColaborador, type PremiosCriterio, type PremiosAvaliacao } from '@innova/supabase';
+import { getSupabase, calcPercentPremio, METODOLOGIA_PADRAO, type PremiosColaborador, type PremiosCriterio, type PremiosAvaliacao, type Company, type MetodologiaPremio } from '@innova/supabase';
 import { Spinner, useToast } from '@innova/ui';
 import { usePremios, formatCompetencia, shiftCompetencia } from '../lib/store';
 
@@ -12,6 +12,7 @@ export function Avaliacao() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);
   const [mesFechado, setMesFechado] = useState(false);
+  const [company, setCompany] = useState<Company | null>(null);
   const toast = useToast();
 
   useEffect(() => { if (currentCompanyId) load(); else setLoading(false); }, [currentCompanyId, currentCompetencia]);
@@ -20,12 +21,14 @@ export function Avaliacao() {
     if (!currentCompanyId) return;
     setLoading(true);
     const sb = getSupabase();
-    const [{ data: cs }, { data: cr }, { data: av }, { data: fl }] = await Promise.all([
+    const [{ data: cs }, { data: cr }, { data: av }, { data: fl }, { data: cp }] = await Promise.all([
       sb.from('premios_colaboradores').select('*').eq('company_id', currentCompanyId).eq('is_active', true).order('full_name'),
       sb.from('premios_criterios').select('*').eq('company_id', currentCompanyId).eq('is_active', true).order('display_order'),
       sb.from('premios_avaliacoes').select('*').eq('company_id', currentCompanyId).eq('competencia', currentCompetencia),
       sb.from('premios_folha').select('is_locked').eq('company_id', currentCompanyId).eq('competencia', currentCompetencia),
+      sb.from('companies').select('*').eq('id', currentCompanyId).maybeSingle(),
     ]);
+    setCompany((cp || null) as Company | null);
     setColaboradores((cs || []) as PremiosColaborador[]);
     setCriterios((cr || []) as PremiosCriterio[]);
     const map = new Map<string, number>();
@@ -59,7 +62,7 @@ export function Avaliacao() {
     setSaving(null);
   }
 
-  // estatísticas: média ponderada por colaborador
+  // estatísticas: média ponderada + prêmio calculado em tempo real
   const colabStats = useMemo(() => {
     return colaboradores.map((c) => {
       let sum = 0, w = 0, count = 0;
@@ -73,9 +76,18 @@ export function Avaliacao() {
       }
       const media = w > 0 ? sum / w : 0;
       const completo = count === criterios.length;
-      return { id: c.id, media, completo, total: criterios.length, count };
+      // Teto individual = salário × premio_max_percent/100
+      const sal = Number(c.salario_base) || 0;
+      const pctMax = Number((c as any).premio_max_percent ?? 100);
+      const teto = sal > 0 ? sal * (pctMax / 100) : 0;
+      // Metodologia · colaborador override > empresa > padrão Innova
+      const met: MetodologiaPremio = (c as any).metodologia_premio || company?.metodologia_premio || METODOLOGIA_PADRAO;
+      // Prêmio só é definitivo quando completo. Antes disso, mostra a tendência.
+      const percent = calcPercentPremio(media, met);
+      const premio = teto > 0 ? Number((teto * (percent / 100)).toFixed(2)) : 0;
+      return { id: c.id, media, completo, total: criterios.length, count, teto, premio, percent };
     });
-  }, [colaboradores, criterios, avaliacoes]);
+  }, [colaboradores, criterios, avaliacoes, company]);
 
   if (!currentCompanyId) {
     return (
@@ -135,7 +147,8 @@ export function Avaliacao() {
                     <div className="text-[10px] text-ink-500 font-normal mt-0.5">peso {Number(c.weight).toFixed(1)}</div>
                   </th>
                 ))}
-                <th className="text-center min-w-[100px]">Média</th>
+                <th className="text-center min-w-[90px]">Média</th>
+                <th className="text-right min-w-[130px]">Prêmio</th>
               </tr>
             </thead>
             <tbody>
@@ -194,9 +207,41 @@ export function Avaliacao() {
                       ) : <span className="text-ink-300 text-xs">—</span>}
                       <div className="text-[10px] text-ink-500 mt-1">{stat.count}/{stat.total}</div>
                     </td>
+                    <td className="text-right">
+                      {stat.teto <= 0 ? (
+                        <span className="text-warn text-[11px] font-bold" title="Sem salário cadastrado">sem teto</span>
+                      ) : stat.count === 0 ? (
+                        <span className="text-ink-300 text-xs">—</span>
+                      ) : (
+                        <div className="inline-flex flex-col items-end leading-tight">
+                          <span className={`font-extrabold ${stat.completo ? 'text-ok' : 'text-ink-700'}`}>
+                            {stat.premio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                          </span>
+                          <span className="text-[10px] text-ink-500 mt-0.5">
+                            {stat.completo ? `${stat.percent}% do teto` : 'parcial · termine a avaliação'}
+                          </span>
+                        </div>
+                      )}
+                    </td>
                   </tr>
                 );
               })}
+              {(() => {
+                const totalPremio = colabStats.reduce((acc, s) => acc + (s.premio || 0), 0);
+                const completos = colabStats.filter((s) => s.completo).length;
+                return (
+                  <tr className="bg-surface-muted font-bold">
+                    <td className="sticky left-0 bg-surface-muted z-10">Total estimado</td>
+                    <td colSpan={criterios.length} className="text-right text-xs text-ink-500 font-normal">
+                      {completos}/{colaboradores.length} avaliações completas
+                    </td>
+                    <td></td>
+                    <td className="text-right font-extrabold">
+                      {totalPremio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                    </td>
+                  </tr>
+                );
+              })()}
             </tbody>
           </table>
         </div>
