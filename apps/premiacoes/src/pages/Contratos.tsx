@@ -13,6 +13,7 @@ export function Contratos() {
   const { currentCompanyId } = usePremios();
   const [rows, setRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
+  const [bulking, setBulking] = useState(false);
   const toast = useToast();
 
   useEffect(() => { if (currentCompanyId) load(); else setLoading(false); }, [currentCompanyId]);
@@ -21,10 +22,12 @@ export function Contratos() {
     if (!currentCompanyId) return;
     setLoading(true);
     const sb = getSupabase();
-    const [{ data: cs }, { data: ct }] = await Promise.all([
+    const [{ data: cs, error: csErr }, { data: ct, error: ctErr }] = await Promise.all([
       sb.from('premios_colaboradores').select('*').eq('company_id', currentCompanyId).eq('is_active', true).order('full_name'),
       sb.from('premios_contratos').select('*').eq('company_id', currentCompanyId),
     ]);
+    if (csErr) toast(`Erro colaboradores: ${csErr.message}`, 'danger');
+    if (ctErr) toast(`Erro contratos: ${ctErr.message}`, 'danger');
     const colabs = (cs || []) as PremiosColaborador[];
     const contratos = (ct || []) as PremiosContrato[];
     setRows(colabs.map((c) => ({
@@ -42,8 +45,25 @@ export function Contratos() {
       colaborador_id: colabId,
       contract_date: new Date().toISOString().slice(0, 10),
     } as never);
-    if (error) toast(error.message, 'danger');
+    if (error) toast(`Erro: ${error.message}`, 'danger');
     else { toast('Contrato criado', 'ok'); load(); }
+  }
+
+  async function gerarTodosContratos() {
+    if (!currentCompanyId) return;
+    const semContrato = rows.filter((r) => !r.contrato);
+    if (semContrato.length === 0) { toast('Todos já têm contrato', 'warn'); return; }
+    setBulking(true);
+    const sb = getSupabase();
+    const payload = semContrato.map((r) => ({
+      company_id: currentCompanyId,
+      colaborador_id: r.colaborador.id,
+      contract_date: new Date().toISOString().slice(0, 10),
+    }));
+    const { error } = await sb.from('premios_contratos').insert(payload as never);
+    setBulking(false);
+    if (error) toast(`Erro: ${error.message}`, 'danger');
+    else { toast(`${semContrato.length} contratos criados`, 'ok'); load(); }
   }
 
   async function marcarAssinado(contratoId: string) {
@@ -67,11 +87,31 @@ export function Contratos() {
       </div>
     );
 
+  const semContratoCount = rows.filter((r) => !r.contrato).length;
+  const total = rows.length;
+  const comContrato = total - semContratoCount;
+
   return (
     <div className="space-y-5">
-      <div>
-        <h1 className="font-display text-4xl">Contratos de adesão</h1>
-        <p className="text-sm text-ink-700 mt-1">Cada colaborador adere ao programa de premiação 457 §2 CLT por contrato.</p>
+      <div className="flex items-end justify-between flex-wrap gap-3">
+        <div>
+          <h1 className="font-display text-4xl">Contratos de adesão</h1>
+          <p className="text-sm text-ink-700 mt-1">Cada colaborador adere ao programa de premiação 457 §2 CLT por contrato.</p>
+          {total > 0 && (
+            <p className="text-xs text-ink-500 mt-2">
+              <strong className="text-ok">{comContrato}</strong> com contrato · <strong className="text-warn">{semContratoCount}</strong> pendentes · {total} ativos
+            </p>
+          )}
+        </div>
+        {semContratoCount > 0 && (
+          <button
+            onClick={gerarTodosContratos}
+            disabled={bulking}
+            className="btn btn-primary inline-flex disabled:opacity-50"
+          >
+            {bulking ? (<><Spinner size={14} className="text-white" /> Gerando...</>) : (`+ Gerar ${semContratoCount} contratos pendentes`)}
+          </button>
+        )}
       </div>
 
       {loading ? (

@@ -132,24 +132,31 @@ export function Avaliacao() {
                       return (
                         <td key={cr.id} className="text-center">
                           <div className="flex items-center justify-center gap-0.5">
-                            {[1, 2, 3, 4, 5].map((n) => (
-                              <button
-                                key={n}
-                                onClick={() => setScore(co.id, cr.id, n)}
-                                disabled={isSaving}
-                                className={`w-7 h-7 rounded-md font-bold text-[11px] transition ${
-                                  score === n
-                                    ? n === 5 ? 'bg-ok text-white scale-110' :
-                                      n === 4 ? 'bg-accent-500 text-white scale-110' :
-                                      n === 3 ? 'bg-warn text-white scale-110' :
-                                      'bg-danger text-white scale-110'
-                                    : 'bg-surface-muted text-ink-700 hover:bg-accent-100'
-                                }`}
-                                title={cr.scale_labels?.[String(n)] || `Nota ${n}`}
-                              >
-                                {n}
-                              </button>
-                            ))}
+                            {[1, 2, 3, 4, 5].map((n) => {
+                              const selected = score === n;
+                              // paleta por nota (cor permanente, mesmo desselecionada)
+                              const palette: Record<number, { sel: string; idle: string }> = {
+                                1: { sel: 'bg-danger text-white shadow-md', idle: 'bg-danger/15 text-danger hover:bg-danger/30' },
+                                2: { sel: 'bg-[#FB923C] text-white shadow-md', idle: 'bg-[#FB923C]/15 text-[#C2410C] hover:bg-[#FB923C]/30' },
+                                3: { sel: 'bg-warn text-white shadow-md', idle: 'bg-warn/15 text-warn hover:bg-warn/30' },
+                                4: { sel: 'bg-[#84CC16] text-white shadow-md', idle: 'bg-[#84CC16]/15 text-[#4D7C0F] hover:bg-[#84CC16]/30' },
+                                5: { sel: 'bg-ok text-white shadow-md', idle: 'bg-ok/15 text-ok hover:bg-ok/30' },
+                              };
+                              const cls = palette[n];
+                              return (
+                                <button
+                                  key={n}
+                                  onClick={() => setScore(co.id, cr.id, n)}
+                                  disabled={isSaving}
+                                  className={`w-7 h-7 rounded-md font-extrabold text-[11px] transition ${
+                                    selected ? `${cls.sel} scale-110` : cls.idle
+                                  }`}
+                                  title={cr.scale_labels?.[String(n)] || `Nota ${n}`}
+                                >
+                                  {n}
+                                </button>
+                              );
+                            })}
                           </div>
                         </td>
                       );
