@@ -22,7 +22,7 @@ export function Avaliacao() {
     setLoading(true);
     const sb = getSupabase();
     const [{ data: cs }, { data: cr }, { data: av }, { data: fl }, { data: cp }] = await Promise.all([
-      sb.from('premios_colaboradores').select('*').eq('company_id', currentCompanyId).eq('is_active', true).order('full_name'),
+      sb.from('premios_colaboradores').select('*').eq('company_id', currentCompanyId).eq('is_active', true).eq('elegivel_premio', true).order('full_name'),
       sb.from('premios_criterios').select('*').eq('company_id', currentCompanyId).eq('is_active', true).order('display_order'),
       sb.from('premios_avaliacoes').select('*').eq('company_id', currentCompanyId).eq('competencia', currentCompetencia),
       sb.from('premios_folha').select('is_locked').eq('company_id', currentCompanyId).eq('competencia', currentCompetencia),

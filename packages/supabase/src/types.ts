@@ -179,6 +179,7 @@ export interface PremiosColaborador {
   salario_base: number | null;
   premio_max_percent: number; // % do salário que o colaborador pode receber como prêmio máximo (nota 5). Default 100.
   metodologia_premio: MetodologiaPremio | null; // override individual; null = herda da empresa
+  elegivel_premio: boolean; // se entra no programa de premiação (default true)
   is_active: boolean;
   notes: string | null;
   created_at: string;

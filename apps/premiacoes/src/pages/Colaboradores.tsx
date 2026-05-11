@@ -55,6 +55,14 @@ export function Colaboradores() {
     else { toast(c.is_active ? 'Inativado' : 'Reativado', 'ok'); load(); }
   }
 
+  async function handleToggleElegivel(c: PremiosColaborador) {
+    const current = (c as any).elegivel_premio !== false;
+    const sb = getSupabase();
+    const { error } = await sb.from('premios_colaboradores').update({ elegivel_premio: !current } as never).eq('id', c.id);
+    if (error) toast(error.message, 'danger');
+    else { toast(current ? 'Removido do programa de premiação' : 'Incluído no programa', 'ok'); load(); }
+  }
+
   async function handleDelete(c: PremiosColaborador) {
     const ok = await confirm({
       title: `Excluir ${c.full_name}?`,
@@ -112,11 +120,13 @@ export function Colaboradores() {
           <table className="data-table">
             <thead>
               <tr>
-                <th>Nome</th><th>CPF</th><th>Matrícula</th><th>Cargo</th><th>Setor</th><th>Status</th><th></th>
+                <th>Nome</th><th>CPF</th><th>Matrícula</th><th>Cargo</th><th>Setor</th><th className="text-center">Prêmio</th><th>Status</th><th></th>
               </tr>
             </thead>
             <tbody>
-              {filtered.map((c) => (
+              {filtered.map((c) => {
+                const elegivel = (c as any).elegivel_premio !== false; // default true se null/undefined
+                return (
                 <tr key={c.id}>
                   <td>
                     <div className="flex items-center gap-3">
@@ -130,6 +140,15 @@ export function Colaboradores() {
                   <td className="text-xs">{c.matricula || '—'}</td>
                   <td className="text-xs">{c.cargo || '—'}</td>
                   <td className="text-xs">{c.setor || '—'}</td>
+                  <td className="text-center">
+                    <button
+                      onClick={() => handleToggleElegivel(c)}
+                      className={`pill cursor-pointer ${elegivel ? 'pill-ok' : 'pill-gray'}`}
+                      title={elegivel ? 'Participa do programa. Clique pra remover.' : 'Não participa. Clique pra incluir.'}
+                    >
+                      {elegivel ? '✓ Participa' : '✕ Excluído'}
+                    </button>
+                  </td>
                   <td>
                     <button onClick={() => handleToggleActive(c)} className={`pill ${c.is_active ? 'pill-ok' : 'pill-gray'} cursor-pointer`}>
                       {c.is_active ? 'Ativo' : 'Inativo'}
@@ -142,7 +161,7 @@ export function Colaboradores() {
                     </div>
                   </td>
                 </tr>
-              ))}
+              );})}
             </tbody>
           </table>
         )}
@@ -575,6 +594,7 @@ function ColaboradorForm({
     data_nascimento: (initial as any)?.data_nascimento || '',
     salario_base: initial?.salario_base?.toString() || '',
     premio_max_percent: ((initial as any)?.premio_max_percent ?? 100).toString(),
+    elegivel_premio: (initial as any)?.elegivel_premio ?? true,
     met_custom: !!(initial as any)?.metodologia_premio,
     met_pct5: (initial as any)?.metodologia_premio?.scale?.find((s: any) => s.min_media === 5)?.percent ?? 100,
     met_pct4: (initial as any)?.metodologia_premio?.scale?.find((s: any) => s.min_media === 4)?.percent ?? 80,
@@ -597,6 +617,7 @@ function ColaboradorForm({
       data_nascimento: form.data_nascimento || null,
       salario_base: form.salario_base ? Number(form.salario_base) : null,
       premio_max_percent: form.premio_max_percent ? Number(form.premio_max_percent) : 100,
+      elegivel_premio: !!form.elegivel_premio,
       metodologia_premio: form.met_custom ? {
         min_score: Number(form.met_min),
         scale: [
@@ -633,6 +654,25 @@ function ColaboradorForm({
               <label className="label">Nome completo *</label>
               <input className="input" required value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} />
             </div>
+
+            <label className={`flex items-center gap-3 rounded-2xl p-3 border-2 cursor-pointer transition ${form.elegivel_premio ? 'bg-ok/5 border-ok/40' : 'bg-surface-muted border-ink-300/30'}`}>
+              <input
+                type="checkbox"
+                checked={form.elegivel_premio}
+                onChange={(e) => setForm({ ...form, elegivel_premio: e.target.checked })}
+                className="w-5 h-5"
+              />
+              <div className="flex-1">
+                <div className="font-bold text-sm">
+                  {form.elegivel_premio ? '✓ Participa do programa de premiação' : '✕ Não participa do programa'}
+                </div>
+                <div className="text-[11px] text-ink-500 mt-0.5">
+                  {form.elegivel_premio
+                    ? 'Entra em Avaliação mensal, Folha de prêmios e Contratos.'
+                    : 'Fica apenas no cadastro pra fins de RH (não entra na avaliação nem na folha de prêmios).'}
+                </div>
+              </div>
+            </label>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="label">CPF *</label>

@@ -26,7 +26,7 @@ export function Contratos() {
     setLoading(true);
     const sb = getSupabase();
     const [{ data: cs, error: csErr }, { data: ct, error: ctErr }, { data: cp }] = await Promise.all([
-      sb.from('premios_colaboradores').select('*').eq('company_id', currentCompanyId).eq('is_active', true).order('full_name'),
+      sb.from('premios_colaboradores').select('*').eq('company_id', currentCompanyId).eq('is_active', true).eq('elegivel_premio', true).order('full_name'),
       sb.from('premios_contratos').select('*').eq('company_id', currentCompanyId),
       sb.from('companies').select('*').eq('id', currentCompanyId).maybeSingle(),
     ]);
