@@ -3,6 +3,7 @@ import type { Company } from '@innova/supabase';
 export interface PrintFolhaInput {
   company: Company;
   competencia: string; // 'YYYY-MM-01'
+  fechamento?: { hash: string; closed_at: string; closed_by_email: string } | null;
   rows: Array<{
     nome: string;
     cpf: string | null;
@@ -24,7 +25,7 @@ export interface PrintFolhaInput {
  * pra enviar à contabilidade.
  */
 export function printFolhaRelatorio(input: PrintFolhaInput) {
-  const { company, competencia, rows } = input;
+  const { company, competencia, rows, fechamento } = input;
   const empresa = company.trade_name || company.legal_name;
   const cnpj = fmtCNPJ(company.cnpj || '');
   const competenciaLabel = new Date(competencia + 'T12:00:00').toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }).toUpperCase();
@@ -132,6 +133,16 @@ export function printFolhaRelatorio(input: PrintFolhaInput) {
       Emitido: ${dataEmissao}
     </div>
   </div>
+
+  ${fechamento ? `
+  <div style="background:#0F0F19;color:#fff;border-radius:8px;padding:10px 16px;margin:10px 0 16px;display:flex;align-items:center;gap:14px;font-family:'SF Mono','Monaco','Courier New',monospace;">
+    <div style="font-size:18pt;color:#FFC600;">⛓</div>
+    <div style="flex:1;">
+      <div style="font-size:7.5pt;text-transform:uppercase;letter-spacing:0.15em;font-weight:800;color:#A5A4F8;">Hash forense SHA-256 · lacre de integridade</div>
+      <div style="font-size:9pt;font-weight:700;word-break:break-all;letter-spacing:0.02em;margin-top:3px;">${esc(fechamento.hash)}</div>
+      <div style="font-size:7.5pt;color:#B0B0C0;margin-top:3px;">Lacrado em ${new Date(fechamento.closed_at).toLocaleString('pt-BR')} por ${esc(fechamento.closed_by_email)}</div>
+    </div>
+  </div>` : ''}
 
   <h1>Relatório de prêmios — competência ${esc(competenciaLabel)}</h1>
   <p style="color:#3F3F50; font-size:9pt; margin: 4px 0 0;">Programa de premiação por desempenho · Art. 457 §2 CLT · natureza indenizatória</p>

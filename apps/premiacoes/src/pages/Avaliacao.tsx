@@ -13,6 +13,7 @@ export function Avaliacao() {
   const [saving, setSaving] = useState<string | null>(null);
   const [mesFechado, setMesFechado] = useState(false);
   const [company, setCompany] = useState<Company | null>(null);
+  const [fechamentoHash, setFechamentoHash] = useState<string | null>(null);
   const toast = useToast();
 
   useEffect(() => { if (currentCompanyId) load(); else setLoading(false); }, [currentCompanyId, currentCompetencia]);
@@ -21,13 +22,15 @@ export function Avaliacao() {
     if (!currentCompanyId) return;
     setLoading(true);
     const sb = getSupabase();
-    const [{ data: cs }, { data: cr }, { data: av }, { data: fl }, { data: cp }] = await Promise.all([
+    const [{ data: cs }, { data: cr }, { data: av }, { data: fl }, { data: cp }, { data: fec }] = await Promise.all([
       sb.from('premios_colaboradores').select('*').eq('company_id', currentCompanyId).eq('is_active', true).eq('elegivel_premio', true).order('full_name'),
       sb.from('premios_criterios').select('*').eq('company_id', currentCompanyId).eq('is_active', true).order('display_order'),
       sb.from('premios_avaliacoes').select('*').eq('company_id', currentCompanyId).eq('competencia', currentCompetencia),
       sb.from('premios_folha').select('is_locked').eq('company_id', currentCompanyId).eq('competencia', currentCompetencia),
       sb.from('companies').select('*').eq('id', currentCompanyId).maybeSingle(),
+      sb.from('v_premios_fechamento_atual').select('hash, reopened_at').eq('company_id', currentCompanyId).eq('competencia', currentCompetencia).maybeSingle(),
     ]);
+    setFechamentoHash(fec && !(fec as any).reopened_at ? (fec as any).hash : null);
     setCompany((cp || null) as Company | null);
     setColaboradores((cs || []) as PremiosColaborador[]);
     setCriterios((cr || []) as PremiosCriterio[]);
@@ -109,8 +112,15 @@ export function Avaliacao() {
           <h1 className="font-display text-4xl">Avaliação mensal</h1>
           <p className="text-sm text-ink-700 mt-1 capitalize">
             Competência: <strong>{formatCompetencia(currentCompetencia)}</strong>
-            {mesFechado && <span className="ml-2 pill pill-ok">🔒 Mês fechado</span>}
+            {mesFechado && <span className="ml-2 pill pill-ok">🔒 Lacrado</span>}
           </p>
+          {fechamentoHash && (
+            <div className="mt-2 inline-flex items-center gap-2 bg-ink-900 text-white rounded-2xl px-3 py-1.5 text-[11px] font-mono">
+              <span className="text-warn">⛓</span>
+              <span className="opacity-70">hash:</span>
+              <span className="font-bold tracking-wider" title={fechamentoHash}>{fechamentoHash.slice(0, 16)}…{fechamentoHash.slice(-8)}</span>
+            </div>
+          )}
         </div>
         <div className="flex items-center gap-2 bg-white rounded-2xl border border-black/5 p-1">
           <button onClick={() => setCompetencia(shiftCompetencia(currentCompetencia, -1))} className="w-8 h-8 grid place-items-center rounded-xl hover:bg-surface-muted">‹</button>
