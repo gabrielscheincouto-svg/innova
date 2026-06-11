@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Navigate } from 'react-router-dom';
 import { signIn, useAuth } from '@innova/auth';
-import { Logo, Spinner, useToast } from '@innova/ui';
+import { Logo, Spinner, useToast, EsqueciSenhaModal } from '@innova/ui';
 
 export function Login() {
   const profile = useAuth((s) => s.profile);
@@ -10,6 +10,7 @@ export function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showEsqueci, setShowEsqueci] = useState(false);
 
   if (profile) return <Navigate to="/" replace />;
 
@@ -58,6 +59,11 @@ export function Login() {
             <button type="submit" disabled={loading || !email || !password} className="w-full btn btn-primary justify-center disabled:opacity-50">
               {loading ? <Spinner size={16} /> : <>Entrar →</>}
             </button>
+            <div className="text-center pt-1">
+              <button type="button" onClick={() => setShowEsqueci(true)} className="text-xs font-bold text-accent-600 hover:text-accent-700">
+                Esqueci minha senha
+              </button>
+            </div>
           </form>
         </div>
 
@@ -65,6 +71,7 @@ export function Login() {
           É colaborador? Acesse pelo link único enviado pela sua empresa.
         </p>
       </div>
+      {showEsqueci && <EsqueciSenhaModal onClose={() => setShowEsqueci(false)} />}
     </div>
   );
 }

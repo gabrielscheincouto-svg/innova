@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthInit, useAuth } from '@innova/auth';
-import { Toast, ConfirmDialog, Spinner } from '@innova/ui';
+import { Toast, ConfirmDialog, Spinner, ResetPasswordPage } from '@innova/ui';
 import { Layout } from './components/Layout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Login } from './pages/Login';
@@ -27,6 +27,7 @@ export default function App() {
     <>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/reset-password" element={<ResetPasswordPage productLabel="Innova /Gestor" loginPath="/gestor/login" />} />
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
             <Route path="/" element={<Dashboard />} />

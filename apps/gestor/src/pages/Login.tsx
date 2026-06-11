@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Navigate } from 'react-router-dom';
 import { signIn, useAuth } from '@innova/auth';
-import { Logo, Spinner, useToast } from '@innova/ui';
+import { Logo, Spinner, useToast, EsqueciSenhaModal } from '@innova/ui';
 
 export function Login() {
   const profile = useAuth((s) => s.profile);
@@ -10,6 +10,7 @@ export function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showEsqueci, setShowEsqueci] = useState(false);
 
   if (profile) return <Navigate to="/" replace />;
 
@@ -89,6 +90,11 @@ export function Login() {
             >
               {loading ? <Spinner size={16} /> : <>Entrar →</>}
             </button>
+            <div className="text-center pt-1">
+              <button type="button" onClick={() => setShowEsqueci(true)} className="text-xs font-bold text-accent-600 hover:text-accent-700">
+                Esqueci minha senha
+              </button>
+            </div>
           </form>
 
           <div className="mt-6 pt-6 border-t border-black/5 text-center text-xs text-ink-500">
@@ -97,11 +103,8 @@ export function Login() {
             </p>
           </div>
         </div>
-
-        <p className="text-center text-[11px] text-ink-500 mt-6">
-          Esqueceu a senha? <a href="mailto:contato@innova.com.br" className="text-accent-600 font-bold">contato@innova.com.br</a>
-        </p>
       </div>
+      {showEsqueci && <EsqueciSenhaModal onClose={() => setShowEsqueci(false)} />}
     </div>
   );
 }

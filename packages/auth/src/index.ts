@@ -157,6 +157,16 @@ export async function updatePassword(newPassword: string) {
 }
 
 /**
+ * Retorna a sessão atual (usada na página de reset de senha pra
+ * verificar se o token do email foi processado).
+ */
+export async function getSession() {
+  const sb = getSupabase();
+  const { data } = await sb.auth.getSession();
+  return data.session;
+}
+
+/**
  * Tradução básica de mensagens de erro do Supabase
  */
 function traduzirErro(msg: string): string {
