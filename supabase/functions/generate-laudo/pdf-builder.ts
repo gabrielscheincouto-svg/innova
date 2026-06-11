@@ -405,48 +405,158 @@ function drawActionPlan(pb: PageBuilder, data: LaudoData) {
 }
 
 // ============================================================
-// PÁGINA FINAL · ASSINATURAS + AUDITORIA
+// PÁGINA · TERMO DE APROVAÇÃO (assinatura ÚNICA do representante legal)
+// Reduz fricção: empresa assina uma vez, cobre o laudo todo,
+// não exige assinatura individual de cada funcionário.
 // ============================================================
 function drawSignatures(pb: PageBuilder, data: LaudoData) {
   pb.drawHeader('Laudo · PGR · NR-1');
 
   pb.text('SEÇÃO FINAL', { x: MARGIN, y: PAGE_H - 70, size: 9, color: C.accent, bold: true });
-  pb.text('Termo de aprovação e assinaturas', { x: MARGIN, y: PAGE_H - 100, size: 22, bold: true });
+  pb.text('Termo de aprovação · assinatura única', { x: MARGIN, y: PAGE_H - 100, size: 22, bold: true });
 
   const intro = wrapText(
-    'As partes abaixo declaram que o presente Programa de Gerenciamento de Riscos foi elaborado conforme NR-1 (Portaria MTE 1.419/2024), revisado, aprovado e arquivado eletronicamente em conformidade com a LGPD.',
+    `A empresa abaixo qualificada, por meio de seu representante legal, declara que o presente Programa de Gerenciamento de Riscos (PGR) foi elaborado conforme NR-1 (Portaria MTE 1.419/2024), revisado pelo Responsável Técnico e arquivado eletronicamente em conformidade com a LGPD. A assinatura digital deste termo pelo representante legal cobre integralmente o conteúdo do laudo, dispensando assinatura individual dos colaboradores.`,
     pb.font, 10, PAGE_W - 2 * MARGIN
   );
   let y = PAGE_H - 140;
   intro.forEach((l) => { pb.text(l, { x: MARGIN, y, size: 10, color: C.ink700 }); y -= 14; });
 
-  y -= 40;
+  y -= 30;
 
-  // RT
-  pb.text('RESPONSÁVEL TÉCNICO', { x: MARGIN, y, size: 8, color: C.ink500, bold: true });
-  pb.line(MARGIN, y - 50, MARGIN + 200, y - 50, C.ink, 1.5);
-  pb.text(data.signedBy?.full_name || 'Aguardando assinatura', { x: MARGIN, y: y - 65, size: 12, bold: true });
-  pb.text(humanizeRole(data.signedBy?.role || ''), { x: MARGIN, y: y - 80, size: 9, color: C.ink700 });
+  // === Bloco da empresa contratante ===
+  pb.text('EMPRESA CONTRATANTE', { x: MARGIN, y, size: 8, color: C.accent, bold: true });
+  y -= 16;
+  pb.rect(MARGIN, y - 90, PAGE_W - 2 * MARGIN, 100, C.gray50);
+  pb.text(data.company.trade_name || data.company.legal_name, { x: MARGIN + 12, y: y - 10, size: 14, bold: true });
+  pb.text('Razão social: ' + data.company.legal_name, { x: MARGIN + 12, y: y - 28, size: 9, color: C.ink700 });
+  pb.text('CNPJ: ' + formatCNPJ(data.company.cnpj), { x: MARGIN + 12, y: y - 42, size: 9, color: C.ink700 });
+  if (data.company.cnae) pb.text('CNAE: ' + data.company.cnae, { x: MARGIN + 12, y: y - 56, size: 9, color: C.ink700 });
+  if (data.company.address || data.company.city) {
+    const endereco = [data.company.address, data.company.city, data.company.state].filter(Boolean).join(', ');
+    pb.text('Endereço: ' + endereco, { x: MARGIN + 12, y: y - 70, size: 9, color: C.ink700 });
+  }
 
-  // Empresa
-  pb.text('REPRESENTANTE DA EMPRESA', { x: MARGIN + 280, y, size: 8, color: C.ink500, bold: true });
-  pb.line(MARGIN + 280, y - 50, MARGIN + 480, y - 50, C.ink, 1.5);
-  pb.text(data.company.trade_name || data.company.legal_name, { x: MARGIN + 280, y: y - 65, size: 12, bold: true });
-  pb.text('Diretoria · ' + (data.company.legal_name || ''), { x: MARGIN + 280, y: y - 80, size: 9, color: C.ink700 });
+  y -= 110;
+
+  // === Bloco do RT (referência, já assinou eletronicamente) ===
+  if (data.signedBy) {
+    pb.text('ELABORADO POR · RESPONSÁVEL TÉCNICO', { x: MARGIN, y, size: 8, color: C.ink500, bold: true });
+    y -= 14;
+    pb.text(data.signedBy.full_name, { x: MARGIN, y, size: 11, bold: true });
+    pb.text(humanizeRole(data.signedBy.role), { x: MARGIN, y: y - 13, size: 9, color: C.ink700 });
+    pb.text('Aprovado eletronicamente no sistema · timestamp registrado em audit log', { x: MARGIN, y: y - 26, size: 8, color: C.ink500, italic: true });
+    y -= 50;
+  }
+
+  // === Área de assinatura digital do representante legal ===
+  pb.text('ASSINATURA DO REPRESENTANTE LEGAL DA EMPRESA', { x: MARGIN, y, size: 8, color: C.accent, bold: true });
+  y -= 14;
+
+  // Caixa visual de assinatura (placeholder pra carimbo digital do gov.br)
+  pb.rect(MARGIN, y - 100, PAGE_W - 2 * MARGIN, 110, C.white);
+  pb.line(MARGIN, y - 100, PAGE_W - MARGIN, y - 100, C.ink300, 0.8);
+  pb.line(MARGIN, y + 10, PAGE_W - MARGIN, y + 10, C.ink300, 0.8);
+  pb.line(MARGIN, y - 100, MARGIN, y + 10, C.ink300, 0.8);
+  pb.line(PAGE_W - MARGIN, y - 100, PAGE_W - MARGIN, y + 10, C.ink300, 0.8);
+
+  pb.text('[ Espaço reservado para a assinatura digital gov.br / ICP-Brasil ]', { x: MARGIN + 12, y: y - 14, size: 9, color: C.ink300, italic: true });
+  pb.text('Nome do(a) representante legal: ____________________________________', { x: MARGIN + 12, y: y - 40, size: 9, color: C.ink700 });
+  pb.text('CPF: ___.___.___-__         Cargo: ________________________________', { x: MARGIN + 12, y: y - 58, size: 9, color: C.ink700 });
+  pb.text('Local e data: ________________________________________________________', { x: MARGIN + 12, y: y - 76, size: 9, color: C.ink700 });
 
   y -= 130;
 
-  // Trilha de auditoria
+  // Hash forense compacto no rodapé (apenas o hash; instruções na próxima página)
   pb.line(MARGIN, y, PAGE_W - MARGIN, y, C.accent, 0.5);
+  y -= 14;
+  pb.text(`SHA-256 deste laudo: ${data.documentHash}`, { x: MARGIN, y, size: 7, color: C.ink500 });
+  y -= 10;
+  pb.text(`Gerado em: ${data.generatedAt} · assessment_id=${data.assessment.id}`, { x: MARGIN, y, size: 7, color: C.ink500 });
+
+  pb.drawFooter();
+}
+
+// ============================================================
+// PÁGINA · INSTRUÇÕES DE ASSINATURA gov.br
+// ============================================================
+function drawSigningInstructions(pb: PageBuilder, data: LaudoData) {
+  pb.drawHeader('Laudo · PGR · NR-1');
+
+  pb.text('INSTRUÇÕES', { x: MARGIN, y: PAGE_H - 70, size: 9, color: C.accent, bold: true });
+  pb.text('Como assinar este laudo via gov.br', { x: MARGIN, y: PAGE_H - 100, size: 22, bold: true });
+
+  const intro = wrapText(
+    'O representante legal da empresa deve assinar digitalmente este PDF usando o Assinador gov.br (gratuito, validade jurídica equiparada à assinatura manuscrita pela Lei 14.063/2020 e MP 2.200-2/2001). Basta uma assinatura — não é necessário assinar página a página nem coletar assinatura de cada colaborador.',
+    pb.font, 10, PAGE_W - 2 * MARGIN
+  );
+  let y = PAGE_H - 140;
+  intro.forEach((l) => { pb.text(l, { x: MARGIN, y, size: 10, color: C.ink700 }); y -= 14; });
+
   y -= 20;
-  pb.text('TRILHA DE AUDITORIA', { x: MARGIN, y, size: 8, color: C.accent, bold: true });
+
+  // Box destaque com URL principal
+  pb.rect(MARGIN, y - 80, PAGE_W - 2 * MARGIN, 90, C.accent50);
+  pb.text('▸ ASSINADOR gov.br', { x: MARGIN + 12, y: y - 14, size: 10, color: C.accent700, bold: true });
+  pb.text('https://assinador.iti.gov.br', { x: MARGIN + 12, y: y - 32, size: 14, color: C.accent700, bold: true });
+  pb.text('Acesso com conta gov.br nível PRATA ou OURO · gratuito · validade jurídica plena', { x: MARGIN + 12, y: y - 50, size: 8, color: C.ink700 });
+  pb.text('Sua conta gov.br pode ser elevada de bronze pra prata em prefeituras, INSS ou pelo app', { x: MARGIN + 12, y: y - 64, size: 8, color: C.ink500 });
+
+  y -= 110;
+
+  // Passo a passo
+  pb.text('PASSO A PASSO', { x: MARGIN, y, size: 8, color: C.accent, bold: true });
   y -= 18;
+
+  const steps = [
+    '1. Baixe este PDF no seu computador.',
+    '2. Acesse https://assinador.iti.gov.br e faça login com sua conta gov.br do representante legal.',
+    '3. Clique em "Escolher arquivo" e selecione este PDF.',
+    '4. Posicione o carimbo de assinatura na "Área de assinatura digital" desta seção (página anterior).',
+    '5. Clique em "Assinar" — o gov.br vai pedir confirmação no app (autenticação de 2 fatores).',
+    '6. Baixe o PDF assinado e arquive uma cópia. Pode também devolver pro Innova pra que fique anexado ao registro.',
+  ];
+  steps.forEach((s) => {
+    const lines = wrapText(s, pb.font, 10, PAGE_W - 2 * MARGIN - 20);
+    lines.forEach((l, i) => {
+      pb.text(l, { x: MARGIN + (i === 0 ? 0 : 18), y, size: 10, color: C.ink });
+      y -= 14;
+    });
+    y -= 4;
+  });
+
+  y -= 10;
+
+  // Alternativas
+  pb.text('ALTERNATIVAS ACEITAS', { x: MARGIN, y, size: 8, color: C.ink500, bold: true });
+  y -= 14;
+  const alts = [
+    '• Certificado ICP-Brasil A1 ou A3 (e-CPF do representante legal) — via Adobe Acrobat ou software do certificador.',
+    '• Assinatura por carimbo gov.br via Conecta gov.br (https://conecta.gov.br) para empresas.',
+    '• Em última instância, impressão física + assinatura manuscrita + arquivamento em pasta — perde a validade digital, mas atende fiscalização presencial.',
+  ];
+  alts.forEach((a) => {
+    const lines = wrapText(a, pb.font, 9, PAGE_W - 2 * MARGIN - 12);
+    lines.forEach((l, i) => {
+      pb.text(l, { x: MARGIN + (i === 0 ? 0 : 12), y, size: 9, color: C.ink700 });
+      y -= 12;
+    });
+    y -= 2;
+  });
+
+  y -= 14;
+
+  // Hash + verificação
+  pb.line(MARGIN, y, PAGE_W - MARGIN, y, C.accent, 0.5);
+  y -= 16;
+  pb.text('PROVA DE INTEGRIDADE', { x: MARGIN, y, size: 8, color: C.accent, bold: true });
+  y -= 14;
   pb.rect(MARGIN, y - 70, PAGE_W - 2 * MARGIN, 80, C.gray50);
-  pb.text(`Hash SHA-256: ${data.documentHash}`, { x: MARGIN + 8, y: y - 8, size: 8, color: C.ink700 });
-  pb.text(`Timestamp: ${data.generatedAt}`, { x: MARGIN + 8, y: y - 22, size: 8, color: C.ink700 });
-  pb.text('Storage: WORM · AES-256 · retenção 20 anos · imutável', { x: MARGIN + 8, y: y - 36, size: 8, color: C.ink700 });
-  pb.text(`Documento: assessment_id=${data.assessment.id}`, { x: MARGIN + 8, y: y - 50, size: 8, color: C.ink700 });
-  pb.text(`Empresa: ${data.company.cnpj}`, { x: MARGIN + 8, y: y - 64, size: 8, color: C.ink700 });
+  pb.text(`Hash SHA-256: ${data.documentHash}`, { x: MARGIN + 8, y: y - 10, size: 8, color: C.ink700 });
+  pb.text(`Timestamp: ${data.generatedAt}`, { x: MARGIN + 8, y: y - 24, size: 8, color: C.ink700 });
+  pb.text(`Documento: assessment_id=${data.assessment.id}`, { x: MARGIN + 8, y: y - 38, size: 8, color: C.ink700 });
+  pb.text(`Empresa: CNPJ ${formatCNPJ(data.company.cnpj)}`, { x: MARGIN + 8, y: y - 52, size: 8, color: C.ink700 });
+  pb.text('Storage WORM · AES-256 · retenção 20 anos · imutável · auditável', { x: MARGIN + 8, y: y - 66, size: 8, color: C.ink500, italic: true });
 
   pb.drawFooter();
 }
@@ -461,7 +571,7 @@ export async function buildLaudoPDF(data: LaudoData): Promise<Uint8Array> {
   const italic = await doc.embedFont(StandardFonts.HelveticaOblique);
   const fonts = { regular, bold, italic };
 
-  const totalPages = 5;
+  const totalPages = 6; // +1 pela página de instruções de assinatura
 
   const page1 = doc.addPage([PAGE_W, PAGE_H]);
   drawCover(new PageBuilder(page1, fonts, 1, totalPages), data);
@@ -478,12 +588,27 @@ export async function buildLaudoPDF(data: LaudoData): Promise<Uint8Array> {
   const page5 = doc.addPage([PAGE_W, PAGE_H]);
   drawSignatures(new PageBuilder(page5, fonts, 5, totalPages), data);
 
+  // Página final · instruções pro representante legal assinar via gov.br
+  const page6 = doc.addPage([PAGE_W, PAGE_H]);
+  drawSigningInstructions(new PageBuilder(page6, fonts, 6, totalPages), data);
+
+  // Metadados PDF pra compatibilidade com assinatura PAdES (assinador.iti.gov.br)
   doc.setTitle(`Laudo PGR · NR-1 · ${data.company.trade_name || data.company.legal_name} · ${data.assessment.cycle}`);
   doc.setAuthor('Innova · Conformidade NR-1');
-  doc.setSubject('Programa de Gerenciamento de Riscos');
-  doc.setProducer('Innova /NR1 Edge Function');
+  doc.setSubject(`Programa de Gerenciamento de Riscos · ${data.company.legal_name} · CNPJ ${data.company.cnpj}`);
+  doc.setProducer('Innova /NR1 Edge Function · pdf-lib');
   doc.setCreator('Innova /NR1');
-  doc.setKeywords(['NR-1', 'PGR', 'SST', 'eSocial', 'S-2240']);
+  doc.setKeywords([
+    'NR-1', 'PGR', 'SST', 'eSocial', 'S-2240',
+    `cnpj:${data.company.cnpj}`,
+    `assessment:${data.assessment.id}`,
+    `hash:${data.documentHash}`,
+    'assinatura-gov.br-PAdES',
+  ]);
+  // Datas precisas pra trilha forense
+  const now = new Date();
+  doc.setCreationDate(now);
+  doc.setModificationDate(now);
 
   return await doc.save();
 }
