@@ -1,12 +1,14 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth, signOut } from '@innova/auth';
-import { LogoMark } from '@innova/ui';
+import { LogoMark, CompanySwitcher } from '@innova/ui';
+import { useNr1 } from '../lib/store';
 import type { ReactNode } from 'react';
 
 export function Layout() {
   const profile = useAuth((s) => s.profile);
   const location = useLocation();
   const navigate = useNavigate();
+  const { currentCompanyId, setCompany } = useNr1();
 
   const isProprietario = profile?.role === 'proprietario';
 
@@ -72,6 +74,11 @@ export function Layout() {
           </div>
           <div className="flex-1" />
           <div className="flex items-center gap-3">
+            <CompanySwitcher
+              system="nr1"
+              currentCompanyId={currentCompanyId}
+              onChange={(id) => setCompany(id)}
+            />
             <div className="text-right">
               <div className="text-sm font-bold leading-tight">{profile?.full_name}</div>
               <div className="text-[10px] text-ink-500">{profile?.email} · {profile?.role}</div>

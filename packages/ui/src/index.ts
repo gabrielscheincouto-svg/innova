@@ -6,3 +6,4 @@ export { EmptyState } from './components/EmptyState';
 export { Spinner } from './components/Spinner';
 export { ResetPasswordPage } from './components/ResetPassword';
 export { EsqueciSenhaModal } from './components/EsqueciSenhaModal';
+export { CompanySwitcher } from './components/CompanySwitcher';

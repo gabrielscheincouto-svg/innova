@@ -1,27 +1,37 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { getSupabase, logAudit, type Profile, type UserRole, type Company } from '@innova/supabase';
 import { Spinner, useToast, useConfirm } from '@innova/ui';
+import { UserCompaniesModal } from './UserCompaniesModal';
 
 export function Usuarios() {
   const [list, setList] = useState<Profile[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
+  const [companyCounts, setCompanyCounts] = useState<Map<string, number>>(new Map());
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filterRole, setFilterRole] = useState<UserRole | 'all'>('all');
   const [editing, setEditing] = useState<Profile | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [managingCompanies, setManagingCompanies] = useState<Profile | null>(null);
   const toast = useToast();
   const confirm = useConfirm();
 
   async function load() {
     setLoading(true);
     const sb = getSupabase();
-    const [profilesRes, compRes] = await Promise.all([
+    const [profilesRes, compRes, ucRes] = await Promise.all([
       sb.from('profiles').select('*').order('created_at', { ascending: false }),
       sb.from('companies').select('*').order('legal_name'),
+      sb.from('user_companies').select('profile_id'),
     ]);
     setList(profilesRes.data || []);
     setCompanies(compRes.data || []);
+    // contagem de empresas por profile
+    const counts = new Map<string, number>();
+    (ucRes.data || []).forEach((r: any) => {
+      counts.set(r.profile_id, (counts.get(r.profile_id) || 0) + 1);
+    });
+    setCompanyCounts(counts);
     setLoading(false);
   }
 
@@ -111,13 +121,16 @@ export function Usuarios() {
                 <th>Usuário</th>
                 <th>E-mail</th>
                 <th>Perfil</th>
+                <th className="text-center">Empresas</th>
                 <th>Status</th>
                 <th>Último acesso</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {filtered.map((u) => (
+              {filtered.map((u) => {
+                const empresasVinc = companyCounts.get(u.id) || 0;
+                return (
                 <tr key={u.id}>
                   <td>
                     <div className="flex items-center gap-3">
@@ -129,6 +142,15 @@ export function Usuarios() {
                   </td>
                   <td className="text-xs">{u.email}</td>
                   <td><RoleBadge role={u.role} /></td>
+                  <td className="text-center">
+                    <button
+                      onClick={() => setManagingCompanies(u)}
+                      className={`pill cursor-pointer ${empresasVinc === 0 ? 'pill-warn' : empresasVinc === 1 ? 'pill-gray' : 'pill-accent'}`}
+                      title={empresasVinc === 0 ? 'Sem empresa vinculada · clique pra adicionar' : empresasVinc === 1 ? '1 empresa · clique pra editar' : `${empresasVinc} empresas · clique pra gerenciar`}
+                    >
+                      {empresasVinc === 0 ? '⚠ Sem empresa' : `${empresasVinc} ${empresasVinc === 1 ? 'empresa' : 'empresas'}`}
+                    </button>
+                  </td>
                   <td>{u.is_active ? <span className="pill pill-ok">Ativo</span> : <span className="pill pill-gray">Inativo</span>}</td>
                   <td className="text-xs text-ink-500">{u.last_login_at ? formatDate(u.last_login_at) : 'nunca'}</td>
                   <td>
@@ -141,7 +163,7 @@ export function Usuarios() {
                     </div>
                   </td>
                 </tr>
-              ))}
+              );})}
             </tbody>
           </table>
         )}
@@ -153,6 +175,13 @@ export function Usuarios() {
           companies={companies}
           onClose={() => setShowForm(false)}
           onSaved={() => { setShowForm(false); load(); }}
+        />
+      )}
+
+      {managingCompanies && (
+        <UserCompaniesModal
+          profile={managingCompanies}
+          onClose={() => { setManagingCompanies(null); load(); }}
         />
       )}
     </div>

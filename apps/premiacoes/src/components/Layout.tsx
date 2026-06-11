@@ -1,8 +1,6 @@
-import { useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth, signOut } from '@innova/auth';
-import { LogoMark } from '@innova/ui';
-import { getSupabase } from '@innova/supabase';
+import { LogoMark, CompanySwitcher } from '@innova/ui';
 import { usePremios } from '../lib/store';
 
 export function Layout() {
@@ -10,22 +8,6 @@ export function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { currentCompanyId, setCompany } = usePremios();
-
-  // Auto-seleciona empresa se o usuário só tem 1 vinculada (caso comum B2B)
-  useEffect(() => {
-    if (currentCompanyId || !profile?.id) return;
-    (async () => {
-      const sb = getSupabase();
-      const { data } = await sb
-        .from('companies')
-        .select('id')
-        .contains('system_access', ['premiacoes'])
-        .limit(2);
-      if (data && data.length === 1) {
-        setCompany(data[0].id);
-      }
-    })();
-  }, [profile?.id, currentCompanyId, setCompany]);
 
   const items = [
     { to: '/', label: 'Dashboard', icon: <DashboardIcon /> },
@@ -68,6 +50,11 @@ export function Layout() {
           </div>
           <div className="flex-1" />
           <div className="flex items-center gap-3">
+            <CompanySwitcher
+              system="premiacoes"
+              currentCompanyId={currentCompanyId}
+              onChange={(id) => setCompany(id)}
+            />
             <div className="text-right">
               <div className="text-sm font-bold leading-tight">{profile?.full_name}</div>
               <div className="text-[10px] text-ink-500">{profile?.email}</div>
