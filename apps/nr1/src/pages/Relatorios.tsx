@@ -156,17 +156,12 @@ export function Relatorios() {
         </div>
       </div>
 
-      <div className="card">
-        <h4 className="font-extrabold text-sm mb-2">⚙ Configuração da Edge Function</h4>
-        <div className="text-xs text-ink-700 space-y-2">
-          <p>O laudo é gerado por uma <strong>Supabase Edge Function</strong> (Deno + pdf-lib) rodando na infra Supabase. Pra ativar:</p>
-          <pre className="bg-surface-muted rounded-xl p-3 text-[11px] font-mono overflow-x-auto">
-{`supabase login
-supabase link --project-ref <seu-project-ref>
-supabase functions deploy generate-laudo --no-verify-jwt`}
-          </pre>
-          <p>Documentação completa em <code>supabase/functions/README.md</code>.</p>
-        </div>
+      <div className="card bg-ok/5 border border-ok/20">
+        <h4 className="font-extrabold text-sm mb-1 text-ok">✓ Edge Function ativa</h4>
+        <p className="text-xs text-ink-700">
+          O laudo é gerado por uma <strong>Supabase Edge Function</strong> (Deno + pdf-lib) rodando na infra Supabase, com hash SHA-256 + audit log + storage WORM.
+          Status: <strong className="text-ok">generate-laudo · ACTIVE</strong>.
+        </p>
       </div>
     </div>
   );
