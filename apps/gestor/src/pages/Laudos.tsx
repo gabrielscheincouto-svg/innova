@@ -130,7 +130,6 @@ export function Laudos() {
     setBatchProgress({ done: 0, total: rows.length, current: '' });
     try {
       // Dinâmico: JSZip só carrega quando precisar
-      // @ts-expect-error - jszip resolvido pelo bundler/npm install no build
       const JSZipMod = await import('jszip');
       const JSZip = JSZipMod.default;
       const zip = new JSZip();
