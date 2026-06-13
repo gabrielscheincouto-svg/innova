@@ -29,14 +29,14 @@ export function Layout() {
         {items.map((it) => {
           const active = it.to === '/' ? location.pathname === '/' : location.pathname.startsWith(it.to);
           return (
-            <Link key={it.to} to={it.to} className={`nav-item ${active ? 'active' : ''}`} title={it.label}>
+            <Link key={it.to} to={it.to} className={`nav-item ${active ? 'active' : ''}`} data-tooltip={it.label}>
               {it.icon}
             </Link>
           );
         })}
         <div className="flex-1" />
-        <Link to="/configuracoes" className={`nav-item ${location.pathname === '/configuracoes' ? 'active' : ''}`} title="Configurações"><CogIcon /></Link>
-        <button onClick={() => { signOut(); navigate('/login'); }} className="nav-item" title="Sair"><LogoutIcon /></button>
+        <Link to="/configuracoes" className={`nav-item ${location.pathname === '/configuracoes' ? 'active' : ''}`} data-tooltip="Configurações"><CogIcon /></Link>
+        <button onClick={() => { signOut(); navigate('/login'); }} className="nav-item" data-tooltip="Sair"><LogoutIcon /></button>
       </aside>
 
       <main className="flex-1 bg-surface rounded-tl-[44px] rounded-bl-[44px] overflow-y-auto">

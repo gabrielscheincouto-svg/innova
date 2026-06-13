@@ -50,16 +50,16 @@ export function Layout() {
             ? location.pathname === '/'
             : location.pathname === item.to;
           return (
-            <Link key={item.to} to={item.to} className={`nav-item ${active ? 'active' : ''}`} title={item.label}>
+            <Link key={item.to} to={item.to} className={`nav-item ${active ? 'active' : ''}`} data-tooltip={item.label}>
               {item.icon}
             </Link>
           );
         })}
         <div className="flex-1" />
-        <Link to="/configuracoes" className={`nav-item ${location.pathname === '/configuracoes' ? 'active' : ''}`} title="Configurações">
+        <Link to="/configuracoes" className={`nav-item ${location.pathname === '/configuracoes' ? 'active' : ''}`} data-tooltip="Configurações">
           <CogIcon />
         </Link>
-        <button onClick={() => { signOut(); navigate('/login'); }} className="nav-item" title="Sair">
+        <button onClick={() => { signOut(); navigate('/login'); }} className="nav-item" data-tooltip="Sair">
           <LogoutIcon />
         </button>
       </aside>
